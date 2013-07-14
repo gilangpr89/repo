@@ -1,0 +1,22 @@
+.border-left {
+	border-left: 1px solid #99bce8;
+}
+.border-right {
+	border-right: 1px solid #99bce8;
+}
+.border-top {
+	border-top: 1px solid #99bce8;
+}
+.border-bottom {
+	border-bottom: 1px solid #99bce8;
+}
+.padding-right {
+	padding-right: 1px;
+}
+.padding-left {
+	padding-left: 1px;
+}
+pre {
+	font-size: 10px;
+	color: red;
+}

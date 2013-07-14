@@ -1,0 +1,89 @@
+/* Icon CSS */
+
+.icon-accept {
+	background-image: url(../images/icons/accept.png) !important;
+}
+
+.icon-add {
+	background-image: url(../images/icons/add.png) !important;
+}
+
+.icon-delete {
+	background-image: url(../images/icons/delete.png) !important;
+}
+
+.icon-cross {
+	background-image: url(../images/icons/cross.png) !important;
+}
+
+.icon-pencil {
+	background-image: url(../images/icons/pencil.png) !important;
+}
+
+.icon-refresh {
+	background-image: url(../images/icons/arrow_refresh.png) !important;
+}
+
+.icon-file-dll {
+	background-image: url(../images/icons/file_extension_dll.png) !important;
+}
+
+.icon-file-txt {
+	background-image: url(../images/icons/file_extension_txt.png) !important;
+}
+
+.icon-search {
+	background-image: url(../images/icons/table_tab_search.png) !important;
+}
+
+.icon-detail {
+	background-image: url(../images/icons/application_view_detail.png) !important;
+}
+
+.icon-align-middle {
+	background-image: url(../images/icons/align_middle.png) !important;
+}
+
+.icon-card-money {
+	background-image: url(../images/icons/card_money.png) !important;
+}
+
+.icon-money-dollar {
+	background-image: url(../images/icons/money_dollar.png) !important;
+}
+
+.icon-master-card {
+	background-image: url(../images/icons/master_card.png) !important;
+}
+
+.icon-visa-card {
+	background-image: url(../images/icons/visa.png) !important;
+}
+
+.icon-visa-card2 {
+	background-image: url(../images/icons/visa_2.png) !important;
+}
+
+.icon-visa-electron {
+	background-image: url(../images/icons/visa_electron.png) !important;
+}
+
+.icon-lock-break {
+	background-image: url(../images/icons/lock_break.png) !important;
+}
+
+.icon-lock-open {
+	background-image: url(../images/icons/lock_open.png) !important;
+}
+
+.icon-printer {
+	background-image: url(../images/icons/printer.png) !important;
+}
+
+.icon-user {
+	background-image: url(../images/icons/user.png) !important;
+}
+
+.icon-exclamation {
+	background-image: url(../images/icons/exclamation.png) !important;
+}

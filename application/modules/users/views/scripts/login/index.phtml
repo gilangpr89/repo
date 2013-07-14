@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>MyProject</title>
+		<!-- Start : CSS -->
+		<link rel="stylesheet" href="<?php echo $this->baseUrl('resources/css/extjs4.2.1/css/ext-all.css')?>" type="text/css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl('resources/css/style.css')?>" type="text/css" />
+		<link rel="stylesheet" href="<?php echo $this->baseUrl('resources/css/icons.css')?>" type="text/css" />
+		<!-- End of : CSS -->
+		<!-- Start : JS -->
+		<script type="text/javascript" src="<?php echo $this->baseUrl('resources/js/extjs4.2.1/ext-all-dev.js')?>"></script>
+		<script type="text/javascript" src="<?php echo $this->baseUrl('assets/js/MyIndo.js')?>"></script>
+		<script type="text/javascript">
+			MyIndo.setBaseUrl('<?php echo $this->baseUrl('')?>');
+			MyIndo.setSiteUrl('<?php echo $this->url()?>');
+			Ext.onReady(function() {
+				var form = Ext.create('Ext.Window', {
+					title: 'Login',
+					width: 300,
+					resizable: false,
+					closable: false,
+					draggable: false,
+					id: '_LOGIN_FORM',
+					items: [{
+						xtype: 'form',
+						layout: 'form',
+						bodyPadding: '5 5 5 5',
+						id: 'login-form',
+						waitMsgTarget: true,
+						border: false,
+						defaultType: 'textfield',
+						items: [{
+							fieldLabel: 'Username',
+							name: 'USERNAME',
+							id: '_USERNAME',
+							enableKeyEvents: true,
+							allowBlank: false,
+							listeners: {
+								keypress: function(d, e) {
+									if(e.getKey() == 13) {
+										login();
+									}
+								}
+							}
+						},{
+							fieldLabel: 'Password',
+							inputType: 'password',
+							allowBlank: false,
+							name: 'PASSWORD',
+							id: '_PASSWORD',
+							enableKeyEvents: true,
+							listeners: {
+								keypress: function(d, e) {
+									if(e.getKey() == 13) {
+										login();
+									}
+								}
+							}
+						}],
+						buttons: [{
+							text: 'Login',
+							listeners: {
+								click: function() {
+									login();
+								}
+							}
+						}]
+					}]
+				});
+				form.show();
+				Ext.getCmp('_USERNAME').focus(false, 100);
+			});
+			function login() {
+				var form = Ext.getCmp('login-form').getForm();
+				if(form.isValid()) {
+					form.submit({
+						url: MyIndo.baseUrl('users/login'),
+						success: function(a, b) {
+							var json = Ext.decode(b.response.responseText);
+							Ext.Msg.alert('Message',json.data.message, function(btn) {
+								Ext.create('Ext.Window', {
+									id: 'loading-window',
+									title: 'Loading',
+									width: 200,
+									resizable: false,
+									draggable: false,
+									modal: true,
+									closable: false,
+									html: '<div style="padding: 10px;text-align: center"><img width="40" height="40" src="' + MyIndo.baseUrl('resources/images/350.gif') + '"/><br/>Loading data, please wait..</div>'
+								}).show();
+								if(btn == 'ok') {
+									document.location = '/';
+								} else {
+									document.location = '/';
+								}
+							});
+							Ext.getCmp('_LOGIN_FORM').hide();
+						},
+						failure: function(a, b) {
+							var json = Ext.decode(b.response.responseText);
+							Ext.Msg.alert('Login authentication failed',json.data.message);
+						},
+						waitMsg: 'Authenticating, please wait..'
+					});
+				} else {
+					Ext.Msg.alert('Message','Please complete form first !', function() {
+						var _x = Ext.getCmp('_USERNAME');
+						var _y = Ext.getCmp('_PASSWORD');
+						if(_x.getValue().length == 0) {
+							_x.focus();
+						} else if(_y.getValue().length == 0) {
+							_y.focus();
+						}
+					});
+				}
+			}
+		</script>
+		<!-- End of : JS -->
+	</head>
+	<body></body>
+</html>
