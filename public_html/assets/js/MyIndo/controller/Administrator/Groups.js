@@ -12,6 +12,9 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 			'groupsupdatewindow button': {
 				click: this.onButtonClicked
 			},
+			'groupsfilter button': {
+				click: this.onButtonClicked
+			},
 			'managegroup button': {
 				click: this.onManageGroupButtonClicked
 			},
@@ -37,8 +40,8 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 				case 'manage':
 					this.manage(record);
 					break;
-				case 'search':
-					this.search(record);
+				case 'filter':
+					this.filter();
 					break;
 
 				/* Add */
@@ -56,6 +59,11 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 				case 'update-cancel':
 					record.up().up().close();
 					break;
+
+				/* Filter */
+				case 'groups-apply-filter':
+					this.applyFilter(record);
+					break;
 			}
 		} catch(e) {
 			Ext.Msg.alert('Application Error', e);
@@ -66,7 +74,7 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 		var action = record.action;
 		switch(action) {
 			case 'add':
-				this.manageAdd();
+				this.manageAdd(record);
 				break;
 			case 'manage-add-save':
 				this.manageAddSave(record);
@@ -114,8 +122,7 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 			if(data.NAME != 'Administrator') {
 				Ext.Msg.confirm('Delete Group Confirmation', 'Are you sure want to delete this group ?', function(btn) {
 					if(btn == 'yes') {
-						var LW = Ext.create('MyIndo.view.Loading');
-						LW.show();
+						me.showLoadingWindow();
 						Ext.Ajax.request({
 							url: MyIndo.siteUrl('groups/request/destroy'),
 							params: {
@@ -124,7 +131,7 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 							},
 							success: function(r) {
 								var json = Ext.decode(r.responseText);
-								LW.close();
+								me.closeLoadingWindow();
 								if(me.isLogin(json)) {
 									if(me.isSuccess(json)) {
 										var store = parent.getStore();
@@ -149,22 +156,18 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 		var selected = parent.getSelectionModel().getSelection();
 		var me = this;
 		if(selected.length > 0) {
-			var panel = Ext.getCmp('main-content');
-			var id = 'manage-group-' + selected[0].data.GROUP_ID;
-			if(!panel.items.get(id)) {
-				var store = Ext.create('MyIndo.store.GroupUsers');
-				store.proxy.extraParams = {
-					GROUP_ID: selected[0].data.GROUP_ID
-				};
-				panel.add({
-					xtype: 'managegroup',
-					title: 'Manage Users: ' + selected[0].data.NAME,
-					id: id,
-					store: store,
-					groupName: selected[0].data.NAME
-				})
-			}
-			panel.setActiveTab(id);
+			var store = Ext.create('MyIndo.store.GroupUsers');
+			store.proxy.extraParams = {
+				GROUP_ID: selected[0].data.GROUP_ID
+			};
+			store.load();
+			var manageWindow = Ext.create('MyIndo.view.Administrator.Groups.Manage', {
+				title: 'Manage Users: ' + selected[0].data.NAME,
+				store: store,
+				id: 'manage-users-' + selected[0].data.GROUP_ID,
+				groupName: selected[0].data.NAME
+			});
+			manageWindow.show();
 		} else {
 			Ext.Msg.alert('Application Error', 'You did not select any Groups.');
 		}
@@ -178,24 +181,26 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 		if(form.isValid()) {
 			Ext.Msg.confirm('Save confirmation', 'Are you sure want to save this data ?', function(btn) {
 				if(btn == 'yes') {
-					var LW = Ext.create('MyIndo.view.Loading');
-					LW.show();
+					me.showLoadingWindow();
 					form.submit({
 						url: MyIndo.baseUrl('groups/request/create'),
 						success: function(data, r) {
 							var json = Ext.decode(r.response.responseText);
-							Ext.Msg.alert('Message', 'Data successfully saved.');
-							var mainContent = Ext.getCmp('main-content');
-							var store = mainContent.getActiveTab().getStore();
-							store.load();
-							form.reset();
-							LW.close();
+							if(me.isLogin(json)) {
+								Ext.Msg.alert('Message', 'Data successfully saved.');
+								var mainContent = Ext.getCmp('main-content');
+								var store = mainContent.getActiveTab().getStore();
+								store.proxy.extraParams = {};
+								store.load();
+								form.reset();
+							}
+							me.closeLoadingWindow();
 						},
 						failure: function(data, r) {
 							var json = Ext.decode(r.response.responseText);
-							LW.close();
+							me.closeLoadingWindow();
 							if(me.isLogin(json)) {
-								Ext.Msg.alert('Application Error', '<strong>Error Code</strong>: ' + json.error_code + '<br/><strong>Message</strong>: ' + json.error_message);
+								me.fail(json);	
 							}
 						}
 					});
@@ -212,21 +217,22 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 		var panel = Ext.getCmp('main-content');
 		var store = panel.getActiveTab().getStore();
 		var me = this;
-		var LW = Ext.create('MyIndo.view.Loading');
-		LW.show();
 		if(form.isValid()) {
+			me.showLoadingWindow();
 			form.submit({
 				url: MyIndo.siteUrl('groups/request/update'),
 				success: function(data, r) {
 					var json = Ext.decode(r.response.responseText);
-					store.load(store.currentPage);
-					parent.close();
-					Ext.Msg.alert('Groups', 'Group successfully updated.');
-					LW.close();
+					if(me.isLogin(json)) {
+						store.load(store.currentPage);
+						parent.close();
+						Ext.Msg.alert('Groups', 'Group successfully updated.');
+					}
+					me.closeLoadingWindow();
 				},
 				failure: function(data, r) {
 					var json = Ext.decode(r.response.responseText);
-					LW.close();
+					me.closeLoadingWindow();
 					if(me.isLogin(json)) {
 						me.fail(json);
 					}
@@ -239,11 +245,9 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 
 	/* Manage */
 
-	manageAdd: function() {
-		var panel = Ext.getCmp('main-content');
-		var parent = panel.getActiveTab();
+	manageAdd: function(record) {
+		var parent = record.up().up();
 		var groupId = parent.id.split('-')[2];
-		var store = parent.getStore();
 		var userStore = Ext.create('MyIndo.store.Users');
 		var windowAdd = Ext.create('MyIndo.view.Administrator.Groups.AddUser', {
 			userStore: userStore
@@ -263,25 +267,26 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 			if(val.USER_ID.length == 88) {
 				Ext.Msg.confirm('Save confirmation', 'Are you sure want to save this data ?', function(btn) {
 				if(btn == 'yes') {
-					var LW = Ext.create('MyIndo.view.Loading');
-					LW.show();
+					me.showLoadingWindow();
 					form.submit({
 						url: MyIndo.baseUrl('groupusers/request/create'),
 						success: function(data, r) {
 							var json = Ext.decode(r.response.responseText);
-							Ext.Msg.alert('Message', 'Data successfully saved.');
-							var mainContent = Ext.getCmp('main-content');
-							var store = mainContent.getActiveTab().getStore();
-							store.load();
-							record.up().up().close();
-							LW.close();
+							if(me.isLogin(json)) {
+								Ext.Msg.alert('Message', 'Data successfully saved.');
+								var mainContent = Ext.getCmp('manage-users-' + val.GROUP_ID);
+								var store = mainContent.items.items[0].getStore();
+								store.load();
+								record.up().up().close();
+							}
+							me.closeLoadingWindow();
 						},
 						failure: function(data, r) {
 							var json = Ext.decode(r.response.responseText);
 							if(me.isLogin(json)) {
-								Ext.Msg.alert('Application Error', '<strong>Error Code</strong>: ' + json.error_code + '<br/><strong>Message</strong>: ' + json.error_message);
+								me.fail(json);
 							}
-							LW.close();
+							me.closeLoadingWindow();
 						}
 					});
 				}
@@ -296,19 +301,18 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 
 	manageDelete: function(record) {
 		var parent = record.up().up();
-		var store = parent.getStore();
-		var selected = parent.getSelectionModel().getSelection();
+		var store = parent.items.items[0].getStore();
+		var selected = parent.items.items[0].getSelectionModel().getSelection();
 		var me = this;
 		if(selected.length > 0) {
 			if(selected[0].data.USERNAME == 'admin' && parent.groupName == 'Administrator') {
-				Ext.Msg.alert('Application Error', 'Sorry, you cannot delete this user.');
+				Ext.Msg.alert('Application Error', 'Sorry, you cannot remove this user.');
 			} else {
 				var groupId = parent.id.split('-')[2];
 				var userId = selected[0].data.USER_ID;
-				Ext.Msg.confirm('Delete User', 'Are you sure want to delete this user ?', function(btn) {
+				Ext.Msg.confirm('Delete User', 'Are you sure want to remove this user ?', function(btn) {
 					if(btn == 'yes') {
-						var LW = Ext.create('MyIndo.view.Loading');
-						LW.show();
+						me.showLoadingWindow();
 						Ext.Ajax.request({
 							url: MyIndo.siteUrl('groupusers/request/destroy'),
 							params: {
@@ -317,11 +321,11 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 							},
 							success: function(r) {
 								var json = Ext.decode(r.responseText);
-								LW.close();
+								me.closeLoadingWindow();
 								if(me.isLogin(json)) {
 									if(me.isSuccess(json)) {
 										store.load();
-										Ext.Msg.alert('Group User', 'User successfully deleted.');
+										Ext.Msg.alert('Manage User', 'User successfully removed.');
 									}
 								}
 							}
@@ -332,5 +336,53 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 		} else {
 			Ext.Msg.alert('Application Error', 'You did not select any users.');
 		}
+	},
+
+	filter: function() {
+		var filterWindow = Ext.create('MyIndo.view.Administrator.Groups.Filter');
+		var store = Ext.getCmp('main-content').getActiveTab().getStore();
+		var params = store.proxy.extraParams;
+		var form = filterWindow.items.items[0].getForm();
+		form.setValues(params);
+		filterWindow.show();
+
+		filterWindow.on('close', function(){
+			var store = Ext.getCmp('main-content').getActiveTab().getStore();
+			var params = store.proxy.extraParams;
+			if(typeof(params.NAME) === 'undefined') {
+				store.load();
+			}
+		});
+	},
+
+	applyFilter: function(record) {
+		var panel = Ext.getCmp('main-content');
+		var parent = panel.getActiveTab();
+		var store = parent.getStore();
+		var selfWindow = record.up().up();
+		var form = record.up().up().items.items[0].getForm();
+		var val = form.getValues();
+		var me = this;
+		if(val.NAME.length == 0) {
+			store.proxy.extraParams = {};
+		} else {
+			store.proxy.extraParams = {
+				NAME: val.NAME
+			};
+		}
+		this.showLoadingWindow();
+		store.load({
+			callback: function(record, opt) {
+				if(record.length == 0) {
+					Ext.Msg.alert('Groups Filter', 'No data found, please try again.');
+					store.proxy.extraParams = {};
+				} else {
+					var json = Ext.decode(opt.response.responseText);
+					Ext.Msg.alert('Groups Filter', 'Result: [' + json.data.totalCount + '] data(s) found.');
+					selfWindow.close();
+				}
+				me.closeLoadingWindow();
+			}
+		});
 	}
 });

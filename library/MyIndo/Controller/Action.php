@@ -13,6 +13,7 @@ Class MyIndo_Controller_Action extends Zend_Controller_Action
 	protected $_limit;
 	protected $_start;
 	protected $_order;
+	protected $_where;
 	protected $_totalCount;
 
 	/* User Auth */
@@ -134,6 +135,9 @@ Class MyIndo_Controller_Action extends Zend_Controller_Action
 
 		// Set default $_totalCount :
 		$this->_totalCount = 0;
+
+		// Set default $_where :
+		$this->_where = array();
 		
 		
 		/* Encryption Class - init */
