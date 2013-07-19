@@ -1,5 +1,5 @@
 Ext.define('MyIndo.store.Groups', {
-	extend: 'MyIndo.data.Store',
+	extend: 'Ext.data.Store',
 	model: 'MyIndo.model.Group',
 	proxy: {
 		type: 'ajax',

@@ -10,13 +10,10 @@ Ext.define('MyIndo.controller.Menu', {
 	'MyIndo.view.Administrator.Groups.Update',
 	'MyIndo.view.Administrator.Groups.Manage',
 	'MyIndo.view.Administrator.Groups.AddUser',
-	'MyIndo.view.Administrator.Groups.Filter',
 
 	/* Users */
 	'MyIndo.view.Administrator.Users.View',
-	'MyIndo.view.Administrator.Users.Add',
-	'MyIndo.view.Administrator.Users.Update',
-	'MyIndo.view.Administrator.Users.Filter'
+	'MyIndo.view.Administrator.Users.Add'
 	],
 	
 	stores: [
@@ -165,11 +162,5 @@ Ext.define('MyIndo.controller.Menu', {
 	onUsersClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create('MyIndo.store.Users');
 		this.createPanel(menuTitle, menuId, mainContent, store, 'usersview');
-	},
-
-	/* Menu Managements */
-
-	onMenuManagementClicked: function(menuTitle, menuId, mainContent) {
-		
 	}
 });

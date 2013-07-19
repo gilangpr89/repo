@@ -11,11 +11,7 @@ Ext.application({
 	controllers: [
 	'Menu',
 	'Administrator.Users',
-	'Administrator.Groups',
-	'Administrator.MenuManagements',
-
-	/* Master */
-	'Master.City'
+	'Administrator.Groups'
 	],
 
 	autoCreateViewport: true,

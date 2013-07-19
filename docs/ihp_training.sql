@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 19, 2013 at 01:32 PM
+-- Generation Time: Jul 15, 2013 at 03:15 AM
 -- Server version: 5.5.31-0ubuntu0.13.04.1
 -- PHP Version: 5.3.14
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `GROUPS` (
   `CREATED_DATE` datetime NOT NULL,
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`GROUP_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=46 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
 
 --
 -- Dumping data for table `GROUPS`
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `MENUS` (
   `CREATED_DATE` datetime NOT NULL,
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`MENU_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `MENUS`
@@ -123,19 +123,13 @@ INSERT INTO `MENUS` (`MENU_ID`, `MENU_TITLE`, `ACTIVE`, `INDEX`, `ACTION`, `TYPE
 (5, 'Update Group', 1, 1, 'update', 'ACTION', 'icon-pencil', 2, '2013-07-01 11:11:42', '2013-07-01 04:23:08'),
 (6, 'Delete Group', 1, 2, 'delete', 'ACTION', 'icon-cross', 2, '2013-07-01 11:12:03', '2013-07-01 06:31:13'),
 (7, 'Manage Users', 1, 3, 'manage', 'ACTION', 'icon-detail', 2, '2013-07-01 11:12:26', '2013-07-14 16:10:13'),
-(8, 'Filter', 1, 5, 'filter', 'ACTION', 'icon-search', 2, '2013-07-01 11:12:44', '2013-07-16 03:39:49'),
-(9, 'Menu Management', 0, 2, 'onMenuManagementClicked', 'SUBMENU', '', 1, '2013-07-10 18:15:07', '2013-07-17 04:25:32'),
+(8, 'Search Groups', 1, 5, 'search', 'ACTION', 'icon-search', 2, '2013-07-01 11:12:44', '2013-07-14 16:10:40'),
+(9, 'Menu Management', 0, 2, NULL, 'SUBMENU', '', 1, '2013-07-10 18:15:07', '2013-07-14 16:04:29'),
 (10, 'Add New user', 1, 0, 'add', 'ACTION', 'icon-accept', 3, '2013-07-11 14:37:16', '2013-07-11 07:37:16'),
 (11, 'Update User', 1, 1, 'update', 'ACTION', 'icon-pencil', 3, '2013-07-11 14:38:43', '2013-07-11 07:38:43'),
 (12, 'Delete User', 1, 2, 'delete', 'ACTION', 'icon-cross', 3, '2013-07-11 14:38:43', '2013-07-11 07:38:43'),
-(13, 'Filter', 1, 3, 'filter', 'ACTION', 'icon-search', 3, '2013-07-11 14:38:43', '2013-07-16 10:33:53'),
-(14, 'Manage Privilege', 1, 4, 'privilege', 'ACTION', 'icon-lock-open', 2, '2013-07-14 23:11:03', '2013-07-14 16:11:39'),
-(15, 'Master', 1, 1, NULL, 'MENU', '', 0, '2013-07-15 23:11:00', '2013-07-15 16:11:00'),
-(16, 'City', 1, 0, 'onMsCityClicked', 'SUBMENU', '', 15, '2013-07-17 10:06:23', '2013-07-17 03:07:32'),
-(17, 'Add City', 1, 0, 'add', 'ACTION', 'icon-accept', 16, '2013-07-17 11:23:12', '2013-07-17 04:23:12'),
-(18, 'Edit City', 1, 1, 'update', 'ACTION', 'icon-pencil', 16, '2013-07-17 11:24:27', '2013-07-17 07:22:01'),
-(19, 'Delete City', 1, 2, 'delete', 'ACTION', 'icon-cross', 16, '2013-07-17 11:24:27', '2013-07-17 04:24:27'),
-(20, 'Filter', 1, 3, 'filter', 'ACTION', 'icon-filter', 16, '2013-07-17 11:24:27', '2013-07-17 04:24:27');
+(13, 'Search User', 1, 3, 'search', 'ACTION', 'icon-search', 3, '2013-07-11 14:38:43', '2013-07-11 07:38:43'),
+(14, 'Manage Privilege', 1, 4, 'privilege', 'ACTION', 'icon-lock-open', 2, '2013-07-14 23:11:03', '2013-07-14 16:11:39');
 
 -- --------------------------------------------------------
 
@@ -178,14 +172,7 @@ CREATE TABLE IF NOT EXISTS `MS_CITY` (
   `CREATED_DATE` datetime NOT NULL,
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `MS_CITY`
---
-
-INSERT INTO `MS_CITY` (`ID`, `NAME`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES
-(1, 'DKI Jakarta', '2013-07-17 15:02:42', '2013-07-17 08:02:42');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -525,14 +512,16 @@ CREATE TABLE IF NOT EXISTS `USERS` (
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`USER_ID`),
   UNIQUE KEY `USERNAME` (`USERNAME`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `USERS`
 --
 
 INSERT INTO `USERS` (`USER_ID`, `USERNAME`, `PASSWORD`, `EMAIL`, `ACTIVE`, `IP_ADDRESS`, `LAST_IP_ADDRESS`, `LAST_LOGIN`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES
-(1, 'admin', '7b3311da916a2454a0c47a6aa2e0c69279a6b85e', 'admin@satudunia.com', 1, '127.0.0.1', '127.0.0.1', '2013-07-18 23:15:02', '2013-06-28 15:49:48', '2013-07-18 16:15:02');
+(1, 'admin', '7b3311da916a2454a0c47a6aa2e0c69279a6b85e', 'admin@ihp.com', 1, '127.0.0.1', '127.0.0.1', '2013-07-15 01:40:15', '2013-06-28 15:49:48', '2013-07-14 18:40:15'),
+(2, 'admin2', '7b3311da916a2454a0c47a6aa2e0c69279a6b85e', 'admin2@ihc.com', 1, '127.0.0.1', '127.0.0.1', '2013-06-28 15:52:39', '2013-06-28 15:52:39', '2013-06-28 08:52:39'),
+(3, 'gilangpr89', 'bedd3253c3b3914419aa0c1e27114d4d43e0e253', 'gilangpr89@yahoo.com', 1, '127.0.0.1', '127.0.0.1', '2013-07-15 02:25:28', '2013-07-15 02:25:17', '2013-07-14 19:25:28');
 
 -- --------------------------------------------------------
 

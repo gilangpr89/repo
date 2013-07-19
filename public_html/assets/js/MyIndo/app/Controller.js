@@ -20,30 +20,14 @@ Ext.define('MyIndo.app.Controller', {
 
 				var me = this;
 				Ext.Msg.alert('Session Expired', 'Sorry you are not authenticated or session is expired, please login again.', function(btn) {
-					if(typeof(Ext.getCmp('_LOGIN_FORM')) === 'undefined') {
-						me.showLoginWindow();
-					}
+						if(typeof(Ext.getCmp('_LOGIN_FORM')) === 'undefined') {
+							me.showLoginWindow();
+						}
 				}, obj);
 			}
 			return data.login;
 		} catch(e) {
 			Ext.Msg.alert('Application Error', e);
-		}
-	},
-
-	showLoadingWindow: function() {
-		if(typeof(Ext.getCmp('generatedLoadingWindow')) === 'undefined') {
-			Ext.create('MyIndo.view.Loading', {
-				id: 'generatedLoadingWindow'
-			}).show();
-		} else {
-			Ext.getCmp('generatedLoadingWindow').show();
-		}
-	},
-
-	closeLoadingWindow: function() {
-		if(typeof(Ext.getCmp('generatedLoadingWindow')) !== 'undefined') {
-			Ext.getCmp('generatedLoadingWindow').close();
 		}
 	},
 
@@ -137,9 +121,13 @@ Ext.define('MyIndo.app.Controller', {
 
 	isSuccess: function(data) {
 		if(!data.success) {
-			this.fail(data);
+			Ext.Msg.alert('Application Error', '<strong>Error Code: ' + data.error_code + '</strong><br/><strong>Error Message</strong>: ' + data.error_message);
 		}
 		return data.success;
+	},
+
+	getActiveUser: function() {
+		return 'admin';
 	},
 
 	fail: function(data) {
@@ -150,7 +138,8 @@ Ext.define('MyIndo.app.Controller', {
 	
 	reloadMenu: function() {
 		var me = this;
-		this.showLoadingWindow();
+		var LW = Ext.create('MyIndo.view.Loading');
+		LW.show();
 		Ext.Ajax.request({
 			url: MyIndo.siteUrl('menus/request/read'),
 			params: {
@@ -158,7 +147,7 @@ Ext.define('MyIndo.app.Controller', {
 			},
 			success: function(response) {
 				var json = Ext.decode(response.responseText);
-				me.closeLoadingWindow();
+				LW.close();
 				if(me.isLogin(json)) {
 					var treeStore = Ext.getStore('Menus');
 					var children = me.getMenuRecursive(json.data, json.data[0].PARENT_ID);
