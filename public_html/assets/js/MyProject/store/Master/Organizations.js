@@ -1,10 +1,10 @@
-Ext.define('MyIndo.store.Groups', {
+Ext.define(MyIndo.getNameSpace('store.Master.Organizations'), {
 	extend: 'MyIndo.data.Store',
-	model: 'MyIndo.model.Group',
+	model: MyIndo.getNameSpace('model.Master.Organization'),
 	proxy: {
 		type: 'ajax',
 		api: {
-			read: MyIndo.siteUrl('groups/request/read')
+			read: MyIndo.siteUrl('organizations/request/read')
 		},
 		actionMethods: MyIndo.config.defaultActionMethods,
 		reader: MyIndo.config.defaultReader
@@ -14,4 +14,4 @@ Ext.define('MyIndo.store.Groups', {
 		direction: 'ASC'
 	},
 	remoteSort: true
-});
+})

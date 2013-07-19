@@ -1,5 +1,5 @@
 Ext.define('MyIndo.store.Users', {
-	extend: 'Ext.data.Store',
+	extend: 'MyIndo.data.Store',
 	model: 'MyIndo.model.User',
 	proxy: {
 		type: 'ajax',

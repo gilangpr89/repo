@@ -1,5 +1,5 @@
 Ext.define('MyIndo.store.MenuActions', {
-	extend: 'Ext.data.Store',
+	extend: 'MyIndo.data.Store',
 	model: 'MyIndo.model.MenuAction',
 	proxy: {
 		type: 'ajax',
