@@ -43,4 +43,19 @@ class City_RequestController extends MyIndo_Controller_Action
 			$this->exception($e);
 		}
 	}
+
+	public function updateAction()
+	{
+		try {
+
+		} catch(Exception $e) {
+			$this->exception($e);
+		}
+	}
+
+	public function testAction()
+	{
+		$str = 'abcdefg';
+		echo strpos($str, 'a');
+	}
 }

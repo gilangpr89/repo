@@ -3,7 +3,7 @@ Ext.define('MyIndo.app.Controller', {
 	requires: [
 	'Ext.Window'
 	],
-	isLogin: function(data, obj = null) {
+	isLogin: function(data, obj) {
 		try {
 			if(!data.login) {
 				//var mainContent = Ext.getCmp('main-content');
