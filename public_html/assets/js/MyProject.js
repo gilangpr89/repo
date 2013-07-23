@@ -15,7 +15,11 @@ Ext.application({
 	'Administrator.MenuManagements',
 
 	/* Master */
-	'Master.City'
+	'Master.City',
+	'Master.AreaLevels',
+	'Master.Beneficiaries',
+	'Master.Countries',
+	'Master.FundingSources'
 	],
 
 	autoCreateViewport: true,

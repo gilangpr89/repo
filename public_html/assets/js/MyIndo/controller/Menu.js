@@ -105,9 +105,9 @@ Ext.define('MyIndo.controller.Menu', {
 					store: store,
 					tbar: MyIndo.tbar[menuId]
 				});
-				mainContent.setActiveTab(menuId);
 			}
 		}
+		mainContent.setActiveTab(menuId);
 	},
 
 	onMenuClicked: function(record) {

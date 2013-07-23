@@ -24,6 +24,22 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
 			case 'update-cancel':
 				this.updateCancel(record);
 				break;
+
+			/* Delete */
+			case 'delete':
+				this.delete(record);
+				break;
+
+			/* Filter */
+			case 'filter':
+				this.filter(record);
+				break;
+			case 'filter-search':
+				this.filterSearch(record);
+				break;
+			case 'filter-cancel':
+				this.filterCancel(record);
+				break;
 		}
 	},
 
@@ -105,6 +121,7 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
 		if(form.isValid()) {
 			Ext.Msg.confirm('Save confirmation', 'Are you sure want to save this data ?', function(btn) {
 				if(btn == 'yes') {
+					me.showLoadingWindow();
 					form.submit({
 						success: function(act, res) {
 							var json = Ext.decode(res.response.responseText);
@@ -137,7 +154,87 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
 
 	updateCancel: function(record) {
 		record.up().up().close();
-	}
+	},
 
 	/* End of : Update */
+
+	/* Delete */
+
+	delete: function(record) {
+		var parent = record.up().up();
+		var selected = parent.getSelectionModel().getSelection();
+		var store = parent.getStore();
+		var me = this;
+		if(selected.length > 0) {
+			var data = selected[0].data;
+			Ext.Msg.confirm('Delete confirmation', 'Are you sure want to delete this data ?', function(btn) {
+				if(btn == 'yes') {
+					me.showLoadingWindow();
+					Ext.Ajax.request({
+						url: parent.url.delete,
+						params: data,
+						success: function(r) {
+							var json = Ext.decode(r.responseText);
+							me.closeLoadingWindow();
+							if(me.isLogin(json)) {
+								if(me.isSuccess(json)) {
+									store.load();
+									Ext.Msg.alert('Delete', 'User successfully deleted.');
+								}
+							}
+						}
+					})
+				}
+			});
+		} else {
+			Ext.Msg.alert('Application Error', 'You did not select any data.');
+		}
+	},
+
+	/* End of: Delete */
+
+	/* Filter */
+	filter: function(record) {
+		var parent = record.up().up();
+		var actions = parent.actions;
+		var filterWindow = Ext.create(actions.filter);
+		filterWindow.show();
+	},
+
+	filterSearch: function(record) {
+		var panel = Ext.getCmp('main-content');
+		var parent = panel.getActiveTab();
+		var store = parent.getStore();
+		var form = record.up().up().items.items[0].getForm();
+		var val = form.getValues();
+		var filters = parent.filters;
+		var params = {};
+		for(var i = 0; i < filters.length; i++) {
+			var tmp = eval('val.' + filters[i]);
+			if(tmp.length > 0) {
+				eval('params.' + filters[i] + ' = ' + 'val.' + filters[i] + ';');
+			}
+		}
+		store.proxy.extraParams = params;
+		store.load({
+			callback: function(eRecord, eOpt) {
+				if(eRecord.length == 0) {
+					Ext.Msg.alert('Filter', 'No data found, please try another value.');
+					record.up().up().on('close', function() {
+						store.proxy.extraParams = {};
+						store.load();
+					});
+				} else {
+					var json = Ext.decode(eOpt.response.responseText);
+					Ext.Msg.alert('Filter', 'Result: [' + json.data.totalCount + '] data(s) found.');
+					record.up().up().close();
+				}
+			}
+		});
+	},
+
+	filterCancel: function(record) {
+		record.up().up().close();
+	}
+	/* End of : Filter */
 });

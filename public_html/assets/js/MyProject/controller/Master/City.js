@@ -3,7 +3,8 @@ Ext.define(MyIndo.getNameSpace('controller.Master.City'), {
 
 	requires: [
 	MyIndo.getNameSpace('view.Master.City.Add'),
-	MyIndo.getNameSpace('view.Master.City.Update')
+	MyIndo.getNameSpace('view.Master.City.Update'),
+	MyIndo.getNameSpace('view.Master.City.Filter')
 	],
 
 	init: function() {
@@ -15,6 +16,9 @@ Ext.define(MyIndo.getNameSpace('controller.Master.City'), {
 				click: this.onButtonClicked
 			},
 			'cityupdatewindow button': {
+				click: this.onButtonClicked
+			},
+			'cityfilterwindow button': {
 				click: this.onButtonClicked
 			}
 		});

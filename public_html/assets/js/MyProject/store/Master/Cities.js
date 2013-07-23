@@ -1,10 +1,10 @@
-Ext.define(MyIndo.getNameSpace('store.Master.Citys'), {
+Ext.define(MyIndo.getNameSpace('store.Master.Cities'), {
 	extend: 'MyIndo.data.Store',
 	model: MyIndo.getNameSpace('model.Master.City'),
 	proxy: {
 		type: 'ajax',
 		api: {
-			read: MyIndo.siteUrl('city/request/read')
+			read: MyIndo.siteUrl('cities/request/read')
 		},
 		actionMethods: MyIndo.config.defaultActionMethods,
 		reader: MyIndo.config.defaultReader

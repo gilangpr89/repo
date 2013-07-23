@@ -1,9 +1,9 @@
-Ext.define(MyIndo.getNameSpace('view.Master.City.View'), {
+Ext.define(MyIndo.getNameSpace('view.Master.Beneficiaries.View'), {
 	extend: 'Ext.grid.Panel',
-	alias: 'widget.cityview',
+	alias: 'widget.beneficiariesview',
 	border: false,
 	columns: [{
-		text: 'City',
+		text: 'Beneficiaries',
 		flex: 1,
 		dataIndex: 'NAME'
 	},{
@@ -21,13 +21,13 @@ Ext.define(MyIndo.getNameSpace('view.Master.City.View'), {
 	initComponent: function() {
 		Ext.apply(this, {
 			actions: {
-				add: MyIndo.getNameSpace('view.Master.City.Add'),
-				update: MyIndo.getNameSpace('view.Master.City.Update'),
-				filter: MyIndo.getNameSpace('view.Master.City.Filter')
+				add: MyIndo.getNameSpace('view.Master.Beneficiaries.Add'),
+				update: MyIndo.getNameSpace('view.Master.Beneficiaries.Update'),
+				filter: MyIndo.getNameSpace('view.Master.Beneficiaries.Filter')
 			},
 			filters: ['NAME'],
 			url: {
-				delete: MyIndo.baseUrl('city/request/destroy')
+				delete: MyIndo.baseUrl('beneficiaries/request/destroy')
 			},
 			dockedItems: [{
 				xtype: 'pagingtoolbar',

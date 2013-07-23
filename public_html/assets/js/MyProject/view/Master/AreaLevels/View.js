@@ -1,11 +1,15 @@
-Ext.define(MyIndo.getNameSpace('view.Master.City.View'), {
+Ext.define(MyIndo.getNameSpace('view.Master.AreaLevels.View'), {
 	extend: 'Ext.grid.Panel',
-	alias: 'widget.cityview',
+	alias: 'widget.arealevelsview',
 	border: false,
 	columns: [{
-		text: 'City',
+		text: 'Area Level',
 		flex: 1,
 		dataIndex: 'NAME'
+	},{
+		text: 'Type',
+		flex: 1,
+		dataIndex: 'TYPE'
 	},{
 		text: 'Created Date',
 		align: 'center',
@@ -21,13 +25,13 @@ Ext.define(MyIndo.getNameSpace('view.Master.City.View'), {
 	initComponent: function() {
 		Ext.apply(this, {
 			actions: {
-				add: MyIndo.getNameSpace('view.Master.City.Add'),
-				update: MyIndo.getNameSpace('view.Master.City.Update'),
-				filter: MyIndo.getNameSpace('view.Master.City.Filter')
+				add: MyIndo.getNameSpace('view.Master.AreaLevels.Add'),
+				update: MyIndo.getNameSpace('view.Master.AreaLevels.Update'),
+				filter: MyIndo.getNameSpace('view.Master.AreaLevels.Filter')
 			},
-			filters: ['NAME'],
+			filters: ['NAME','TYPE'],
 			url: {
-				delete: MyIndo.baseUrl('city/request/destroy')
+				delete: MyIndo.baseUrl('arealevels/request/destroy')
 			},
 			dockedItems: [{
 				xtype: 'pagingtoolbar',
