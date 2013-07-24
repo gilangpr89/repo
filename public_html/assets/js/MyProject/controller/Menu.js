@@ -13,7 +13,7 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 	MyIndo.getNameSpace('view.Master.Positions.View'),
 	MyIndo.getNameSpace('view.Master.Provinces.View'),
 	MyIndo.getNameSpace('view.Master.Roles.View'),
-	MyIndo.getNameSpace('view.Master.Trainers.View'),
+	//MyIndo.getNameSpace('view.Master.Trainers.View'),
 	MyIndo.getNameSpace('view.Master.Trainings.View'),
 	MyIndo.getNameSpace('view.Master.Venues.View')
 	],
