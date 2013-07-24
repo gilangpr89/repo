@@ -25,6 +25,7 @@ Ext.application({
 	'Master.Positions',
 	'Master.Provinces',
 	'Master.Roles',
+	'Master.Trainers',
 	'Master.Trainings',
 	'Master.Venues'
 	],

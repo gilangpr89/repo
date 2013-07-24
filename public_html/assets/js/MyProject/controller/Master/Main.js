@@ -195,9 +195,15 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
 
 	/* Filter */
 	filter: function(record) {
+		var panel = Ext.getCmp('main-content');
+		var activePanel = panel.getActiveTab();
+		var store = activePanel.getStore();
+		var extraParams = store.proxy.extraParams;
 		var parent = record.up().up();
 		var actions = parent.actions;
 		var filterWindow = Ext.create(actions.filter);
+		var form = filterWindow.items.items[0].getForm();
+		form.setValues(extraParams);
 		filterWindow.show();
 	},
 

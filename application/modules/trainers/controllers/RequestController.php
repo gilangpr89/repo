@@ -1,23 +1,20 @@
 <?php
 
-class Participants_RequestController extends MyIndo_Controller_Action
+class Trainers_RequestController extends MyIndo_Controller_Action
 {
 	protected $_unique;
-	protected $_modelView;
 	protected $_required;
 	protected $_sData;
 
 	public function init()
 	{
-		$this->_model = new participants_Model_Participants();
-		$this->_modelView = new participants_Model_ParticipantsView();
-		$this->_unique = 'Participant';
+		$this->_model = new trainers_Model_Trainers();
+		$this->_unique = 'Trainer';
 		$this->_required = array(
-			'FNAME',
-			'MNAME',
-			'LNAME',
-			'SNAME',
+			'NAME',
+			'NICKNAME',
 			'GENDER',
+			'ADDRESS',
 			'BDATE',
 			'MOBILE_NO',
 			'PHONE_NO',
@@ -60,8 +57,8 @@ class Participants_RequestController extends MyIndo_Controller_Action
 			if(isset($this->_posts['NAME'])) {
 				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
 			}
-			if(isset($this->_posts['SNAME'])) {
-				$this->_where[] = $this->_model->getAdapter()->quoteInto('SNAME LIKE ?', '%' . $this->_posts['SNAME'] . '%');
+			if(isset($this->_posts['NICKNAME'])) {
+				$this->_where[] = $this->_model->getAdapter()->quoteInto('NICKNAME LIKE ?', '%' . $this->_posts['NICKNAME'] . '%');
 			}
 			if(isset($this->_posts['MOBILE_NO'])) {
 				$this->_where[] = $this->_model->getAdapter()->quoteInto('MOBILE_NO LIKE ?', '%' . $this->_posts['MOBILE_NO'] . '%');
@@ -69,8 +66,8 @@ class Participants_RequestController extends MyIndo_Controller_Action
 			if(isset($this->_posts['EMAIL1'])) {
 				$this->_where[] = $this->_model->getAdapter()->quoteInto('EMAIL1 LIKE ?', '%' . $this->_posts['EMAIL1'] . '%');
 			}
-			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-			$this->_data['totalCount'] = $this->_modelView->count($this->_where);
+			$this->_data['items'] = $this->_model->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+			$this->_data['totalCount'] = $this->_model->count($this->_where);
 		} catch(Exception $e) {
 			$this->exception($e);
 		}

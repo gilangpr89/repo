@@ -1,12 +1,12 @@
-Ext.define(MyIndo.getNameSpace('view.Master.Participants.Add'), {
+Ext.define(MyIndo.getNameSpace('view.Master.Trainers.Add'), {
 	extend: 'Ext.Window',
-	alias: 'widget.participantsaddwindow',
+	alias: 'widget.trainersaddwindow',
 	modal: true,
 	closable: true,
 	draggable: true,
 	resizable: false,
-	width: 400,
-	title: 'Add New Participant',
+	width: 330,
+	title: 'Add New Trainer',
 
 	initComponent: function() {
 		Ext.define('Gender', {
@@ -25,23 +25,19 @@ Ext.define(MyIndo.getNameSpace('view.Master.Participants.Add'), {
 				layout: 'form',
 				border: false,
 				bodyPadding: '5 5 5 5',
-				url: MyIndo.siteUrl('participants/request/create'),
+				url: MyIndo.siteUrl('trainers/request/create'),
 				defaultType: 'textfield',
 				items: [{
-					name: 'FNAME',
+					name: 'NAME',
 					allowBlank: false,
-					fieldLabel: 'First Name',
-					emptyText: 'Input First Name..'
+					fieldLabel: 'Name',
+					emptyText: 'Input name..',
+					allowBlank: false
 				},{
-					name: 'MNAME',
-					fieldLabel: 'Middle Name'
-				},{
-					name: 'LNAME',
-					fieldLabel: 'Last Name'
-				},{
-					name: 'SNAME',
-					fieldLabel: 'Surname',
-					emptyText: 'Input Surname..',
+					name: 'NICKNAME',
+					allowBlank: false,
+					fieldLabel: 'Nickname',
+					emptyText: 'Input nickname..',
 					allowBlank: false
 				},{
 					xtype: 'combobox',
@@ -71,30 +67,33 @@ Ext.define(MyIndo.getNameSpace('view.Master.Participants.Add'), {
 					queryMode: 'local',
 					editable: false
 				},{
-					xtype: 'datefield',
-					name: 'BDATE',
-					emptyText: 'Input Birthdate..',
-					fieldLabel: 'Birthdate',
-					allowBlank:false,
-					format: 'Y/m/d'
-				},{
-					name: 'MOBILE_NO',
-					fieldLabel: 'Mobile No',
-					emptyText: 'Input Mobile Number..',
+					xtype: 'textarea',
+					name: 'ADDRESS',
+					fieldLabel: 'Address',
 					allowBlank: false
 				},{
+					xtype: 'datefield',
+					name: 'BDATE',
+					format: 'Y/m/d',
+					allowBlank: false,
+					fieldLabel: 'Birthdate',
+					emptyText: 'Input Birthdate..'
+				},{
+					name: 'MOBILE_NO',
+					allowBlank: false,
+					fieldLabel: 'Mobile No.',
+					emptyText: 'Input Mobile No..'
+				},{
 					name: 'PHONE_NO',
-					fieldLabel: 'Phone No'
+					fieldLabel: 'Phone No.'
 				},{
 					name: 'EMAIL1',
 					fieldLabel: 'Primary Email',
-					emptyText: 'Input primary Email..',
 					allowBlank: false,
-					vtype: 'email'
+					emptyText: 'Input Email..'
 				},{
 					name: 'EMAIL2',
 					fieldLabel: 'Secondary Email',
-					vtype: 'email'
 				},{
 					name: 'FB',
 					fieldLabel: 'Facebook'

@@ -1,30 +1,29 @@
-Ext.define(MyIndo.getNameSpace('view.Master.Participants.View'), {
+Ext.define(MyIndo.getNameSpace('view.Master.Trainers.View'), {
 	extend: 'Ext.grid.Panel',
-	alias: 'widget.participantsview',
+	alias: 'widget.trainersview',
 	border: false,
 	columns: [{
 		text: 'Name',
-		width: 263,
+		flex: 1,
 		dataIndex: 'NAME'
 	},{
-		text: 'Surname',
-		width: 100,
-		align: 'center',
-		dataIndex: 'SNAME'
+		text: 'Nickname',
+		width: 80,
+		dataIndex: 'NICKNAME'
 	},{
 		text: 'Gender',
+		width: 80,
 		align: 'center',
-		widht: 80,
 		dataIndex: 'GENDER'
 	},{
 		text: 'Birthdate',
-		align: 'center',
 		width: 80,
+		align: 'center',
 		dataIndex: 'BDATE'
 	},{
 		text: 'Mobile No.',
-		align: 'center',
 		width: 100,
+		align: 'center',
 		dataIndex: 'MOBILE_NO'
 	},{
 		text: 'Phone No.',
@@ -68,13 +67,13 @@ Ext.define(MyIndo.getNameSpace('view.Master.Participants.View'), {
 	initComponent: function() {
 		Ext.apply(this, {
 			actions: {
-				add: MyIndo.getNameSpace('view.Master.Participants.Add'),
-				update: MyIndo.getNameSpace('view.Master.Participants.Update'),
-				filter: MyIndo.getNameSpace('view.Master.Participants.Filter')
+				add: MyIndo.getNameSpace('view.Master.Trainers.Add'),
+				update: MyIndo.getNameSpace('view.Master.Trainers.Update'),
+				filter: MyIndo.getNameSpace('view.Master.Trainers.Filter')
 			},
-			filters: ['NAME','SNAME','MOBILE_NO','EMAIL1'],
+			filters: ['NAME','NICKNAME','MOBILE_NO','EMAIL1'],
 			url: {
-				delete: MyIndo.baseUrl('participants/request/destroy')
+				delete: MyIndo.baseUrl('trainers/request/destroy')
 			},
 			dockedItems: [{
 				xtype: 'pagingtoolbar',
