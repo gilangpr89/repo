@@ -4,6 +4,9 @@ Ext.define(MyIndo.getNameSpace('model.Master.Participant'), {
 		name: 'ID',
 		type: 'string'
 	},{
+		name: 'NAME',
+		type: 'string'
+	},{
 		name: 'FNAME',
 		type: 'string'
 	},{

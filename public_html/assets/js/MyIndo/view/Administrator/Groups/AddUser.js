@@ -5,7 +5,7 @@ Ext.define('MyIndo.view.Administrator.Groups.AddUser', {
 	closable: true,
 	draggable: true,
 	resizable: false,
-	width: 330,
+	width: 360,
 	title: 'Add New User',
 
 	initComponent: function() {

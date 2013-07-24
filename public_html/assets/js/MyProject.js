@@ -19,7 +19,14 @@ Ext.application({
 	'Master.AreaLevels',
 	'Master.Beneficiaries',
 	'Master.Countries',
-	'Master.FundingSources'
+	'Master.FundingSources',
+	'Master.Organizations',
+	'Master.Participants',
+	'Master.Positions',
+	'Master.Provinces',
+	'Master.Roles',
+	'Master.Trainings',
+	'Master.Venues'
 	],
 
 	autoCreateViewport: true,
