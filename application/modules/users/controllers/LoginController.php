@@ -55,7 +55,7 @@ class Users_LoginController extends Zend_Controller_Action
     			$usersData = $adapter->getResultRowObject();
     			unset($usersData->PASSWORD);
     			
-    			$usersData->EXPIRED = strtotime('+10 minutes');
+    			$usersData->EXPIRED = strtotime('+10 seconds');
     			
     			$storage = new Zend_Auth_Storage_Session();
     			$storage->write($usersData);

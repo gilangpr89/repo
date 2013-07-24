@@ -4,6 +4,8 @@ Ext.Loader.setConfig({
 
 Ext.Loader.setPath('MyIndo', 'assets/js/MyIndo');
 
+
+
 Ext.application({
 	appFolder: 'assets/js/MyProject',
 	name: 'MyProject',
