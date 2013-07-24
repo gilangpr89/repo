@@ -15,7 +15,7 @@ Ext.define(MyIndo.getNameSpace('view.Master.City.Add'), {
 				layout: 'form',
 				border: false,
 				bodyPadding: '5 5 5 5',
-				url: MyIndo.siteUrl('city/request/create'),
+				url: MyIndo.siteUrl('cities/request/create'),
 				items: [{
 					xtype: 'textfield',
 					name: 'NAME',

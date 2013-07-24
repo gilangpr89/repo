@@ -27,7 +27,7 @@ Ext.define(MyIndo.getNameSpace('view.Master.City.View'), {
 			},
 			filters: ['NAME'],
 			url: {
-				delete: MyIndo.baseUrl('city/request/destroy')
+				delete: MyIndo.baseUrl('cities/request/destroy')
 			},
 			dockedItems: [{
 				xtype: 'pagingtoolbar',

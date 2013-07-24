@@ -15,7 +15,7 @@ Ext.define(MyIndo.getNameSpace('view.Master.City.Update'), {
 				layout: 'form',
 				border: false,
 				bodyPadding: '5 5 5 5',
-				url: MyIndo.siteUrl('city/request/update'),
+				url: MyIndo.siteUrl('cities/request/update'),
 				items: [{
 					xtype: 'hidden',
 					name: 'ID',
