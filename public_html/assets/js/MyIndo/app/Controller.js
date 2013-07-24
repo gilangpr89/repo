@@ -110,7 +110,7 @@ Ext.define('MyIndo.app.Controller', {
 		var form = Ext.getCmp('login-form').getForm();
 		if(form.isValid()) {
 			form.submit({
-				url: MyIndo.baseUrl('users/login'),
+				url: MyIndo.siteUrl('users/login'),
 				success: function(a, b) {
 					var json = Ext.decode(b.response.responseText);
 					Ext.Msg.alert('Message',json.data.message);

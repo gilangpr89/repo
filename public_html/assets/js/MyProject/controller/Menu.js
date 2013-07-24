@@ -15,7 +15,9 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 	MyIndo.getNameSpace('view.Master.Roles.View'),
 	MyIndo.getNameSpace('view.Master.Trainers.View'),
 	MyIndo.getNameSpace('view.Master.Trainings.View'),
-	MyIndo.getNameSpace('view.Master.Venues.View')
+	MyIndo.getNameSpace('view.Master.Venues.View'),
+
+	MyIndo.getNameSpace('view.Transaction.Trainings.View')
 	],
 	
 	stores: [
@@ -34,8 +36,13 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 	'Master.Trainings',
 	'Master.Venues',
 	'Master.Trainings',
-	'Master.Venues'
+	'Master.Venues',
+
+	'Transaction.Trainings'
 	],
+
+
+	/* Master */
 
 	onMsCityClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Master.Cities'));
@@ -100,5 +107,12 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 	onMsVenuesClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Master.Venues'));
 		this.createPanel(menuTitle, menuId, mainContent, store, 'venuesview');
+	},
+
+	/* End of : Master */
+
+	onTrTrainingsClicked: function(menuTitle, menuId, mainContent) {
+		var store = Ext.create(MyIndo.getNameSpace('store.Transaction.Trainings'));
+		this.createPanel(menuTitle, menuId, mainContent, store, 'trtrainingsview');
 	},
 });

@@ -29,7 +29,10 @@ Ext.application({
 	'Master.Roles',
 	'Master.Trainers',
 	'Master.Trainings',
-	'Master.Venues'
+	'Master.Venues',
+
+	/* Transaction */
+	'Transaction.Trainings'
 	],
 
 	autoCreateViewport: true,
