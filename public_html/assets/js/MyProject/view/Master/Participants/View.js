@@ -4,7 +4,7 @@ Ext.define(MyIndo.getNameSpace('view.Master.Participants.View'), {
 	border: false,
 	columns: [{
 		text: 'Name',
-		flex: 1,
+		width: 263,
 		dataIndex: 'NAME'
 	},{
 		text: 'Surname',
@@ -22,10 +22,37 @@ Ext.define(MyIndo.getNameSpace('view.Master.Participants.View'), {
 		width: 80,
 		dataIndex: 'BDATE'
 	},{
-		text: 'Email',
-		width: 150,
+		text: 'Mobile No.',
+		align: 'center',
+		width: 100,
+		dataIndex: 'MOBILE_NO'
+	},{
+		text: 'Phone No.',
+		align: 'center',
+		width: 100,
+		dataIndex: 'PHONE_NO',
+		hidden: true
+	},{
+		text: 'Primary Email',
+		width: 170,
 		align: 'center',
 		dataIndex: 'EMAIL1'
+	},{
+		text: 'Secondary Email',
+		width: 150,
+		align: 'center',
+		dataIndex: 'EMAIL2',
+		hidden: true
+	},{
+		text: 'Facebook',
+		width: 150,
+		dataIndex: 'FB',
+		hidden: true
+	},{
+		text: 'Twitter',
+		width: 100,
+		dataIndex: 'TWITER',
+		hidden: true
 	},{
 		text: 'Created Date',
 		align: 'center',

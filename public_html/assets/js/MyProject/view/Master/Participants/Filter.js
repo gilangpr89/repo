@@ -20,6 +20,21 @@ Ext.define(MyIndo.getNameSpace('view.Master.Participants.Filter'), {
 					name: 'NAME',
 					fieldLabel: 'Name',
 					emptyText: 'Input name..'
+				},{
+					xtype: 'textfield',
+					name: 'SNAME',
+					fieldLabel: 'Surname',
+					emptyText: 'Input surname..'
+				},{
+					xtype: 'textfield',
+					name: 'MOBILE_NO',
+					fieldLabel: 'Mobile No.',
+					emptyText: 'Input Mobile No.'
+				},{
+					xtype: 'textfield',
+					name: 'EMAIL1',
+					fieldLabel: 'Email',
+					emptyText: 'Input Email..'
 				}]
 			}],
 			buttons: [{

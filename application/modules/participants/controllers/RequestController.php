@@ -4,27 +4,44 @@ class Participants_RequestController extends MyIndo_Controller_Action
 {
 	protected $_unique;
 	protected $_modelView;
+	protected $_required;
+	protected $_sData;
 
 	public function init()
 	{
 		$this->_model = new participants_Model_Participants();
 		$this->_modelView = new participants_Model_ParticipantsView();
 		$this->_unique = 'Participant';
+		$this->_required = array(
+			'FNAME',
+			'MNAME',
+			'LNAME',
+			'SNAME',
+			'GENDER',
+			'BDATE',
+			'MOBILE_NO',
+			'PHONE_NO',
+			'EMAIL1',
+			'EMAIL2',
+			'FB',
+			'TWITTER'
+			);
+		$this->_sData = array();
 	}
 
 	public function createAction()
 	{
 		try {
-			if(isset($this->_posts['NAME'])) {
-				if(!$this->_model->isExist('NAME', $this->_posts['NAME'])) {
-					
-					$this->_model->insert(array(
-						'NAME' => $this->_posts['NAME'],
-						'CREATED_DATE' => $this->_date
-						));
+			$valid = true;
+			foreach($this->_required as $r) {
+				if(!isset($this->_posts[$r])) {
+					$valid = false;
 				} else {
-					$this->error(101, $this->_unique . ' already registered, please input another name.');
+					$this->_sData[$r] = $this->_posts[$r];
 				}
+			}
+			if($valid) {
+				$this->_model->insert($this->_sData);
 			} else {
 				$this->error(901);
 			}
@@ -42,6 +59,15 @@ class Participants_RequestController extends MyIndo_Controller_Action
 			if(isset($this->_posts['NAME'])) {
 				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
 			}
+			if(isset($this->_posts['SNAME'])) {
+				$this->_where[] = $this->_model->getAdapter()->quoteInto('SNAME LIKE ?', '%' . $this->_posts['SNAME'] . '%');
+			}
+			if(isset($this->_posts['MOBILE_NO'])) {
+				$this->_where[] = $this->_model->getAdapter()->quoteInto('MOBILE_NO LIKE ?', '%' . $this->_posts['MOBILE_NO'] . '%');
+			}
+			if(isset($this->_posts['EMAIL1'])) {
+				$this->_where[] = $this->_model->getAdapter()->quoteInto('EMAIL1 LIKE ?', '%' . $this->_posts['EMAIL1'] . '%');
+			}
 			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
 			$this->_data['totalCount'] = $this->_modelView->count($this->_where);
 		} catch(Exception $e) {
@@ -52,28 +78,22 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	public function updateAction()
 	{
 		try {
-			if(isset($this->_posts['ID']) && isset($this->_posts['NAME'])) {
-				$id = $this->_enc->base64decrypt($this->_posts['ID']);
-				$name = $this->_posts['NAME'];
-				$valid = true;
-				$q = $this->_model->select()->where('ID = ?', $id);
-				if($q->query()->rowCount() > 0) {
-					$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $name . '%');
-					$details = $q->query()->fetch();
-					if($this->_model->isExist('NAME', $name)) {
-						if($details['NAME'] != $name) {
-							$valid = false;
-						}
-					}
-					if($valid) {
-						$this->_model->update(array(
-							'NAME' => $name
-							), $this->_model->getAdapter()->quoteInto('ID = ?', $id));
-					} else {
-						$this->error(101, $this->_unique . ' already registered.');
-					}
+			$this->_required[] = 'ID';
+			$valid = true;
+			foreach($this->_required as $r) {
+				if(!isset($this->_posts[$r])) {
+					$valid = false;
 				} else {
-					$this->error(102);
+					$this->_sData[$r] = $this->_posts[$r];
+				}
+			}
+			if($valid) {
+				$id = $this->_enc->base64decrypt($this->_posts['ID']);
+				if($this->_model->isExist('ID', $id)) {
+					unset($this->_sData['ID']);
+					$this->_model->update($this->_sData, $this->_model->getAdapter()->quoteInto('ID = ?', $id));
+				} else {
+					$this->error(101);
 				}
 			} else {
 				$this->error(901);
