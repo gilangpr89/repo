@@ -9,6 +9,16 @@ Ext.define(MyIndo.getNameSpace('view.Master.AreaLevels.Add'), {
 	title: 'Add New Area Level',
 
 	initComponent: function() {
+		Ext.define('AreaType', {
+			extend: 'Ext.data.Model',
+			fields: [{
+				name: 'TYPE',
+				type: 'string'
+			},{
+				name: 'VALUE',
+				type: 'string'
+			}]
+		});
 		Ext.apply(this, {
 			items: [{
 				xtype: 'form',
@@ -23,11 +33,26 @@ Ext.define(MyIndo.getNameSpace('view.Master.AreaLevels.Add'), {
 					fieldLabel: 'Name',
 					emptyText: 'Input name..'
 				},{
-					xtype: 'textfield',
+					xtype: 'combobox',
 					name: 'TYPE',
-					allowBlank: false,
 					fieldLabel: 'Type',
-					emptyText: 'Input type..'
+					store: Ext.create('Ext.data.Store', {
+						autoDestroy: true,
+						model: 'AreaType',
+						data: [{
+							"TYPE":"Country Level",
+							"VALUE":"Country Level"
+						},{
+							"TYPE":"Regional Level",
+							"VALUE":"Regional Level"
+						}]
+					}),
+					displayField: 'TYPE',
+					valueField: 'VALUE',
+					emptyText: 'Select Type..',
+					allowBlank: false,
+					queryMode: 'local',
+					editable: false
 				}]
 			}],
 			buttons: [{
