@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 19, 2013 at 01:32 PM
+-- Generation Time: Jul 25, 2013 at 04:36 PM
 -- Server version: 5.5.31-0ubuntu0.13.04.1
 -- PHP Version: 5.3.14
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `GROUPS` (
   `CREATED_DATE` datetime NOT NULL,
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`GROUP_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=46 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
 
 --
 -- Dumping data for table `GROUPS`
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `MENUS` (
   `CREATED_DATE` datetime NOT NULL,
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`MENU_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=87 ;
 
 --
 -- Dumping data for table `MENUS`
@@ -131,11 +131,74 @@ INSERT INTO `MENUS` (`MENU_ID`, `MENU_TITLE`, `ACTIVE`, `INDEX`, `ACTION`, `TYPE
 (13, 'Filter', 1, 3, 'filter', 'ACTION', 'icon-search', 3, '2013-07-11 14:38:43', '2013-07-16 10:33:53'),
 (14, 'Manage Privilege', 1, 4, 'privilege', 'ACTION', 'icon-lock-open', 2, '2013-07-14 23:11:03', '2013-07-14 16:11:39'),
 (15, 'Master', 1, 1, NULL, 'MENU', '', 0, '2013-07-15 23:11:00', '2013-07-15 16:11:00'),
-(16, 'City', 1, 0, 'onMsCityClicked', 'SUBMENU', '', 15, '2013-07-17 10:06:23', '2013-07-17 03:07:32'),
+(16, 'City', 1, 2, 'onMsCityClicked', 'SUBMENU', '', 15, '2013-07-17 10:06:23', '2013-07-23 08:52:58'),
 (17, 'Add City', 1, 0, 'add', 'ACTION', 'icon-accept', 16, '2013-07-17 11:23:12', '2013-07-17 04:23:12'),
 (18, 'Edit City', 1, 1, 'update', 'ACTION', 'icon-pencil', 16, '2013-07-17 11:24:27', '2013-07-17 07:22:01'),
 (19, 'Delete City', 1, 2, 'delete', 'ACTION', 'icon-cross', 16, '2013-07-17 11:24:27', '2013-07-17 04:24:27'),
-(20, 'Filter', 1, 3, 'filter', 'ACTION', 'icon-filter', 16, '2013-07-17 11:24:27', '2013-07-17 04:24:27');
+(20, 'Filter', 1, 3, 'filter', 'ACTION', 'icon-filter', 16, '2013-07-17 11:24:27', '2013-07-17 04:24:27'),
+(21, 'Area Levels', 1, 0, 'onMsAreaLevelsClicked', 'SUBMENU', '', 15, '2013-07-23 15:53:49', '2013-07-23 09:00:11'),
+(22, 'Add New Area Level', 1, 0, 'add', 'ACTION', 'icon-accept', 21, '2013-07-23 15:54:58', '2013-07-23 08:54:58'),
+(23, 'Edit Area Level', 1, 1, 'update', 'ACTION', 'icon-pencil', 21, '2013-07-23 15:55:56', '2013-07-23 09:12:08'),
+(24, 'Delete Area Level', 1, 2, 'delete', 'ACTION', 'icon-cross', 21, '2013-07-23 15:55:56', '2013-07-23 08:55:56'),
+(25, 'Filter Area Level', 1, 3, 'filter', 'ACTION', 'icon-filter', 21, '2013-07-23 15:55:56', '2013-07-23 09:12:14'),
+(26, 'Beneficiaries', 1, 1, 'onMsBeneficiariesClicked', 'SUBMENU', '', 15, '2013-07-23 16:30:19', '2013-07-23 09:32:50'),
+(27, 'Add Beneficiaries', 1, 0, 'add', 'ACTION', 'icon-accept', 26, '2013-07-23 16:31:42', '2013-07-23 09:31:42'),
+(28, 'Edit Beneficiaries', 1, 1, 'update', 'ACTION', 'icon-pencil', 26, '2013-07-23 16:32:26', '2013-07-23 09:32:26'),
+(29, 'Delete Beneficiaries', 1, 2, 'delete', 'ACTION', 'icon-cross', 26, '2013-07-23 16:32:26', '2013-07-23 09:32:26'),
+(30, 'Filter Beneficiaries', 1, 3, 'filter', 'ACTION', 'icon-filter', 26, '2013-07-23 16:32:26', '2013-07-23 09:32:26'),
+(31, 'Countries', 1, 3, 'onMsCountriesClicked', 'SUBMENU', '', 15, '2013-07-23 16:53:00', '2013-07-23 09:53:00'),
+(32, 'Add New Country', 1, 0, 'add', 'ACTION', 'icon-accept', 31, '2013-07-23 16:54:26', '2013-07-23 09:54:26'),
+(34, 'Update Country', 1, 1, 'update', 'ACTION', 'icon-pencil', 31, '2013-07-23 16:55:04', '2013-07-23 09:55:04'),
+(35, 'Delete Country', 1, 2, 'delete', 'ACTION', 'icon-cross', 31, '2013-07-23 16:55:04', '2013-07-23 09:55:04'),
+(36, 'Filter Country', 1, 3, 'filter', 'ACTION', 'icon-accept', 31, '2013-07-23 16:55:04', '2013-07-23 09:55:04'),
+(37, 'Funding Sources', 1, 4, 'onMsFundingSourcesClicked', 'SUBMENU', '', 15, '2013-07-23 17:01:36', '2013-07-23 10:01:36'),
+(38, 'Add New Funding Sources', 1, 0, 'add', 'ACTION', 'icon-accept', 37, '2013-07-23 17:03:14', '2013-07-23 10:03:14'),
+(39, 'Update Funding Sources', 1, 1, 'update', 'ACTION', 'icon-pencil', 37, '2013-07-23 17:03:14', '2013-07-23 10:03:14'),
+(40, 'Delete Funding Sources', 1, 2, 'delete', 'ACTION', 'icon-cross', 37, '2013-07-23 17:03:14', '2013-07-23 10:03:14'),
+(41, 'Filter Funding Sources', 1, 3, 'filter', 'ACTION', 'icon-filter', 37, '2013-07-23 17:03:14', '2013-07-23 10:03:14'),
+(42, 'Organizations', 1, 5, 'onMsOrganizationsClicked', 'SUBMENU', '', 15, '2013-07-23 17:24:51', '2013-07-23 10:24:51'),
+(43, 'Add New Organization', 1, 0, 'add', 'ACTION', 'icon-accept', 42, '2013-07-23 17:25:40', '2013-07-23 10:25:40'),
+(44, 'Update Organization', 1, 1, 'update', 'ACTION', 'icon-pencil', 42, '2013-07-23 17:26:19', '2013-07-23 10:26:19'),
+(45, 'Delete Organization', 1, 2, 'delete', 'ACTION', 'icon-cross', 42, '2013-07-23 17:26:19', '2013-07-23 10:26:19'),
+(46, 'Filter Organization', 1, 3, 'filter', 'ACTION', 'icon-filter', 42, '2013-07-23 17:26:19', '2013-07-23 10:26:19'),
+(47, 'Positions', 1, 7, 'onMsPositionsClicked', 'SUBMENU', '', 15, '2013-07-23 17:34:27', '2013-07-23 10:46:58'),
+(48, 'Add New Position', 1, 0, 'add', 'ACTION', 'icon-accept', 47, '2013-07-23 17:34:57', '2013-07-23 10:34:57'),
+(49, 'Update Position', 1, 1, 'update', 'ACTION', 'icon-pencil', 47, '2013-07-23 17:35:38', '2013-07-23 10:35:38'),
+(50, 'Delete Position', 1, 2, 'delete', 'ACTION', 'icon-cross', 47, '2013-07-23 17:35:38', '2013-07-23 10:35:38'),
+(51, 'Filter Position', 1, 3, 'filter', 'ACTION', 'icon-filter', 47, '2013-07-23 17:35:38', '2013-07-23 10:35:38'),
+(52, 'Provinces', 1, 8, 'onMsProvincesClicked', 'SUBMENU', '', 15, '2013-07-23 17:39:57', '2013-07-23 10:47:03'),
+(53, 'Add New Province', 1, 0, 'add', 'ACTION', 'icon-accept', 52, '2013-07-23 17:40:23', '2013-07-23 10:45:54'),
+(54, 'Update Province', 1, 1, 'update', 'ACTION', 'icon-pencil', 52, '2013-07-23 17:41:05', '2013-07-23 10:45:56'),
+(55, 'Delete Province', 1, 2, 'delete', 'ACTION', 'icon-cross', 52, '2013-07-23 17:41:05', '2013-07-23 10:45:58'),
+(56, 'Filter Province', 1, 3, 'filter', 'ACTION', 'icon-filter', 52, '2013-07-23 17:41:05', '2013-07-23 10:45:59'),
+(57, 'Participants', 1, 6, 'onMsParticipantsClicked', 'SUBMENU', '', 15, '2013-07-23 17:47:37', '2013-07-23 10:47:37'),
+(58, 'Add New Participant', 1, 0, 'add', 'ACTION', 'icon-accept', 57, '2013-07-23 17:48:06', '2013-07-23 10:48:06'),
+(59, 'Update Participant', 1, 1, 'update', 'ACTION', 'icon-pencil', 57, '2013-07-23 17:48:52', '2013-07-23 10:48:52'),
+(60, 'Delete Participant', 1, 2, 'delete', 'ACTION', 'icon-cross', 57, '2013-07-23 17:48:52', '2013-07-23 10:48:52'),
+(61, 'Filter Participant', 1, 3, 'filter', 'ACTION', 'icon-filter', 57, '2013-07-23 17:48:52', '2013-07-23 10:48:52'),
+(62, 'Roles', 1, 9, 'onMsRolesClicked', 'SUBMENU', '', 15, '2013-07-23 17:56:25', '2013-07-23 10:56:25'),
+(63, 'Add New Role', 1, 0, 'add', 'ACTION', 'icon-accept', 62, '2013-07-23 18:21:29', '2013-07-23 11:21:29'),
+(64, 'Update Role', 1, 1, 'update', 'ACTION', 'icon-pencil', 62, '2013-07-23 18:22:20', '2013-07-23 11:22:20'),
+(65, 'Edit Role', 1, 2, 'delete', 'ACTION', 'icon-cross', 62, '2013-07-23 18:22:20', '2013-07-23 11:22:20'),
+(66, 'Filter Role', 1, 3, 'filter', 'ACTION', 'icon-filter', 62, '2013-07-23 18:22:20', '2013-07-23 15:17:19'),
+(67, 'Trainers', 1, 10, 'onMsTrainersClicked', 'SUBMENU', '', 15, '2013-07-23 22:18:03', '2013-07-23 15:18:03'),
+(68, 'Add New Trainer', 1, 0, 'add', 'ACTION', 'icon-accept', 67, '2013-07-23 22:18:26', '2013-07-23 15:18:26'),
+(69, 'Update Trainer', 1, 1, 'update', 'ACTION', 'icon-pencil', 67, '2013-07-23 22:19:04', '2013-07-23 15:19:04'),
+(70, 'Delete Trainer', 1, 2, 'delete', 'ACTION', 'icon-cross', 67, '2013-07-23 22:19:04', '2013-07-23 15:19:04'),
+(71, 'Filter Trainer', 1, 3, 'filter', 'ACTION', 'icon-filter', 67, '2013-07-23 22:19:04', '2013-07-23 15:19:04'),
+(72, 'Venues', 1, 12, 'onMsVenuesClicked', 'SUBMENU', '', 15, '2013-07-23 22:20:01', '2013-07-23 15:26:14'),
+(73, 'Add New Venue', 1, 0, 'add', 'ACTION', 'icon-accept', 72, '2013-07-23 22:20:27', '2013-07-23 15:20:27'),
+(74, 'Update Venue', 1, 1, 'update', 'ACTION', 'icon-pencil', 72, '2013-07-23 22:21:07', '2013-07-23 15:21:07'),
+(75, 'Delete Venue', 1, 2, 'delete', 'ACTION', 'icon-cross', 72, '2013-07-23 22:21:07', '2013-07-23 15:21:07'),
+(76, 'Filter Venue', 1, 2, 'filter', 'ACTION', 'icon-filter', 72, '2013-07-23 22:21:07', '2013-07-23 15:21:07'),
+(77, 'Trainings', 1, 11, 'onMsTrainingsClicked', 'SUBMENU', '', 15, '2013-07-23 22:26:50', '2013-07-23 15:26:50'),
+(78, 'Add New Training', 1, 0, 'add', 'ACTION', 'icon-accept', 77, '2013-07-23 22:27:11', '2013-07-23 15:27:11'),
+(79, 'Update Training', 1, 1, 'update', 'ACTION', 'icon-pencil', 77, '2013-07-23 22:27:42', '2013-07-23 15:27:42'),
+(80, 'Delete Training', 1, 2, 'delete', 'ACTION', 'icon-cross', 77, '2013-07-23 22:27:42', '2013-07-23 15:27:42'),
+(81, 'Filter Training', 1, 2, 'filter', 'ACTION', 'icon-filter', 77, '2013-07-23 22:27:42', '2013-07-23 15:27:42'),
+(84, 'Transaction', 1, 2, NULL, 'MENU', '', 0, '2013-07-24 17:05:23', '2013-07-24 10:05:23'),
+(85, 'Trainings', 1, 0, 'onTrTrainingsClicked', 'SUBMENU', '', 84, '2013-07-24 17:06:23', '2013-07-24 10:06:23'),
+(86, 'Add New Training', 1, 0, 'add', 'ACTION', 'icon-accept', 85, '2013-07-24 17:06:46', '2013-07-24 10:06:46');
 
 -- --------------------------------------------------------
 
@@ -150,7 +213,21 @@ CREATE TABLE IF NOT EXISTS `MS_AREA_LEVELS` (
   `CREATED_DATE` datetime NOT NULL,
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+
+--
+-- Dumping data for table `MS_AREA_LEVELS`
+--
+
+INSERT INTO `MS_AREA_LEVELS` (`ID`, `NAME`, `TYPE`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES
+(4, 'ISEAN Region', 'Regional Level', '2013-07-24 17:10:53', '2013-07-24 10:12:39'),
+(5, 'ASEAN', 'Regional Level', '2013-07-24 17:11:00', '2013-07-24 10:11:00'),
+(6, 'ASIA Pacific', 'Regional Level', '2013-07-24 17:11:15', '2013-07-24 10:11:15'),
+(7, 'ID', 'Country Level', '2013-07-24 17:11:22', '2013-07-24 10:11:22'),
+(8, 'MY', 'Country Level', '2013-07-24 17:11:28', '2013-07-24 10:11:28'),
+(9, 'PH', 'Country Level', '2013-07-24 17:11:38', '2013-07-24 10:12:13'),
+(10, 'TL', 'Country Level', '2013-07-24 17:11:55', '2013-07-24 10:11:55'),
+(11, 'SG', 'Country Level', '2013-07-24 17:12:01', '2013-07-24 10:12:01');
 
 -- --------------------------------------------------------
 
@@ -164,7 +241,18 @@ CREATE TABLE IF NOT EXISTS `MS_BENEFICIARIES` (
   `CREATED_DATE` datetime NOT NULL,
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `MS_BENEFICIARIES`
+--
+
+INSERT INTO `MS_BENEFICIARIES` (`ID`, `NAME`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES
+(2, 'SR Staff', '2013-07-24 17:13:09', '2013-07-24 10:13:09'),
+(3, 'Local CBO Staff', '2013-07-24 17:13:18', '2013-07-24 10:13:18'),
+(4, 'Health Care Provider', '2013-07-24 17:13:24', '2013-07-24 10:13:24'),
+(5, 'Community / Non Staff', '2013-07-24 17:13:32', '2013-07-24 10:13:32'),
+(6, 'Others', '2013-07-24 17:13:36', '2013-07-24 10:13:36');
 
 -- --------------------------------------------------------
 
@@ -178,14 +266,18 @@ CREATE TABLE IF NOT EXISTS `MS_CITY` (
   `CREATED_DATE` datetime NOT NULL,
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `MS_CITY`
 --
 
 INSERT INTO `MS_CITY` (`ID`, `NAME`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES
-(1, 'DKI Jakarta', '2013-07-17 15:02:42', '2013-07-17 08:02:42');
+(3, 'Jakarta', '2013-07-24 16:32:49', '2013-07-24 09:32:49'),
+(4, 'Surabaya', '2013-07-25 16:07:25', '2013-07-25 09:07:25'),
+(5, 'Bandung', '2013-07-25 16:07:32', '2013-07-25 09:07:32'),
+(6, 'Bangkok', '2013-07-25 16:07:36', '2013-07-25 09:07:36'),
+(8, 'Serangon', '2013-07-25 16:07:53', '2013-07-25 09:07:53');
 
 -- --------------------------------------------------------
 
@@ -199,7 +291,18 @@ CREATE TABLE IF NOT EXISTS `MS_COUNTRY` (
   `CREATED_DATE` datetime NOT NULL,
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `MS_COUNTRY`
+--
+
+INSERT INTO `MS_COUNTRY` (`ID`, `NAME`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES
+(3, 'Indonesia', '2013-07-25 14:39:14', '2013-07-25 07:39:14'),
+(4, 'Singapore', '2013-07-25 14:39:18', '2013-07-25 07:39:18'),
+(5, 'Malaysia', '2013-07-25 14:39:23', '2013-07-25 07:39:23'),
+(6, 'Thailand', '2013-07-25 14:39:28', '2013-07-25 07:39:28'),
+(7, 'Philippine', '2013-07-25 14:39:58', '2013-07-25 07:39:58');
 
 -- --------------------------------------------------------
 
@@ -209,12 +312,50 @@ CREATE TABLE IF NOT EXISTS `MS_COUNTRY` (
 
 CREATE TABLE IF NOT EXISTS `MS_FUNDING_SOURCES` (
   `ID` int(19) NOT NULL AUTO_INCREMENT,
+  `CITY_ID` int(19) NOT NULL,
+  `COUNTRY_ID` int(19) NOT NULL,
   `NAME` varchar(100) NOT NULL,
+  `PHONE_NO1` varchar(20) NOT NULL,
+  `PHONE_NO2` varchar(20) DEFAULT NULL,
+  `EMAIL1` varchar(100) NOT NULL,
+  `EMAIL2` varchar(100) DEFAULT NULL,
+  `WEBSITE` varchar(100) DEFAULT NULL,
+  `ADDRESS` text,
   `CREATED_DATE` datetime NOT NULL,
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`ID`),
+  KEY `fk_CITY_ID` (`CITY_ID`),
+  KEY `fk_COUNTRY_ID` (`COUNTRY_ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
+--
+-- Dumping data for table `MS_FUNDING_SOURCES`
+--
+
+INSERT INTO `MS_FUNDING_SOURCES` (`ID`, `CITY_ID`, `COUNTRY_ID`, `NAME`, `PHONE_NO1`, `PHONE_NO2`, `EMAIL1`, `EMAIL2`, `WEBSITE`, `ADDRESS`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES
+(3, 3, 3, 'PT MyIndo Cyber Media', '021-9999999', '', 'halo@myindo.co.id', '', 'http://www.myindo.co.id', 'Jl Radio 1', '2013-07-25 14:58:45', '2013-07-25 08:27:49');
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `MS_FUNDING_SOURCES_VIEW`
+--
+CREATE TABLE IF NOT EXISTS `MS_FUNDING_SOURCES_VIEW` (
+`ID` int(19)
+,`CITY_ID` int(19)
+,`CITY_NAME` varchar(100)
+,`COUNTRY_ID` int(19)
+,`COUNTRY_NAME` varchar(100)
+,`NAME` varchar(100)
+,`PHONE_NO1` varchar(20)
+,`PHONE_NO2` varchar(20)
+,`EMAIL1` varchar(100)
+,`EMAIL2` varchar(100)
+,`WEBSITE` varchar(100)
+,`ADDRESS` text
+,`CREATED_DATE` datetime
+,`MODIFIED_DATE` timestamp
+);
 -- --------------------------------------------------------
 
 --
@@ -223,12 +364,50 @@ CREATE TABLE IF NOT EXISTS `MS_FUNDING_SOURCES` (
 
 CREATE TABLE IF NOT EXISTS `MS_ORGANIZATIONS` (
   `ID` int(19) NOT NULL AUTO_INCREMENT,
+  `CITY_ID` int(19) NOT NULL,
+  `COUNTRY_ID` int(19) NOT NULL,
   `NAME` varchar(100) NOT NULL,
+  `PHONE_NO1` varchar(20) NOT NULL,
+  `PHONE_NO2` varchar(20) DEFAULT NULL,
+  `EMAIL1` varchar(100) NOT NULL,
+  `EMAIL2` varchar(100) DEFAULT NULL,
+  `WEBSITE` varchar(100) DEFAULT NULL,
+  `ADDRESS` text,
   `CREATED_DATE` datetime NOT NULL,
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`ID`),
+  KEY `CITY_ID` (`CITY_ID`),
+  KEY `COUNTRY_ID` (`COUNTRY_ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
+--
+-- Dumping data for table `MS_ORGANIZATIONS`
+--
+
+INSERT INTO `MS_ORGANIZATIONS` (`ID`, `CITY_ID`, `COUNTRY_ID`, `NAME`, `PHONE_NO1`, `PHONE_NO2`, `EMAIL1`, `EMAIL2`, `WEBSITE`, `ADDRESS`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES
+(3, 3, 3, 'PT MyIndo Cyber Media', '021-1231231', '', 'email@email.com', '', '', '', '2013-07-25 16:27:02', '2013-07-25 09:27:02');
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `MS_ORGANIZATIONS_VIEW`
+--
+CREATE TABLE IF NOT EXISTS `MS_ORGANIZATIONS_VIEW` (
+`ID` int(19)
+,`CITY_ID` int(19)
+,`CITY_NAME` varchar(100)
+,`COUNTRY_ID` int(19)
+,`COUNTRY_NAME` varchar(100)
+,`NAME` varchar(100)
+,`PHONE_NO1` varchar(20)
+,`PHONE_NO2` varchar(20)
+,`EMAIL1` varchar(100)
+,`EMAIL2` varchar(100)
+,`WEBSITE` varchar(100)
+,`ADDRESS` text
+,`CREATED_DATE` datetime
+,`MODIFIED_DATE` timestamp
+);
 -- --------------------------------------------------------
 
 --
@@ -252,8 +431,38 @@ CREATE TABLE IF NOT EXISTS `MS_PARTICIPANTS` (
   `CREATED_DATE` datetime NOT NULL,
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
+--
+-- Dumping data for table `MS_PARTICIPANTS`
+--
+
+INSERT INTO `MS_PARTICIPANTS` (`ID`, `FNAME`, `MNAME`, `LNAME`, `SNAME`, `GENDER`, `BDATE`, `MOBILE_NO`, `PHONE_NO`, `EMAIL1`, `EMAIL2`, `FB`, `TWITTER`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES
+(1, 'Gilang', 'Pratama', 'Putra', 'Gilang', 'Male', '1989-03-20', '08119811010', '0818974821', 'gilang.pratama@myindo.co.id', '', '', '', '2013-07-24 01:33:40', '2013-07-24 08:29:49');
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `MS_PARTICIPANTS_VIEW`
+--
+CREATE TABLE IF NOT EXISTS `MS_PARTICIPANTS_VIEW` (
+`ID` int(19)
+,`NAME` varchar(302)
+,`FNAME` varchar(100)
+,`MNAME` varchar(100)
+,`LNAME` varchar(100)
+,`SNAME` varchar(100)
+,`GENDER` varchar(100)
+,`BDATE` date
+,`MOBILE_NO` varchar(20)
+,`PHONE_NO` varchar(20)
+,`EMAIL1` varchar(100)
+,`EMAIL2` varchar(100)
+,`FB` varchar(100)
+,`TWITTER` varchar(100)
+,`CREATED_DATE` datetime
+,`MODIFIED_DATE` timestamp
+);
 -- --------------------------------------------------------
 
 --
@@ -266,7 +475,7 @@ CREATE TABLE IF NOT EXISTS `MS_POSITIONS` (
   `CREATED_DATE` datetime NOT NULL,
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -280,7 +489,7 @@ CREATE TABLE IF NOT EXISTS `MS_PROVINCE` (
   `CREATED_DATE` datetime NOT NULL,
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -318,7 +527,14 @@ CREATE TABLE IF NOT EXISTS `MS_TRAINERS` (
   `CREATED_DATE` datetime NOT NULL,
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `MS_TRAINERS`
+--
+
+INSERT INTO `MS_TRAINERS` (`ID`, `NAME`, `NICKNAME`, `GENDER`, `ADDRESS`, `BDATE`, `MOBILE_NO`, `PHONE_NO`, `EMAIL1`, `EMAIL2`, `FB`, `TWITTER`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES
+(2, 'Gilang Pratama Putra', 'Gilang', 'Male', 'Jl. Kelapa Tiga No 3', '2013-07-24', '08119811010', '', 'gilang.pratama@myindo.co.id', '', '', '', '2013-07-24 16:29:26', '2013-07-24 09:36:24');
 
 -- --------------------------------------------------------
 
@@ -332,7 +548,14 @@ CREATE TABLE IF NOT EXISTS `MS_TRAININGS` (
   `CREATED_DATE` datetime NOT NULL,
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `MS_TRAININGS`
+--
+
+INSERT INTO `MS_TRAININGS` (`ID`, `NAME`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES
+(2, 'Training Sample #1', '2013-07-24 18:36:11', '2013-07-24 11:36:11');
 
 -- --------------------------------------------------------
 
@@ -346,7 +569,14 @@ CREATE TABLE IF NOT EXISTS `MS_VENUES` (
   `CREATED_DATE` datetime NOT NULL,
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `MS_VENUES`
+--
+
+INSERT INTO `MS_VENUES` (`ID`, `NAME`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES
+(2, 'Venue Name', '2013-07-24 18:41:20', '2013-07-24 11:41:20');
 
 -- --------------------------------------------------------
 
@@ -525,14 +755,14 @@ CREATE TABLE IF NOT EXISTS `USERS` (
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`USER_ID`),
   UNIQUE KEY `USERNAME` (`USERNAME`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `USERS`
 --
 
 INSERT INTO `USERS` (`USER_ID`, `USERNAME`, `PASSWORD`, `EMAIL`, `ACTIVE`, `IP_ADDRESS`, `LAST_IP_ADDRESS`, `LAST_LOGIN`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES
-(1, 'admin', '7b3311da916a2454a0c47a6aa2e0c69279a6b85e', 'admin@satudunia.com', 1, '127.0.0.1', '127.0.0.1', '2013-07-18 23:15:02', '2013-06-28 15:49:48', '2013-07-18 16:15:02');
+(1, 'admin', '7b3311da916a2454a0c47a6aa2e0c69279a6b85e', 'admin@satudunia.com', 1, '127.0.0.1', '127.0.0.1', '2013-07-25 16:26:22', '2013-06-28 15:49:48', '2013-07-25 09:26:22');
 
 -- --------------------------------------------------------
 
@@ -552,6 +782,33 @@ DROP TABLE IF EXISTS `GROUP_VIEW`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `GROUP_VIEW` AS select `a`.`GROUP_ID` AS `GROUP_ID`,`a`.`NAME` AS `NAME`,count(`b`.`USER_ID`) AS `TOTAL_USER`,`a`.`ACTIVE` AS `ACTIVE`,`a`.`CREATED_DATE` AS `CREATED_DATE`,`a`.`MODIFIED_DATE` AS `MODIFIED_DATE` from (`GROUPS` `a` left join `GROUP_USER` `b` on((`a`.`GROUP_ID` = `b`.`GROUP_ID`))) group by `a`.`GROUP_ID`;
 
+-- --------------------------------------------------------
+
+--
+-- Structure for view `MS_FUNDING_SOURCES_VIEW`
+--
+DROP TABLE IF EXISTS `MS_FUNDING_SOURCES_VIEW`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `MS_FUNDING_SOURCES_VIEW` AS select `fsr`.`ID` AS `ID`,`fsr`.`CITY_ID` AS `CITY_ID`,`cty`.`NAME` AS `CITY_NAME`,`fsr`.`COUNTRY_ID` AS `COUNTRY_ID`,`ctr`.`NAME` AS `COUNTRY_NAME`,`fsr`.`NAME` AS `NAME`,`fsr`.`PHONE_NO1` AS `PHONE_NO1`,`fsr`.`PHONE_NO2` AS `PHONE_NO2`,`fsr`.`EMAIL1` AS `EMAIL1`,`fsr`.`EMAIL2` AS `EMAIL2`,`fsr`.`WEBSITE` AS `WEBSITE`,`fsr`.`ADDRESS` AS `ADDRESS`,`fsr`.`CREATED_DATE` AS `CREATED_DATE`,`fsr`.`MODIFIED_DATE` AS `MODIFIED_DATE` from ((`MS_CITY` `cty` join `MS_COUNTRY` `ctr`) join `MS_FUNDING_SOURCES` `fsr`) where ((`fsr`.`CITY_ID` = `cty`.`ID`) and (`fsr`.`COUNTRY_ID` = `ctr`.`ID`));
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `MS_ORGANIZATIONS_VIEW`
+--
+DROP TABLE IF EXISTS `MS_ORGANIZATIONS_VIEW`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `MS_ORGANIZATIONS_VIEW` AS select `org`.`ID` AS `ID`,`org`.`CITY_ID` AS `CITY_ID`,`cty`.`NAME` AS `CITY_NAME`,`org`.`COUNTRY_ID` AS `COUNTRY_ID`,`ctr`.`NAME` AS `COUNTRY_NAME`,`org`.`NAME` AS `NAME`,`org`.`PHONE_NO1` AS `PHONE_NO1`,`org`.`PHONE_NO2` AS `PHONE_NO2`,`org`.`EMAIL1` AS `EMAIL1`,`org`.`EMAIL2` AS `EMAIL2`,`org`.`WEBSITE` AS `WEBSITE`,`org`.`ADDRESS` AS `ADDRESS`,`org`.`CREATED_DATE` AS `CREATED_DATE`,`org`.`MODIFIED_DATE` AS `MODIFIED_DATE` from ((`MS_CITY` `cty` join `MS_COUNTRY` `ctr`) join `MS_ORGANIZATIONS` `org`) where ((`org`.`CITY_ID` = `cty`.`ID`) and (`org`.`COUNTRY_ID` = `ctr`.`ID`));
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `MS_PARTICIPANTS_VIEW`
+--
+DROP TABLE IF EXISTS `MS_PARTICIPANTS_VIEW`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `MS_PARTICIPANTS_VIEW` AS select `MS_PARTICIPANTS`.`ID` AS `ID`,concat(`MS_PARTICIPANTS`.`FNAME`,' ',`MS_PARTICIPANTS`.`MNAME`,' ',`MS_PARTICIPANTS`.`LNAME`) AS `NAME`,`MS_PARTICIPANTS`.`FNAME` AS `FNAME`,`MS_PARTICIPANTS`.`MNAME` AS `MNAME`,`MS_PARTICIPANTS`.`LNAME` AS `LNAME`,`MS_PARTICIPANTS`.`SNAME` AS `SNAME`,`MS_PARTICIPANTS`.`GENDER` AS `GENDER`,`MS_PARTICIPANTS`.`BDATE` AS `BDATE`,`MS_PARTICIPANTS`.`MOBILE_NO` AS `MOBILE_NO`,`MS_PARTICIPANTS`.`PHONE_NO` AS `PHONE_NO`,`MS_PARTICIPANTS`.`EMAIL1` AS `EMAIL1`,`MS_PARTICIPANTS`.`EMAIL2` AS `EMAIL2`,`MS_PARTICIPANTS`.`FB` AS `FB`,`MS_PARTICIPANTS`.`TWITTER` AS `TWITTER`,`MS_PARTICIPANTS`.`CREATED_DATE` AS `CREATED_DATE`,`MS_PARTICIPANTS`.`MODIFIED_DATE` AS `MODIFIED_DATE` from `MS_PARTICIPANTS`;
+
 --
 -- Constraints for dumped tables
 --
@@ -562,6 +819,20 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 ALTER TABLE `GROUP_USER`
   ADD CONSTRAINT `GROUP_USER_ibfk_1` FOREIGN KEY (`GROUP_ID`) REFERENCES `GROUPS` (`GROUP_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `GROUP_USER_ibfk_2` FOREIGN KEY (`USER_ID`) REFERENCES `USERS` (`USER_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `MS_FUNDING_SOURCES`
+--
+ALTER TABLE `MS_FUNDING_SOURCES`
+  ADD CONSTRAINT `fk_CITY_ID` FOREIGN KEY (`CITY_ID`) REFERENCES `MS_CITY` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_COUNTRY_ID` FOREIGN KEY (`COUNTRY_ID`) REFERENCES `MS_COUNTRY` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `MS_ORGANIZATIONS`
+--
+ALTER TABLE `MS_ORGANIZATIONS`
+  ADD CONSTRAINT `MS_ORGANIZATIONS_ibfk_2` FOREIGN KEY (`COUNTRY_ID`) REFERENCES `MS_COUNTRY` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `MS_ORGANIZATIONS_ibfk_1` FOREIGN KEY (`CITY_ID`) REFERENCES `MS_CITY` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `PRIVILEGES`
