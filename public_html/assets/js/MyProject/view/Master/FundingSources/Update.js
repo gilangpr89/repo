@@ -5,7 +5,7 @@ Ext.define(MyIndo.getNameSpace('view.Master.FundingSources.Update'), {
 	closable: true,
 	draggable: true,
 	resizable: false,
-	width: 330,
+	width: 370,
 	title: 'Update Funding Source',
 
 	initComponent: function() {

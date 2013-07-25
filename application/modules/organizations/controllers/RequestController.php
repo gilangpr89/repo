@@ -2,27 +2,46 @@
 
 class Organizations_RequestController extends MyIndo_Controller_Action
 {
+	protected $_modelView;
 	protected $_unique;
+	protected $_required;
+	protected $_sData;
 
 	public function init()
 	{
 		$this->_model = new organizations_Model_Organizations();
+		$this->_modelView = new organizations_Model_OrganizationsView();
 		$this->_unique = 'Organization';
+		$this->_required = array(
+			'CITY_ID',
+			'COUNTRY_ID',
+			'NAME',
+			'PHONE_NO1',
+			'PHONE_NO2',
+			'EMAIL1',
+			'EMAIL2',
+			'WEBSITE',
+			'ADDRESS'
+			);
+		$this->_sData = array();
 	}
 
 	public function createAction()
 	{
 		try {
-			if(isset($this->_posts['NAME'])) {
-				if(!$this->_model->isExist('NAME', $this->_posts['NAME'])) {
-					
-					$this->_model->insert(array(
-						'NAME' => $this->_posts['NAME'],
-						'CREATED_DATE' => $this->_date
-						));
+			$valid = true;
+			foreach($this->_required as $r) {
+				if(!isset($this->_posts[$r])) {
+					$valid = false;
 				} else {
-					$this->error(101, $this->_unique . ' already registered, please input another name.');
+					$this->_sData[$r] = $this->_posts[$r];
 				}
+			}
+			if($valid) {
+				$this->_sData['CITY_ID'] = $this->_enc->base64decrypt($this->_sData['CITY_ID']);
+				$this->_sData['COUNTRY_ID'] = $this->_enc->base64decrypt($this->_sData['COUNTRY_ID']);
+				$this->_sData['CREATED_DATE'] = $this->_date;
+				$this->_model->insert($this->_sData);
 			} else {
 				$this->error(901);
 			}
@@ -35,13 +54,21 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 	{
 		try {
 			if(isset($this->_posts['query'])) {
-				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['query'] . '%');
+				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['query'] . '%');
 			}
 			if(isset($this->_posts['NAME'])) {
-				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
+				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
 			}
-			$this->_data['items'] = $this->_model->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-			$this->_data['totalCount'] = $this->_model->count($this->_where);
+			if(isset($this->_posts['CITY_ID'])) {
+				$cityId = $this->_enc->base64decrypt($this->_posts['CITY_ID']);
+				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('CITY_ID = ?', (int)$cityId);
+			}
+			if(isset($this->_posts['COUNTRY_ID'])) {
+				$countryId = $this->_enc->base64decrypt($this->_posts['COUNTRY_ID']);
+				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('COUNTRY_ID = ?', (int)$countryId);
+			}
+			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+			$this->_data['totalCount'] = $this->_modelView->count($this->_where);
 		} catch(Exception $e) {
 			$this->exception($e);
 		}
@@ -50,28 +77,25 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 	public function updateAction()
 	{
 		try {
-			if(isset($this->_posts['ID']) && isset($this->_posts['NAME'])) {
-				$id = $this->_enc->base64decrypt($this->_posts['ID']);
-				$name = $this->_posts['NAME'];
-				$valid = true;
-				$q = $this->_model->select()->where('ID = ?', $id);
-				if($q->query()->rowCount() > 0) {
-					$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $name . '%');
-					$details = $q->query()->fetch();
-					if($this->_model->isExist('NAME', $name)) {
-						if($details['NAME'] != $name) {
-							$valid = false;
-						}
-					}
-					if($valid) {
-						$this->_model->update(array(
-							'NAME' => $name
-							), $this->_model->getAdapter()->quoteInto('ID = ?', $id));
-					} else {
-						$this->error(101, $this->_unique . ' already registered.');
-					}
+			$this->_required[] = 'ID';
+			$valid = true;
+			foreach($this->_required as $r) {
+				if(!isset($this->_posts[$r])) {
+					$valid = false;
 				} else {
-					$this->error(102);
+					$this->_sData[$r] = $this->_posts[$r];
+				}
+			}
+			if($valid) {
+				$id = $this->_enc->base64decrypt($this->_posts['ID']);
+				$this->_sData['CITY_ID'] = $this->_enc->base64decrypt($this->_sData['CITY_ID']);
+				$this->_sData['COUNTRY_ID'] = $this->_enc->base64decrypt($this->_sData['COUNTRY_ID']);
+
+				if($this->_model->isExist('ID', $id)) {
+					unset($this->_sData['ID']);
+					$this->_model->update($this->_sData, $this->_model->getAdapter()->quoteInto('ID = ?', $id));
+				} else {
+					$this->error(101);
 				}
 			} else {
 				$this->error(901);

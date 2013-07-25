@@ -5,10 +5,14 @@ Ext.define(MyIndo.getNameSpace('view.Master.Organizations.Filter'), {
 	closable: true,
 	draggable: true,
 	resizable: false,
-	width: 330,
+	width: 360,
 	title: 'Filter Organization',
 
 	initComponent: function() {
+		var storeCity = Ext.create(MyIndo.getNameSpace('store.Master.Cities'),{autoDestroy:true});
+		var storeCountry = Ext.create(MyIndo.getNameSpace('store.Master.Countries'),{autoDestroy:true});
+		storeCity.load();
+		storeCountry.load();
 		Ext.apply(this, {
 			items: [{
 				xtype: 'form',
@@ -20,6 +24,30 @@ Ext.define(MyIndo.getNameSpace('view.Master.Organizations.Filter'), {
 					name: 'NAME',
 					fieldLabel: 'Name',
 					emptyText: 'Input name..'
+				},{
+					xtype: 'combobox',
+					fieldLabel: 'City',
+					name: 'CITY_ID',
+					allowBlank: false,
+					displayField: 'NAME',
+					valueField: 'ID',
+					minChars: 3,
+					pageSize: 25,
+					store: storeCity,
+					allowBlank: false,
+					emptyText: 'Select city..'
+				},{
+					xtype: 'combobox',
+					fieldLabel: 'Country',
+					name: 'COUNTRY_ID',
+					allowBlank: false,
+					displayField: 'NAME',
+					valueField: 'ID',
+					minChars: 3,
+					pageSize: 25,
+					store: storeCountry,
+					allowBlank: false,
+					emptyText: 'Select country..'
 				}]
 			}],
 			buttons: [{
