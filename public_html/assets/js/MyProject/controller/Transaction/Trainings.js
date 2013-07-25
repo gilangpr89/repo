@@ -3,6 +3,7 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 
 	requires: [
 	MyIndo.getNameSpace('view.Transaction.Trainings.Add'),
+	MyIndo.getNameSpace('view.Transaction.Trainings.Update'),
 	MyIndo.getNameSpace('view.Transaction.Trainings.ManageParticipants')
 	],
 
