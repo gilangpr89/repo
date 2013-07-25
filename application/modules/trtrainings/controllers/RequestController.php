@@ -142,29 +142,85 @@ class Trtrainings_RequestController extends MyIndo_Controller_Action
 	public function updateAction()
 	{
 		try {
-			if(isset($this->_posts['ID']) && isset($this->_posts['NAME'])) {
-				$id = $this->_enc->base64decrypt($this->_posts['ID']);
-				$name = $this->_posts['NAME'];
-				$valid = true;
-				$q = $this->_model->select()->where('ID = ?', $id);
-				if($q->query()->rowCount() > 0) {
-					$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $name . '%');
-					$details = $q->query()->fetch();
-					if($this->_model->isExist('NAME', $name)) {
-						if($details['NAME'] != $name) {
-							$valid = false;
-						}
-					}
-					if($valid) {
-						$this->_model->update(array(
-							'NAME' => $name
-							), $this->_model->getAdapter()->quoteInto('ID = ?', $id));
+			$valid = true;
+			$this->_required[] = 'ID';
+			foreach($this->_required as $r) {
+				if(!isset($this->_posts[$r])) {
+					$valid = false;
+				} else {
+					$this->_ids[] = 'ID';
+					if(!in_array($r, $this->_ids)) {
+						$this->_sData[$r] = $this->_posts[$r];
 					} else {
-						$this->error(101, $this->_unique . ' already registered.');
+						$this->_sData[$r] = $this->_enc->base64decrypt($this->_posts[$r]);
+					}
+				}
+			}
+			if($valid) {
+				$error = false;
+				$errorMsg = array();
+				
+				/* Check for valid Tr Training */
+				if(!$this->_model->isExist('ID', $this->_sData['ID'])) {
+					$error = true;
+					$errorMsg[] = 'Invalid Training.';
+				}
+
+				/* Check for valid Area Levels */
+				if(!$this->_modelAreaLevels->isExist('ID', $this->_sData['AREA_LEVEL_ID'])) {
+					$error = true;
+					$errorMsg[] = 'Invalid area level.';
+				}
+
+				/* Check for valid Beneficiaries */
+				if(!$this->_modelBeneficiaries->isExist('ID', $this->_sData['BENEFICIARIES_ID'])) {
+					$error = true;
+					$errorMsg[] = 'Invalid beneficiaries.';
+				}
+
+				/* Check for valid Funding Sources */
+				if(!$this->_modelFundingSources->isExist('ID', $this->_sData['FUNDING_SOURCE_ID'])) {
+					$error = true;
+					$errorMsg[] = 'Invalid funding source.';
+				}
+
+				/* Check for valid Organizations */
+				if(!$this->_modelOrganizations->isExist('ID', $this->_sData['ORGANIZATION_ID'])) {
+					$error = true;
+					$errorMsg[] = 'Invalid organization.';
+				}
+
+				/* Check for valid Training */
+				if(!$this->_modelTrainings->isExist('ID', $this->_sData['TRAINING_ID'])) {
+					$error = true;
+					$errorMsg[] = 'Invalid training.';
+				}
+
+				/* Check for valid Venues */
+				if(!$this->_modelVenues->isExist('ID', $this->_sData['VENUE_ID'])) {
+					$error = true;
+					$errorMsg[] = 'Invalid venue.';
+				}
+
+				if(!$error) {
+					$id = $this->_sData['ID'];
+					unset($this->_sData['ID']);
+					try {
+						$this->_model->update($this->_sData, $this->_model->getAdapter()->quoteInto('ID = ?', $id));
+					} catch(Exception $e) {
+						$this->exception($e);
 					}
 				} else {
-					$this->error(102);
+					$msg = '';
+					foreach($errorMsg as $k=>$e) {
+						if($k>0) {
+							$msg .= '<br/>';
+						}
+						$msg .= $e;
+					}
+					$this->error(901, $msg);
 				}
+
 			} else {
 				$this->error(901);
 			}

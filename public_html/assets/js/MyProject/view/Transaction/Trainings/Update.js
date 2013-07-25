@@ -22,7 +22,14 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.Update'), {
 		var storeFundingSources = Ext.create(MyIndo.getNameSpace('store.Master.FundingSources'),{autoDestroy:true});
 		var storeVenues = Ext.create(MyIndo.getNameSpace('store.Master.Venues'),{autoDestroy:true});
 		var storeOrganizations = Ext.create(MyIndo.getNameSpace('store.Master.Organizations'),{autoDestroy:true});
-		var LD = Ext.create('MyIndo.view.Loading');
+		var LD = Ext.create('MyIndo.view.Loading',{
+			listeners: {
+				deactivate: function(self) {
+					self.toFront();
+				},
+				delay: 1
+			}
+		});
 		LD.show();
 		var me = this;
 		var count = 0;
@@ -164,10 +171,10 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.Update'), {
 			}],
 			buttons: [{
 				text: 'Save',
-				action: 'add-save'
+				action: 'update-save'
 			},{
 				text: 'Cancel',
-				action: 'add-cancel'
+				action: 'update-cancel'
 			}]
 		});
 		this.callParent(arguments);
