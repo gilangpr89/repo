@@ -10,8 +10,10 @@ Ext.define(MyIndo.getNameSpace('view.Master.Organizations.Update'), {
 
 	initComponent: function() {
 		var storeCity = Ext.create(MyIndo.getNameSpace('store.Master.Cities'),{autoDestroy:true});
+		var storeProvince = Ext.create(MyIndo.getNameSpace('store.Master.Provinces'),{autoDestroy:true});
 		var storeCountry = Ext.create(MyIndo.getNameSpace('store.Master.Countries'),{autoDestroy:true});
 		storeCity.load();
+		storeProvince.load();
 		storeCountry.load();
 		Ext.apply(this, {
 			items: [{
@@ -66,7 +68,21 @@ Ext.define(MyIndo.getNameSpace('view.Master.Organizations.Update'), {
 					pageSize: 25,
 					store: storeCity,
 					allowBlank: false,
-					emptyText: 'Select city..'
+					emptyText: 'Select city..',
+					editable: false
+				},{
+					xtype: 'combobox',
+					fieldLabel: 'Province',
+					name: 'PROVINCE_ID',
+					allowBlank: false,
+					displayField: 'NAME',
+					valueField: 'ID',
+					minChars: 3,
+					pageSize: 25,
+					store: storeProvince,
+					allowBlank: false,
+					emptyText: 'Select province..',
+					editable: false
 				},{
 					xtype: 'combobox',
 					fieldLabel: 'Country',
@@ -78,7 +94,8 @@ Ext.define(MyIndo.getNameSpace('view.Master.Organizations.Update'), {
 					pageSize: 25,
 					store: storeCountry,
 					allowBlank: false,
-					emptyText: 'Select country..'
+					emptyText: 'Select country..',
+					editable: false
 				},{
 					xtype: 'textarea',
 					name: 'ADDRESS',

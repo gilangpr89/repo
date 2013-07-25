@@ -10,6 +10,12 @@ Ext.define(MyIndo.getNameSpace('model.Master.Organization'), {
 		name: 'CITY_NAME',
 		type: 'string'
 	},{
+		name: 'PROVINCE_ID',
+		type: 'string'
+	},{
+		name: 'PROVINCE_NAME',
+		type: 'string'
+	},{
 		name: 'COUNTRY_ID',
 		type: 'string'
 	},{

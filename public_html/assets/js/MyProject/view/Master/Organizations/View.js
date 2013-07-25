@@ -22,6 +22,11 @@ Ext.define(MyIndo.getNameSpace('view.Master.Organizations.View'), {
 		width: 100,
 		dataIndex: 'CITY_NAME'
 	},{
+		text: 'Province',
+		align: 'center',
+		width: 100,
+		dataIndex: 'PROVINCE_NAME'
+	},{
 		text: 'Country',
 		align: 'center',
 		width: 100,
@@ -45,7 +50,7 @@ Ext.define(MyIndo.getNameSpace('view.Master.Organizations.View'), {
 				update: MyIndo.getNameSpace('view.Master.Organizations.Update'),
 				filter: MyIndo.getNameSpace('view.Master.Organizations.Filter')
 			},
-			filters: ['NAME','CITY_ID','COUNTRY_ID'],
+			filters: ['NAME','CITY_ID','PROVINCE_ID','COUNTRY_ID'],
 			url: {
 				delete: MyIndo.baseUrl('organizations/request/destroy')
 			},

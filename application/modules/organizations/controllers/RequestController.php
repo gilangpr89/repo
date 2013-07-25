@@ -14,6 +14,7 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 		$this->_unique = 'Organization';
 		$this->_required = array(
 			'CITY_ID',
+			'PROVINCE_ID',
 			'COUNTRY_ID',
 			'NAME',
 			'PHONE_NO1',
@@ -39,6 +40,7 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 			}
 			if($valid) {
 				$this->_sData['CITY_ID'] = $this->_enc->base64decrypt($this->_sData['CITY_ID']);
+				$this->_sData['PROVINCE_ID'] = $this->_enc->base64decrypt($this->_sData['PROVINCE_ID']);
 				$this->_sData['COUNTRY_ID'] = $this->_enc->base64decrypt($this->_sData['COUNTRY_ID']);
 				$this->_sData['CREATED_DATE'] = $this->_date;
 				$this->_model->insert($this->_sData);
@@ -62,6 +64,10 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 			if(isset($this->_posts['CITY_ID'])) {
 				$cityId = $this->_enc->base64decrypt($this->_posts['CITY_ID']);
 				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('CITY_ID = ?', (int)$cityId);
+			}
+			if(isset($this->_posts['PROVINCE_ID'])) {
+				$provinceId = $this->_enc->base64decrypt($this->_posts['PROVINCE_ID']);
+				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('PROVINCE_ID = ?', (int)$provinceId);
 			}
 			if(isset($this->_posts['COUNTRY_ID'])) {
 				$countryId = $this->_enc->base64decrypt($this->_posts['COUNTRY_ID']);
@@ -89,6 +95,7 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 			if($valid) {
 				$id = $this->_enc->base64decrypt($this->_posts['ID']);
 				$this->_sData['CITY_ID'] = $this->_enc->base64decrypt($this->_sData['CITY_ID']);
+				$this->_sData['PROVINCE_ID'] = $this->_enc->base64decrypt($this->_sData['PROVINCE_ID']);
 				$this->_sData['COUNTRY_ID'] = $this->_enc->base64decrypt($this->_sData['COUNTRY_ID']);
 
 				if($this->_model->isExist('ID', $id)) {
