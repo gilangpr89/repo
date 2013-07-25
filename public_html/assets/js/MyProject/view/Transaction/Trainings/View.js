@@ -4,8 +4,34 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.View'), {
 	border: false,
 	columns: [{
 		text: 'Training Name',
-		flex: 1,
-		dataIndex: 'NAME'
+		width: 160,
+		dataIndex: 'TRAINING_NAME'
+	},{
+		text: 'Area Level',
+		width: 100,
+		align: 'center',
+		dataIndex: 'AREA_LEVEL_NAME'
+	},{
+		text: 'Beneficiaries',
+		width: 150,
+		dataIndex: 'BENEFICIARIES_NAME'
+	},{
+		text: 'Funding Source',
+		width: 150,
+		dataIndex: 'FUNDING_SOURCE_NAME'
+	},{
+		text: 'Venue',
+		width: 120,
+		dataIndex: 'VENUE_NAME'
+	},{
+		text: 'Host',
+		width: 150,
+		dataIndex: 'ORGANIZATION_NAME'
+	},{
+		text: 'Creator',
+		align: 'center',
+		width: 80,
+		dataIndex: 'USERNAME'
 	},{
 		text: 'Created Date',
 		align: 'center',

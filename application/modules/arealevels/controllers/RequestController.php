@@ -3,11 +3,13 @@
 class Arealevels_RequestController extends MyIndo_Controller_Action
 {
 
+	protected $_modelView;
 	protected $_unique;
 
 	public function init()
 	{
 		$this->_model = new arealevels_Model_AreaLevels();
+		$this->_modelView = new arealevels_Model_AreaLevelsView();
 		$this->_unique = 'Area Level';
 	}
 
@@ -37,16 +39,16 @@ class Arealevels_RequestController extends MyIndo_Controller_Action
 	{
 		try {
 			if(isset($this->_posts['query'])) {
-				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['query'] . '%');
+				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['query'] . '%');
 			}
 			if(isset($this->_posts['NAME'])) {
-				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
+				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
 			}
 			if(isset($this->_posts['TYPE'])) {
-				$this->_where[] = $this->_model->getAdapter()->quoteInto('TYPE LIKE ?', '%' . $this->_posts['TYPE'] . '%');
+				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('TYPE LIKE ?', '%' . $this->_posts['TYPE'] . '%');
 			}
-			$this->_data['items'] = $this->_model->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-			$this->_data['totalCount'] = $this->_model->count($this->_where);
+			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+			$this->_data['totalCount'] = $this->_modelView->count($this->_where);
 		} catch(Exception $e) {
 			$this->exception($e);
 		}

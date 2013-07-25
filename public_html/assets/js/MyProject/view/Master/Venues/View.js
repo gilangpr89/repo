@@ -7,6 +7,31 @@ Ext.define(MyIndo.getNameSpace('view.Master.Venues.View'), {
 		flex: 1,
 		dataIndex: 'NAME'
 	},{
+		text: 'Phone',
+		align: 'center',
+		width: 100,
+		dataIndex: 'PHONE_NO1'
+	},{
+		text: 'Email',
+		align: 'center',
+		width: 130,
+		dataIndex: 'EMAIL1'
+	},{
+		text: 'City',
+		align: 'center',
+		width: 100,
+		dataIndex: 'CITY_NAME'
+	},{
+		text: 'Province',
+		align: 'center',
+		width: 100,
+		dataIndex: 'PROVINCE_NAME'
+	},{
+		text: 'Country',
+		align: 'center',
+		width: 100,
+		dataIndex: 'COUNTRY_NAME'
+	},{
 		text: 'Created Date',
 		align: 'center',
 		width: 150,
@@ -25,7 +50,7 @@ Ext.define(MyIndo.getNameSpace('view.Master.Venues.View'), {
 				update: MyIndo.getNameSpace('view.Master.Venues.Update'),
 				filter: MyIndo.getNameSpace('view.Master.Venues.Filter')
 			},
-			filters: ['NAME'],
+			filters: ['NAME','CITY_ID','PROVINCE_ID','COUNTRY_ID'],
 			url: {
 				delete: MyIndo.baseUrl('venues/request/destroy')
 			},

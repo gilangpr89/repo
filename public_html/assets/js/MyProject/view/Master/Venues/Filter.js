@@ -5,10 +5,16 @@ Ext.define(MyIndo.getNameSpace('view.Master.Venues.Filter'), {
 	closable: true,
 	draggable: true,
 	resizable: false,
-	width: 330,
+	width: 360,
 	title: 'Filter Venue',
 
 	initComponent: function() {
+		var storeCity = Ext.create(MyIndo.getNameSpace('store.Master.Cities'),{autoDestroy:true});
+		var storeProvince = Ext.create(MyIndo.getNameSpace('store.Master.Provinces'),{autoDestroy:true});
+		var storeCountry = Ext.create(MyIndo.getNameSpace('store.Master.Countries'),{autoDestroy:true});
+		storeCity.load();
+		storeProvince.load();
+		storeCountry.load();
 		Ext.apply(this, {
 			items: [{
 				xtype: 'form',
@@ -20,6 +26,45 @@ Ext.define(MyIndo.getNameSpace('view.Master.Venues.Filter'), {
 					name: 'NAME',
 					fieldLabel: 'Name',
 					emptyText: 'Input name..'
+				},{
+					xtype: 'combobox',
+					fieldLabel: 'City',
+					name: 'CITY_ID',
+					allowBlank: false,
+					displayField: 'NAME',
+					valueField: 'ID',
+					minChars: 3,
+					pageSize: 25,
+					store: storeCity,
+					allowBlank: false,
+					emptyText: 'Select city..',
+					editable: false
+				},{
+					xtype: 'combobox',
+					fieldLabel: 'Province',
+					name: 'PROVINCE_ID',
+					allowBlank: false,
+					displayField: 'NAME',
+					valueField: 'ID',
+					minChars: 3,
+					pageSize: 25,
+					store: storeProvince,
+					allowBlank: false,
+					emptyText: 'Select province..',
+					editable: false
+				},{
+					xtype: 'combobox',
+					fieldLabel: 'Country',
+					name: 'COUNTRY_ID',
+					allowBlank: false,
+					displayField: 'NAME',
+					valueField: 'ID',
+					minChars: 3,
+					pageSize: 25,
+					store: storeCountry,
+					allowBlank: false,
+					emptyText: 'Select country..',
+					editable: false
 				}]
 			}],
 			buttons: [{

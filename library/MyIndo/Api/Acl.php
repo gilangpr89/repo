@@ -74,6 +74,8 @@ class MyIndo_Api_Acl extends Zend_Controller_Plugin_Abstract
 				$mEnc = new MyIndo_Encryption_Aes(md5($enc->get('key')), md5($enc->get('iv')));
 	
 				$view->authKey = $mEnc->base64encrypt($usersData->USER_ID);
+				$view->USER_ID = $usersData->USER_ID;
+				$view->USERNAME = $usersData->USERNAME;
 				
 			} else {
 				

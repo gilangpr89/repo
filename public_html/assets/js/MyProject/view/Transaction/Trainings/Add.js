@@ -6,7 +6,7 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.Add'), {
 	draggable: true,
 	resizable: false,
 	width: 360,
-	title: 'Add New Training',
+	title: 'Create New Training',
 
 	initComponent: function() {
 
@@ -41,7 +41,7 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.Add'), {
 					fieldLabel: 'Area Level',
 					name: 'AREA_LEVEL_ID',
 					allowBlank: false,
-					displayField: 'NAME',
+					displayField: 'DISPLAY_NAME',
 					valueField: 'ID',
 					minChars: 3,
 					pageSize: 25,
@@ -86,7 +86,7 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.Add'), {
 					emptyText: 'Select venue..'
 				},{
 					xtype: 'combobox',
-					fieldLabel: 'Organization',
+					fieldLabel: 'Host',
 					name: 'ORGANIZATION_ID',
 					allowBlank: false,
 					displayField: 'NAME',

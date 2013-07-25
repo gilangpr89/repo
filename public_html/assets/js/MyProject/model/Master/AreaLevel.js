@@ -4,6 +4,9 @@ Ext.define(MyIndo.getNameSpace('model.Master.AreaLevel'), {
 		name: 'ID',
 		type: 'string'
 	},{
+		name: 'DISPLAY_NAME',
+		type: 'string'
+	},{
 		name: 'NAME',
 		type: 'string'
 	},{
