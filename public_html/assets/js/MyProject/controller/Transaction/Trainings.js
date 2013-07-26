@@ -76,26 +76,30 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 		var form = parent.items.items[0].getForm();
 		var me = this;
 		if(form.isValid()) {
-			me.showLoadingWindow();
-			form.submit({
-				success: function(act, res) {
-					var json = Ext.decode(res.response.responseText);
-					me.closeLoadingWindow();
-					if(me.isLogin(json)) {
-						Ext.Msg.alert('Message', 'Data successfully saved.');
-						var mainContent = Ext.getCmp('manage-participant-grid');
-						var store = mainContent.getStore();
-						store.proxy.extraParams = {};
-						store.load();
-						form.reset();
-					}
-				},
-				failure: function(act, res) {
-					var json = Ext.decode(res.response.responseText);
-					me.closeLoadingWindow();
-					if(me.isLogin(json)) {
-						Ext.Msg.alert('Application Error', '<strong>Error Code</strong>: ' + json.error_code + '<br/><strong>Message</strong>: ' + json.error_message);
-					}
+			Ext.Msg.confirm('Save Participant', 'Are you sure want to save this data ?', function(btn) {
+				if(btn == 'yes') {
+					me.showLoadingWindow();
+					form.submit({
+						success: function(act, res) {
+							var json = Ext.decode(res.response.responseText);
+							me.closeLoadingWindow();
+							if(me.isLogin(json)) {
+								Ext.Msg.alert('Message', 'Data successfully saved.');
+								var mainContent = Ext.getCmp('manage-participant-grid');
+								var store = mainContent.getStore();
+								store.proxy.extraParams = {};
+								store.load();
+								form.reset();
+							}
+						},
+						failure: function(act, res) {
+							var json = Ext.decode(res.response.responseText);
+							me.closeLoadingWindow();
+							if(me.isLogin(json)) {
+								Ext.Msg.alert('Application Error', '<strong>Error Code</strong>: ' + json.error_code + '<br/><strong>Message</strong>: ' + json.error_message);
+							}
+						}
+					});
 				}
 			});
 		} else {
