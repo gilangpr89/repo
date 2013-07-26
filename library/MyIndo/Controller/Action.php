@@ -199,7 +199,9 @@ Class MyIndo_Controller_Action extends Zend_Controller_Action
 				"\\u0000"
 				);
 		header('Content-Type: application/json');
-		echo str_replace($replacer, "", Zend_Json::encode($json));
+		$jsonStr = str_replace($replacer, "", Zend_Json::encode($json));
+		echo $jsonStr;
+		//echo base64_encode($jsonStr);
 	}
 
 	public function exception($e)

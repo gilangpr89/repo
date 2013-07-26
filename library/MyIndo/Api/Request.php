@@ -44,7 +44,8 @@ class MyIndo_Api_Request
 		try {
 			$menuModel = new MyIndo_Model_Menus();
 			$where = array($menuModel->getAdapter()->quoteInto('ACTIVE = ?',1));
-			$list = $menuModel->getList(null,null, 'INDEX ASC', $where);
+			$list = $menuModel->getList(null,null, array('MENU_ID ASC','INDEX ASC'), $where);
+			
 			foreach($list as $k=>$d) {
 				$list[$k]['PARENT_ID'] = $this->_enc->base64encrypt($d['PARENT_ID']);
 			}

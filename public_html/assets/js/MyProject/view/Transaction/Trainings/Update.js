@@ -22,14 +22,7 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.Update'), {
 		var storeFundingSources = Ext.create(MyIndo.getNameSpace('store.Master.FundingSources'),{autoDestroy:true});
 		var storeVenues = Ext.create(MyIndo.getNameSpace('store.Master.Venues'),{autoDestroy:true});
 		var storeOrganizations = Ext.create(MyIndo.getNameSpace('store.Master.Organizations'),{autoDestroy:true});
-		var LD = Ext.create('MyIndo.view.Loading',{
-			listeners: {
-				deactivate: function(self) {
-					self.toFront();
-				},
-				delay: 1
-			}
-		});
+		var LD = Ext.create('MyIndo.view.Loading');
 		LD.show();
 		var me = this;
 		var count = 0;

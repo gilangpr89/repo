@@ -36,6 +36,9 @@ class MyIndo_Db_Table_Abstract extends Zend_Db_Table_Abstract
 			}
 
 			if(!is_null($order)) {
+				if(!is_array($order)) {
+					$order = array($order);
+				}
 				$query->order($order);
 			}
 
