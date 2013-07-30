@@ -16,7 +16,9 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.ManageParticipants'),
 				border: false,
 				minHeight: 200,
 				store: this.store,
-				columns: [{
+				columns: [
+				Ext.create('Ext.grid.RowNumberer'),
+				{
 					text: 'Name',
 					flex: 1,
 					dataIndex: 'PARTICIPANT_NAME'

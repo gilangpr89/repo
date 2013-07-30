@@ -2,7 +2,8 @@ Ext.define(MyIndo.getNameSpace('view.Master.City.View'), {
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.cityview',
 	border: false,
-	columns: [{
+	columns: [
+	Ext.create('Ext.grid.RowNumberer'),{
 		text: 'City',
 		flex: 1,
 		dataIndex: 'NAME'

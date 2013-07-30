@@ -2,7 +2,8 @@ Ext.define(MyIndo.getNameSpace('view.Master.Trainings.View'), {
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.trainingsview',
 	border: false,
-	columns: [{
+	columns: [
+	Ext.create('Ext.grid.RowNumberer'),{
 		text: 'Training',
 		flex: 1,
 		dataIndex: 'NAME'

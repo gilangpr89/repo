@@ -115,5 +115,5 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 	onTrTrainingsClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Transaction.Trainings'));
 		this.createPanel(menuTitle, menuId, mainContent, store, 'trtrainingsview');
-	},
+	}
 });

@@ -2,7 +2,9 @@ Ext.define('MyIndo.view.Administrator.Groups.View', {
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.groupsview',
 	border: false,
-	columns: [{
+	columns: [
+	Ext.create('Ext.grid.RowNumberer'),
+	{
 		text: 'Group Name',
 		flex: 1,
 		dataIndex: 'NAME'

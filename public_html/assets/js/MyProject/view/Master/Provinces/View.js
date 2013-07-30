@@ -2,7 +2,9 @@ Ext.define(MyIndo.getNameSpace('view.Master.Provinces.View'), {
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.provincesview',
 	border: false,
-	columns: [{
+	columns: [
+	Ext.create('Ext.grid.RowNumberer'),
+	{
 		text: 'Province',
 		flex: 1,
 		dataIndex: 'NAME'

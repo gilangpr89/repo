@@ -2,7 +2,8 @@ Ext.define(MyIndo.getNameSpace('view.Master.FundingSources.View'), {
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.fundingsourcesview',
 	border: false,
-	columns: [{
+	columns: [
+	Ext.create('Ext.grid.RowNumberer'),{
 		text: 'Funding Source',
 		flex: 1,
 		dataIndex: 'NAME'

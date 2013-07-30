@@ -1,6 +1,5 @@
 Ext.define('MyIndo.view.Loading', {
 	extend: 'Ext.Window',
-	title: 'Loading..',
 	width: 200,
 	resizable: false,
 	draggable: false,

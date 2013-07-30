@@ -90,9 +90,13 @@
 									html: '<div style="padding: 10px;text-align: center"><img width="40" height="40" src="' + MyIndo.baseUrl('resources/images/350.gif') + '"/><br/>Loading data, please wait..</div>'
 								}).show();
 								if(btn == 'ok') {
-									document.location = '/';
+									setTimeout(function() {
+										document.location = '/';
+									},1000);
 								} else {
-									document.location = '/';
+									setTimeout(function() {
+										document.location = '/';
+									},1000);
 								}
 							});
 							Ext.getCmp('_LOGIN_FORM').hide();

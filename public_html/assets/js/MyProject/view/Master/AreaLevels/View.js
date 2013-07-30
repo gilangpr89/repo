@@ -2,7 +2,9 @@ Ext.define(MyIndo.getNameSpace('view.Master.AreaLevels.View'), {
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.arealevelsview',
 	border: false,
-	columns: [{
+	columns: [
+	Ext.create('Ext.grid.RowNumberer'),
+	{
 		text: 'Area Level',
 		flex: 1,
 		dataIndex: 'NAME'

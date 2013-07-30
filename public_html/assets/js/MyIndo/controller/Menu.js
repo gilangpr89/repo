@@ -37,7 +37,7 @@ Ext.define('MyIndo.controller.Menu', {
 					this.reloadMenu();
 				}
 			},
-			'usermenu button': {
+			'northpanel button': {
 				click: this.onUserMenuButtonClicked
 			}
 		});
@@ -148,7 +148,9 @@ Ext.define('MyIndo.controller.Menu', {
 		Ext.Msg.confirm('Logout', 'Are you sure want to logout ?', function(btn) {
 			if(btn == 'yes') {
 				me.showLoading();
-				document.location = MyIndo.baseUrl('users/login/logout');
+				setTimeout(function() {
+					document.location = MyIndo.baseUrl('users/login/logout');
+				},1000);
 			}
 		});
 	},

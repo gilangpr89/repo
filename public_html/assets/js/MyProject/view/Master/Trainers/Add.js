@@ -93,7 +93,7 @@ Ext.define(MyIndo.getNameSpace('view.Master.Trainers.Add'), {
 					emptyText: 'Input Email..'
 				},{
 					name: 'EMAIL2',
-					fieldLabel: 'Secondary Email',
+					fieldLabel: 'Secondary Email'
 				},{
 					name: 'FB',
 					fieldLabel: 'Facebook'

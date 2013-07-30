@@ -2,7 +2,8 @@ Ext.define(MyIndo.getNameSpace('view.Master.Roles.View'), {
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.rolesview',
 	border: false,
-	columns: [{
+	columns: [
+	Ext.create('Ext.grid.RowNumberer'),{
 		text: 'Role',
 		flex: 1,
 		dataIndex: 'NAME'

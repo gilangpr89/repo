@@ -14,7 +14,9 @@ Ext.define('MyIndo.view.Administrator.Groups.Manage', {
 				border: false,
 				minHeight: 200,
 				store: this.store,
-				columns: [{
+				columns: [
+				Ext.create('Ext.grid.RowNumberer'),
+				{
 					text: 'Username',
 					flex: 1,
 					dataIndex: 'USERNAME'

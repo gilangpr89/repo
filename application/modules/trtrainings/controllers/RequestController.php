@@ -81,7 +81,7 @@ class Trtrainings_RequestController extends MyIndo_Controller_Action
 				/* Check for valid Organizations */
 				if(!$this->_modelOrganizations->isExist('ID', $this->_sData['ORGANIZATION_ID'])) {
 					$error = true;
-					$errorMsg[] = 'Invalid organization.';
+					$errorMsg[] = 'Invalid host.';
 				}
 
 				/* Check for valid Training */
@@ -187,7 +187,7 @@ class Trtrainings_RequestController extends MyIndo_Controller_Action
 				/* Check for valid Organizations */
 				if(!$this->_modelOrganizations->isExist('ID', $this->_sData['ORGANIZATION_ID'])) {
 					$error = true;
-					$errorMsg[] = 'Invalid organization.';
+					$errorMsg[] = 'Invalid host.';
 				}
 
 				/* Check for valid Training */

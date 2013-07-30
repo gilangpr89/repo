@@ -10,17 +10,25 @@ Ext.define('MyIndo.view.Viewport', {
 	config: {
 		items: [{
 			region: 'north',
-			xtype: 'northpanel'
+			xtype: 'northpanel',
+			tbar: [{
+				text: 'Change Password',
+				iconCls: 'icon-lock-break'
+			},{
+				text: 'Logout',
+				iconCls: 'icon-exclamation',
+				action: 'logout'
+			}]
 		},{
 			region: 'west',
-			autoScroll: true,
+			// autoScroll: true,
 			width: 250,
-			items: [{
-				xtype: 'mainmenu',
-				minHeight: 300
-			},{
-				xtype: 'usermenu'
-			}]
+			// items: [{
+				xtype: 'mainmenu'
+			// 	minHeight: 300
+			// },{
+			// 	xtype: 'usermenu'
+			// }]
 		},{
 			region: 'center',
 			xtype: 'content'

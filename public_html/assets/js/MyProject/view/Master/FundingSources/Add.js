@@ -35,7 +35,7 @@ Ext.define(MyIndo.getNameSpace('view.Master.FundingSources.Add'), {
 					emptyText: 'Input primary phone..'
 				},{
 					name: 'PHONE_NO2',
-					fieldLabel: 'Secondary Phone',
+					fieldLabel: 'Secondary Phone'
 				},{
 					name: 'EMAIL1',
 					allowBlank: false,
@@ -48,7 +48,7 @@ Ext.define(MyIndo.getNameSpace('view.Master.FundingSources.Add'), {
 					vtype: 'email'
 				},{
 					name: 'WEBSITE',
-					fieldLabel: 'Website',
+					fieldLabel: 'Website'
 				},{
 					xtype: 'combobox',
 					fieldLabel: 'City',
@@ -91,7 +91,7 @@ Ext.define(MyIndo.getNameSpace('view.Master.FundingSources.Add'), {
 				},{
 					xtype: 'textarea',
 					name: 'ADDRESS',
-					fieldLabel: 'Address',
+					fieldLabel: 'Address'
 				}]
 			}],
 			buttons: [{

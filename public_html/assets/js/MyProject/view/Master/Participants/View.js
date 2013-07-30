@@ -2,7 +2,8 @@ Ext.define(MyIndo.getNameSpace('view.Master.Participants.View'), {
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.participantsview',
 	border: false,
-	columns: [{
+	columns: [
+	Ext.create('Ext.grid.RowNumberer'),{
 		text: 'Name',
 		width: 263,
 		dataIndex: 'NAME'

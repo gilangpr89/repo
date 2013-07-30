@@ -14,4 +14,4 @@ Ext.define(MyIndo.getNameSpace('store.Master.AreaLevels'), {
 		direction: 'ASC'
 	},
 	remoteSort: true
-})
+});

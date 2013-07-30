@@ -2,7 +2,8 @@ Ext.define(MyIndo.getNameSpace('view.Master.Organizations.View'), {
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.organizationsview',
 	border: false,
-	columns: [{
+	columns: [
+	Ext.create('Ext.grid.RowNumberer'),{
 		text: 'Organization',
 		flex: 1,
 		dataIndex: 'NAME'
