@@ -10,9 +10,9 @@ Class MyIndo_Controller_Action extends Zend_Controller_Action
 	protected $_data;
 	protected $_posts;
 	protected $_date;
-	protected $_limit;
-	protected $_start;
-	protected $_order;
+	protected $_limit; //
+	protected $_start; //
+	protected $_order; //
 	protected $_where;
 	protected $_totalCount;
 
