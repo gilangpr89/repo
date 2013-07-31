@@ -1,8 +1,19 @@
+var splashscreen;
+
 Ext.Loader.setConfig({
 	enabled: true
 });
 
 Ext.Loader.setPath('MyIndo', 'assets/js/MyIndo');
+
+
+Ext.onReady(function() {
+    splashscreen = Ext.getBody().mask('Loading application', 'splashscreen');
+    splashscreen.addCls('splashscreen');
+    Ext.DomHelper.insertFirst(Ext.query('.x-mask-msg')[0], {
+        cls: 'x-splash-icon'
+    });
+});
 
 Ext.application({
 	appFolder: 'assets/js/MyProject',
@@ -64,6 +75,28 @@ Ext.application({
 			}).show();
 			return true;
 		};
+
+		// Setup a task to fadeOut the splashscreen
+        var task = new Ext.util.DelayedTask(function() {
+            // Fade out the body mask
+            splashscreen.fadeOut({
+                duration: 1000,
+                remove:true
+            });
+            // Fade out the icon and message
+            splashscreen.next().fadeOut({
+                duration: 1000,
+                remove:true,
+                listeners: {
+                    afteranimate: function() {
+                        // Set the body as unmasked after the animation
+                        Ext.getBody().unmask();
+                    }
+                }
+            });
+        });
+        // Run the fade 500 milliseconds after launch.
+        task.delay(500);
 
 	}
 });

@@ -155,7 +155,7 @@ Ext.define('MyIndo.app.Controller', {
 	
 	reloadMenu: function() {
 		var me = this;
-		this.showLoadingWindow();
+		//this.showLoadingWindow();
 		Ext.Ajax.request({
 			url: MyIndo.siteUrl('menus/request/read'),
 			params: {
@@ -163,7 +163,7 @@ Ext.define('MyIndo.app.Controller', {
 			},
 			success: function(response) {
 				var json = Ext.decode(response.responseText);
-				me.closeLoadingWindow();
+				//me.closeLoadingWindow();
 				if(me.isLogin(json)) {
 					var treeStore = Ext.getStore('Menus');
 					var children = me.getMenuRecursive(json.data, json.data[0].PARENT_ID);
