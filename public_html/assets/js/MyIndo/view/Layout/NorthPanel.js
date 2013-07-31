@@ -8,7 +8,7 @@ Ext.define('MyIndo.view.Layout.NorthPanel', {
 		iconCls: 'icon-lock-break'
 	},{
 		text: 'Close All Tabs',
-		iconCls: ''
+		iconCls: 'icon-tab-delete'
 	},{
 		text: 'Logout',
 		iconCls: 'icon-exclamation',

@@ -91,3 +91,23 @@
 .icon-filter {
 	background-image: url(../images/icons/filter.png) !important;
 }
+
+.icon-tab {
+	background-image: url(../images/icons/tab.png) !important;
+}
+
+.icon-tab-add {
+	background-image: url(../images/icons/tab_add.png) !important;
+}
+
+.icon-tab-delete {
+	background-image: url(../images/icons/tab_delete.png) !important;
+}
+
+.icon-tab-edit {
+	background-image: url(../images/icons/tab_edit.png) !important;
+}
+
+.icon-tab-go {
+	background-image: url(../images/icons/tab_go.png) !important;
+}
