@@ -2,9 +2,7 @@ Ext.define('MyIndo.view.Administrator.Groups.View', {
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.groupsview',
 	border: false,
-	columns: [
-	Ext.create('Ext.grid.RowNumberer'),
-	{
+	columns: [{
 		text: 'Group Name',
 		flex: 1,
 		dataIndex: 'NAME'
@@ -13,12 +11,7 @@ Ext.define('MyIndo.view.Administrator.Groups.View', {
 		width: 80,
 		align: 'center',
 		dataIndex: 'TOTAL_USER'
-	}/*,{
-		text: 'Active',
-		width: 80,
-		align: 'center',
-		dataIndex: 'ACTIVE'
-	}*/,{
+	},{
 		text: 'Created Date',
 		align: 'center',
 		width: 150,

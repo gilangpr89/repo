@@ -2,8 +2,7 @@ Ext.define(MyIndo.getNameSpace('view.Master.Countries.View'), {
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.countriesview',
 	border: false,
-	columns: [
-	Ext.create('Ext.grid.RowNumberer'),{
+	columns: [{
 		text: 'Country',
 		flex: 1,
 		dataIndex: 'NAME'

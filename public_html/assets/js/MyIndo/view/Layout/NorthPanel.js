@@ -2,7 +2,15 @@ Ext.define('MyIndo.view.Layout.NorthPanel', {
 	extend: 'Ext.panel.Panel',
 	alias: 'widget.northpanel',
 	title: 'MyProject',
-	border: false
+	border: false,
+	tbar: [{
+		text: 'Change Password',
+		iconCls: 'icon-lock-break'
+	},{
+		text: 'Logout',
+		iconCls: 'icon-exclamation',
+		action: 'logout'
+	}]
 //	tbar: [{
 //		text: 'My Account',
 //		iconCls: 'icon-user'

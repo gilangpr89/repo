@@ -2,9 +2,7 @@ Ext.define(MyIndo.getNameSpace('view.Master.Beneficiaries.View'), {
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.beneficiariesview',
 	border: false,
-	columns: [
-	Ext.create('Ext.grid.RowNumberer'),
-	{
+	columns: [{
 		text: 'Beneficiaries',
 		flex: 1,
 		dataIndex: 'NAME'

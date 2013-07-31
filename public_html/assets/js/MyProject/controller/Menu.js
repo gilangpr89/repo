@@ -47,73 +47,73 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 
 	onMsCityClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Master.Cities'));
-		this.createPanel(menuTitle, menuId, mainContent, store, 'cityview');
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Master.City.View'));
 	},
 
 	onMsAreaLevelsClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Master.AreaLevels'));
-		this.createPanel(menuTitle, menuId, mainContent, store, 'arealevelsview');
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Master.AreaLevels.View'));
 	},
 
 	onMsBeneficiariesClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Master.Beneficiaries'));
-		this.createPanel(menuTitle, menuId, mainContent, store, 'beneficiariesview');
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Master.Beneficiaries.View'));
 	},
 
 	onMsCountriesClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Master.Countries'));
-		this.createPanel(menuTitle, menuId, mainContent, store, 'countriesview');
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Master.Countries.View'));
 	},
 
 	onMsFundingSourcesClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Master.FundingSources'));
-		this.createPanel(menuTitle, menuId, mainContent, store, 'fundingsourcesview');
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Master.FundingSources.View'));
 	},
 
 	onMsOrganizationsClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Master.Organizations'));
-		this.createPanel(menuTitle, menuId, mainContent, store, 'organizationsview');
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Master.Organizations.View'));
 	},
 
 	onMsParticipantsClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Master.Participants'));
-		this.createPanel(menuTitle, menuId, mainContent, store, 'participantsview');
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Master.Participants.View'));
 	},
 
 	onMsPositionsClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Master.Positions'));
-		this.createPanel(menuTitle, menuId, mainContent, store, 'positionsview');
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Master.Positions.View'));
 	},
 
 	onMsProvincesClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Master.Provinces'));
-		this.createPanel(menuTitle, menuId, mainContent, store, 'provincesview');
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Master.Provinces.View'));
 	},
 
 	onMsRolesClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Master.Roles'));
-		this.createPanel(menuTitle, menuId, mainContent, store, 'rolesview');
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Master.Roles.View'));
 	},
 
 	onMsTrainersClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Master.Trainers'));
-		this.createPanel(menuTitle, menuId, mainContent, store, 'trainersview');
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Master.Trainers.View'));
 	},
 
 	onMsTrainingsClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Master.Trainings'));
-		this.createPanel(menuTitle, menuId, mainContent, store, 'trainingsview');
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Master.Trainings.View'));
 	},
 
 	onMsVenuesClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Master.Venues'));
-		this.createPanel(menuTitle, menuId, mainContent, store, 'venuesview');
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Master.Venues.View'));
 	},
 
 	/* End of : Master */
 
 	onTrTrainingsClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Transaction.Trainings'));
-		this.createPanel(menuTitle, menuId, mainContent, store, 'trtrainingsview');
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Transaction.Trainings.View'));
 	}
 });

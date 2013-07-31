@@ -59,9 +59,6 @@ Ext.define(MyIndo.getNameSpace('view.Master.Participants.Add'), {
 						},{
 							"GENDER":"Transgender",
 							"VALUE":"Transgender"
-						},{
-							"GENDER":"MSM",
-							"VALUE":"MSM"
 						}]
 					}),
 					displayField: 'GENDER',

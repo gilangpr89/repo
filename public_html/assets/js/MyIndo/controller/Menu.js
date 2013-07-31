@@ -51,63 +51,99 @@ Ext.define('MyIndo.controller.Menu', {
 		if(!mainContent.items.get(menuId)) {
 			var menuStore = Ext.create('MyIndo.store.MenuActions');
 			var me = this;
-			if(typeof(MyIndo.tbar[menuId]) === 'undefined') {
-				var LD = Ext.create('MyIndo.view.Loading');
-				LD.show();
-				menuStore.proxy.extraParams = {MENU_ID:menuId};
-				menuStore.load({
-					callback: function(record, r) {
-						var tbar = new Array();
-						
-						if(typeof(r.response) !== 'undefined') {
-							store.load({
-								callback: function(model, data) {
-									var json = Ext.decode(data.response.responseText);
-									if(me.isLogin(json)) {
-										
-									}
-								}
-							});
-							Ext.each(record, function(r, i) {
-								tbar[i] = {
-									'text'		: r.data.MENU_TITLE,
-									'iconCls'	: r.data.ICONCLS,
-									'action'	: r.data.ACTION
-								};				
-								
-							});
-							MyIndo.tbar[menuId] = tbar;
-							mainContent.add({
-								xtype: xtype,
-								title: menuTitle,
-								id: menuId,
-								closable: true,
-								store: store,
-								tbar: tbar
-							});
-							mainContent.setActiveTab(menuId);
-
-						} else {
-							me.isLogin({
-								login: false
-							});
-						}
-						LD.close();
+			me.showLoadingWindow();
+			menuStore.proxy.extraParams = {MENU_ID: menuId};
+			menuStore.load({
+				callback: function(record, r) {
+					var tbar = new Array();
+					if(typeof(r.response) !== 'undefined') {
+						store.load({
+							callback: function(model, data) {
+								var json = Ext.decode(data.response.responseText);
+								me.isLogin(json);
+							}
+						});
+						Ext.each(record, function(r, i) {
+							tbar[i] = {
+								'text'		: r.data.MENU_TITLE,
+								'iconCls'	: r.data.ICONCLS,
+								'action'	: r.data.ACTION
+							};
+						});
+						mainContent.add(Ext.create(xtype, {
+							title: menuTitle,
+							id: menuId,
+							closable: true,
+							store: store,
+							tbar: tbar
+						}));
+						mainContent.setActiveTab(menuId);
+					} else {
+						me.isLogin({login:false});
 					}
-				});
-			} else {
-				store.load();
-				mainContent.add({
-					xtype: xtype,
-					title: menuTitle,
-					id: menuId,
-					closable: true,
-					store: store,
-					tbar: MyIndo.tbar[menuId]
-				});
-			}
+					me.closeLoadingWindow();
+				}
+			});
 		}
 		mainContent.setActiveTab(menuId);
+		// if(!mainContent.items.get(menuId)) {
+		// 	var menuStore = Ext.create('MyIndo.store.MenuActions');
+		// 	var me = this;
+		// 	if(typeof(MyIndo.tbar[menuId]) === 'undefined') {
+		// 		var LD = Ext.create('MyIndo.view.Loading');
+		// 		LD.show();
+		// 		menuStore.proxy.extraParams = {MENU_ID:menuId};
+		// 		menuStore.load({
+		// 			callback: function(record, r) {
+		// 				var tbar = new Array();
+						
+		// 				if(typeof(r.response) !== 'undefined') {
+		// 					store.load({
+		// 						callback: function(model, data) {
+		// 							var json = Ext.decode(data.response.responseText);
+		// 							if(me.isLogin(json)) {
+										
+		// 							}
+		// 						}
+		// 					});
+		// 					Ext.each(record, function(r, i) {
+		// 						tbar[i] = {
+		// 							'text'		: r.data.MENU_TITLE,
+		// 							'iconCls'	: r.data.ICONCLS,
+		// 							'action'	: r.data.ACTION
+		// 						};				
+								
+		// 					});
+		// 					MyIndo.tbar[menuId] = tbar;
+		// 					mainContent.add(Ext.create(xtype, {
+		// 						title: menuTitle,
+		// 						id: menuId,
+		// 						closable: true,
+		// 						store: store,
+		// 						tbar: tbar
+		// 					}));
+		// 					mainContent.setActiveTab(menuId);
+
+		// 				} else {
+		// 					me.isLogin({
+		// 						login: false
+		// 					});
+		// 				}
+		// 				LD.close();
+		// 			}
+		// 		});
+		// 	} else {
+		// 		store.load();
+		// 		mainContent.add(Ext.create(xtype, {
+		// 			title: menuTitle,
+		// 			id: menuId,
+		// 			closable: true,
+		// 			store: store,
+		// 			tbar: MyIndo.tbar[menuId]
+		// 		}));
+		// 	}
+		// }
+		// mainContent.setActiveTab(menuId);
 	},
 
 	onMenuClicked: function(record) {
@@ -159,14 +195,14 @@ Ext.define('MyIndo.controller.Menu', {
 
 	onGroupsClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create('MyIndo.store.Groups');
-		this.createPanel(menuTitle, menuId, mainContent, store, 'groupsview');
+		this.createPanel(menuTitle, menuId, mainContent, store, 'MyIndo.view.Administrator.Groups.View');
 	},
 
 	/* Users */
 
 	onUsersClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create('MyIndo.store.Users');
-		this.createPanel(menuTitle, menuId, mainContent, store, 'usersview');
+		this.createPanel(menuTitle, menuId, mainContent, store, 'MyIndo.view.Administrator.Users.View');
 	},
 
 	/* Menu Managements */

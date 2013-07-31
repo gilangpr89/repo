@@ -19,11 +19,16 @@ Ext.define('MyIndo.app.Controller', {
 				// Ext.WindowMgr.hideAll();
 
 				var me = this;
-				Ext.Msg.alert('Session Expired', 'Sorry you are not authenticated or session is expired, please login again.', function(btn) {
-					if(typeof(Ext.getCmp('_LOGIN_FORM')) === 'undefined') {
-						me.showLoginWindow();
+				Ext.MessageBox.show({
+					title: 'Application Error',
+					msg: 'Sorry you are not authenticated or session is expired, please login again.',
+					buttons: Ext.MessageBox.OK,
+					fn: function(btn) {
+						if(typeof(Ext.getCmp('_LOGIN_FORM')) === 'undefined') {
+							me.showLoginWindow();
+						}
 					}
-				}, obj);
+				});
 			}
 			return data.login;
 		} catch(e) {
