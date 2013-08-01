@@ -73,15 +73,15 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.ManageTrainers'), {
 				}]
 			}],
 			tbar: [{
-				text: 'Add Participant',
+				text: 'Add Trainer',
 				iconCls: 'icon-accept',
 				action: 'add'
 			},{
-				text: 'Update Participant',
+				text: 'Update Trainer',
 				iconCls: 'icon-pencil',
 				action: 'update'
 			},{
-				text: 'Remove Participant',
+				text: 'Remove Trainer',
 				iconCls: 'icon-cross',
 				action: 'delete'
 			}],

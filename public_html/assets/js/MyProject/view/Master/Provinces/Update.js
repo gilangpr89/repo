@@ -9,6 +9,8 @@ Ext.define(MyIndo.getNameSpace('view.Master.Provinces.Update'), {
 	title: 'Update Province',
 
 	initComponent: function() {
+		var store = Ext.create(MyIndo.getNameSpace('store.Master.Countries'),{autoDestroy:true});
+		store.load();
 		Ext.apply(this, {
 			items: [{
 				xtype: 'form',
@@ -20,6 +22,16 @@ Ext.define(MyIndo.getNameSpace('view.Master.Provinces.Update'), {
 					xtype: 'hidden',
 					name: 'ID',
 					allowBlank: false
+				},{
+					xtype: 'combobox',
+					name: 'COUNTRY_ID',
+					fieldLabel: 'Country',
+					store: store,
+					displayField: 'NAME',
+					valueField: 'ID',
+					emptyText: 'Select Country..',
+					allowBlank: false,
+					editable: false
 				},{
 					xtype: 'textfield',
 					name: 'NAME',

@@ -3,26 +3,43 @@
 class Provinces_RequestController extends MyIndo_Controller_Action
 {
 	protected $_unique;
+	protected $_modelCountry;
 
 	public function init()
 	{
 		$this->_model = new provinces_Model_Provinces();
 		$this->_unique = 'Province';
+		$this->_modelCountry = new countries_Model_Country();
 	}
 
 	public function createAction()
 	{
 		try {
 			if(isset($this->_posts['NAME'])) {
-				if(!$this->_model->isExist('NAME', $this->_posts['NAME'])) {
 					
-					$this->_model->insert(array(
-						'NAME' => $this->_posts['NAME'],
-						'CREATED_DATE' => $this->_date
-						));
+				$countryId = (isset($this->_posts['COUNTRY_ID'])) ? $this->_enc->base64decrypt($this->_posts['COUNTRY_ID']) : '';
+				
+				if($this->_modelCountry->isExists(array($this->_modelCountry->getAdapter()->quoteInto('ID = ?', $countryId)))) {
+
+					if(!$this->_model->isExists(array(
+						$this->_model->getAdapter()->quoteInto('COUNTRY_ID = ?', $countryId),
+						$this->_model->getAdapter()->quoteInto('NAME = ?', $this->_posts['NAME'])
+						))) {
+
+							$this->_model->insert(array(
+								'COUNTRY_ID' => $countryId,
+								'NAME' => $this->_posts['NAME'],
+								'CREATED_DATE' => $this->_date
+								));
+
+					} else {
+						$this->error(101, $this->_unique . ' already registered, please input another name.');
+					}
+					
 				} else {
-					$this->error(101, $this->_unique . ' already registered, please input another name.');
+					$this->error(102, 'Invalid country.' . $countryId);
 				}
+
 			} else {
 				$this->error(901);
 			}
@@ -34,8 +51,14 @@ class Provinces_RequestController extends MyIndo_Controller_Action
 	public function readAction()
 	{
 		try {
-			if(isset($this->_posts['query'])) {
+			if(isset($this->_posts['query']) && !empty($this->_posts['query'])) {
 				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['query'] . '%');
+			}
+			if(isset($this->_posts['COUNTRY_ID'])) {
+				$countryId = $this->_enc->base64decrypt($this->_posts['COUNTRY_ID']);
+				if($this->_modelCountry->isExists(array($this->_modelCountry->getAdapter()->quoteInto('ID = ?', $countryId)))) {
+					$this->_where[] = $this->_model->getAdapter()->quoteInto('COUNTRY_ID = ?', $countryId);
+				}
 			}
 			if(isset($this->_posts['NAME'])) {
 				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');

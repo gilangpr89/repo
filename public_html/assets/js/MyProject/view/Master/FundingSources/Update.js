@@ -15,6 +15,7 @@ Ext.define(MyIndo.getNameSpace('view.Master.FundingSources.Update'), {
 		storeCity.load();
 		storeProvince.load();
 		storeCountry.load();
+		var loaded = false;
 		Ext.apply(this, {
 			items: [{
 				xtype: 'form',
@@ -59,17 +60,31 @@ Ext.define(MyIndo.getNameSpace('view.Master.FundingSources.Update'), {
 					fieldLabel: 'Website'
 				},{
 					xtype: 'combobox',
-					fieldLabel: 'City',
-					name: 'CITY_ID',
+					fieldLabel: 'Country',
+					name: 'COUNTRY_ID',
 					allowBlank: false,
 					displayField: 'NAME',
 					valueField: 'ID',
 					minChars: 3,
 					pageSize: 25,
-					store: storeCity,
+					store: storeCountry,
 					allowBlank: false,
-					emptyText: 'Select city..',
-					editable: false
+					emptyText: 'Select country..',
+					editable: false,
+					listeners: {
+						change: function(obj, val) {
+							storeProvince.proxy.extraParams.COUNTRY_ID = val;
+							storeProvince.load();
+							var form = this.up().getForm();
+							var val = form.getValues();
+							if(loaded) {
+								form.setValues({
+									PROVINCE_ID: ''
+								});
+							}
+							loaded = true;
+						}
+					}
 				},{
 					xtype: 'combobox',
 					fieldLabel: 'Province',
@@ -85,16 +100,16 @@ Ext.define(MyIndo.getNameSpace('view.Master.FundingSources.Update'), {
 					editable: false
 				},{
 					xtype: 'combobox',
-					fieldLabel: 'Country',
-					name: 'COUNTRY_ID',
+					fieldLabel: 'City',
+					name: 'CITY_ID',
 					allowBlank: false,
 					displayField: 'NAME',
 					valueField: 'ID',
 					minChars: 3,
 					pageSize: 25,
-					store: storeCountry,
+					store: storeCity,
 					allowBlank: false,
-					emptyText: 'Select country..',
+					emptyText: 'Select city..',
 					editable: false
 				},{
 					xtype: 'textarea',
