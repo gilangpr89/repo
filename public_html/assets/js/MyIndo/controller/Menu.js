@@ -174,6 +174,9 @@ Ext.define('MyIndo.controller.Menu', {
 			case 'logout':
 				this.logout();
 				break;
+			case 'tab-close':
+				this.closeAllTabs();
+				break;
 		}
 	},
 
@@ -189,6 +192,25 @@ Ext.define('MyIndo.controller.Menu', {
 				},1000);
 			}
 		});
+	},
+
+	/* Close all tabs */
+
+	closeAllTabs: function() {
+		var content = Ext.getCmp('main-content');
+		if(content.items.length > 0) {
+			Ext.Msg.confirm('Close All Tabs', 'Are you sure want to close all tabs ?', function(btn) {
+				if(btn == 'yes') {
+					content.items.each(function(item) {
+						if(item.closable) {
+							item.close();
+						}
+					});
+				}
+			});
+		} else {
+			Ext.Msg.alert('Application Error', 'There are no tab opened.');
+		}
 	},
 
 	/* Groups */

@@ -84,6 +84,10 @@
 	background-image: url(../images/icons/user.png) !important;
 }
 
+.icon-user-suit {
+	background-image: url(../images/icons/user_suit.png) !important;
+}
+
 .icon-exclamation {
 	background-image: url(../images/icons/exclamation.png) !important;
 }

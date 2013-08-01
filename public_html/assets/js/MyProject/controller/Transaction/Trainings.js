@@ -14,18 +14,23 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 			'trtrainingsview button': {
 				click: this.onButtonClicked
 			},
-			'trtrainingsview button[action=manage]': {
+			'trtrainingsview button[action=manage-participants]': {
 				click: this.manageParticipants
 			},
-			'managetrtrainingsparticipantswindow button[action=add]': {
+			'trtrainingsview button[action=manage-trainers]': {
+				click: this.manageTrainers
+			},
+
+			'managetrtrainingparticipantswindow button[action=add]': {
 				click: this.onManageAddParticipant
 			},
-			'managetrtrainingsparticipantswindow button[action=update]': {
+			'managetrtrainingparticipantswindow button[action=update]': {
 				click: this.onManageUpdateParticipant
 			},
-			'managetrtrainingsparticipantswindow button[action=delete]': {
+			'managetrtrainingparticipantswindow button[action=delete]': {
 				click: this.onManageDeleteParticipant
 			},
+
 			'manageparticipantsupdatewindow button[action=update-save]': {
 				click: this.onManageSaveUpdateParticipant
 			},
@@ -55,6 +60,22 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 			});
 			store.load();
 			manageParticipantsWindow.show();
+		} else {
+			Ext.Msg.alert('Application Error', 'You did not select any Training.');
+		}
+	},
+
+	manageTrainers: function(record) {
+		var parent = record.up().up();
+		var selected = parent.getSelectionModel().getSelection();
+		if(selected.length > 0) {
+			var store = Ext.create(MyIndo.getNameSpace('store.Transaction.TrainingParticipants'));
+			var manageTrainersWindow = Ext.create(MyIndo.getNameSpace('view.Transaction.Trainings.ManageTrainers'), {
+				store: store,
+				trTrainingId: selected[0].data.ID
+			});
+			store.load();
+			manageTrainersWindow.show();
 		} else {
 			Ext.Msg.alert('Application Error', 'You did not select any Training.');
 		}

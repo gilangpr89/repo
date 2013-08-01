@@ -1,18 +1,18 @@
-Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.ManageParticipants'), {
+Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.ManageTrainers'), {
 	extend: 'Ext.Window',
-	alias: 'widget.managetrtrainingparticipantswindow',
+	alias: 'widget.managetrtrainingtrainerswindow',
 	modal: true,
 	closable: true,
 	draggable: true,
 	resizable: false,
 	width: 950,
-	title: 'Manage Training Participant',
+	title: 'Manage Training Trainers',
 
 	initComponent: function() {
 		Ext.apply(this, {
 			items: [{
 				xtype: 'gridpanel',
-				id: 'manage-participant-grid',
+				id: 'manage-trainer-grid',
 				border: false,
 				minHeight: 200,
 				store: this.store,
