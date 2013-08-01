@@ -4,7 +4,7 @@ Ext.define(MyIndo.getNameSpace('store.Transaction.TrainingTrainers'), {
 	proxy: {
 		type: 'ajax',
 		api: {
-			read: MyIndo.siteUrl('trainingtrainers/request/read')
+			read: MyIndo.siteUrl('trtrainingtrainers/request/read')
 		},
 		actionMethods: MyIndo.config.defaultActionMethods,
 		reader: MyIndo.config.defaultReader

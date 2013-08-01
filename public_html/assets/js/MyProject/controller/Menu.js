@@ -39,7 +39,8 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 	'Master.Venues',
 
 	'Transaction.Trainings',
-	'Transaction.TrainingParticipants'
+	'Transaction.TrainingParticipants',
+	'Transaction.TrainingTrainers'
 	],
 
 

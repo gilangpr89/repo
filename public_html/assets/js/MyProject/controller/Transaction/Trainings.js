@@ -6,7 +6,11 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 	MyIndo.getNameSpace('view.Transaction.Trainings.Update'),
 	MyIndo.getNameSpace('view.Transaction.Trainings.ManageParticipants'),
 	MyIndo.getNameSpace('view.Transaction.Trainings.AddParticipants'),
-	MyIndo.getNameSpace('view.Transaction.Trainings.UpdateParticipants')
+	MyIndo.getNameSpace('view.Transaction.Trainings.UpdateParticipants'),
+
+	MyIndo.getNameSpace('view.Transaction.Trainings.ManageTrainers'),
+	MyIndo.getNameSpace('view.Transaction.Trainings.AddTrainers'),
+	MyIndo.getNameSpace('view.Transaction.Trainings.UpdateTrainers')
 	],
 
 	init: function() {
@@ -21,6 +25,7 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 				click: this.manageTrainers
 			},
 
+			/* Participants */
 			'managetrtrainingparticipantswindow button[action=add]': {
 				click: this.onManageAddParticipant
 			},
@@ -30,13 +35,24 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 			'managetrtrainingparticipantswindow button[action=delete]': {
 				click: this.onManageDeleteParticipant
 			},
-
 			'manageparticipantsupdatewindow button[action=update-save]': {
 				click: this.onManageSaveUpdateParticipant
 			},
 			'manageparticipantsaddwindow button[action=add-save]': {
 				click: this.onAddSaveParticipant
 			},
+			/* End of : Participants */
+
+			'managetrtrainingtrainerswindow button[action=add]': {
+				click: this.onManageAddTrainer
+			},
+			'managetrtrainingtrainerswindow button[action=update]': {
+				click: this.onManageUpdateTrainer
+			},
+			'managetrainersaddwindow button[action=add-save]': {
+				click: this.onAddSaveTrainer
+			},
+
 			'trtrainingsaddwindow button': {
 				click: this.onButtonClicked
 			},
@@ -54,28 +70,13 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 		var selected = parent.getSelectionModel().getSelection();
 		if(selected.length > 0) {
 			var store = Ext.create(MyIndo.getNameSpace('store.Transaction.TrainingParticipants'));
+			store.proxy.extraParams.TRAINING_ID = selected[0].data.ID;
 			var manageParticipantsWindow = Ext.create(MyIndo.getNameSpace('view.Transaction.Trainings.ManageParticipants'), {
 				store: store,
 				trTrainingId: selected[0].data.ID
 			});
 			store.load();
 			manageParticipantsWindow.show();
-		} else {
-			Ext.Msg.alert('Application Error', 'You did not select any Training.');
-		}
-	},
-
-	manageTrainers: function(record) {
-		var parent = record.up().up();
-		var selected = parent.getSelectionModel().getSelection();
-		if(selected.length > 0) {
-			var store = Ext.create(MyIndo.getNameSpace('store.Transaction.TrainingParticipants'));
-			var manageTrainersWindow = Ext.create(MyIndo.getNameSpace('view.Transaction.Trainings.ManageTrainers'), {
-				store: store,
-				trTrainingId: selected[0].data.ID
-			});
-			store.load();
-			manageTrainersWindow.show();
 		} else {
 			Ext.Msg.alert('Application Error', 'You did not select any Training.');
 		}
@@ -108,7 +109,9 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 								Ext.Msg.alert('Message', 'Data successfully saved.');
 								var mainContent = Ext.getCmp('manage-participant-grid');
 								var store = mainContent.getStore();
+								var TRAINING_ID = store.proxy.extraParams.TRAINING_ID;
 								store.proxy.extraParams = {};
+								store.proxy.extraParams.TRAINING_ID = TRAINING_ID;
 								store.load();
 								form.reset();
 							}
@@ -160,7 +163,9 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 								Ext.Msg.alert('Message', 'Data successfully saved.');
 								var mainContent = Ext.getCmp('manage-participant-grid');
 								var store = mainContent.getStore();
+								var TRAINING_ID = store.proxy.extraParams.TRAINING_ID;
 								store.proxy.extraParams = {};
+								store.proxy.extraParams.TRAINING_ID = TRAINING_ID;
 								store.load();
 								parent.close();
 							}
@@ -199,6 +204,9 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 								if(me.isSuccess(json)) {
 									var mainContent = Ext.getCmp('manage-participant-grid');
 									var store = mainContent.getStore();
+									var TRAINING_ID = store.proxy.extraParams.TRAINING_ID;
+									store.proxy.extraParams = {};
+									store.proxy.extraParams.TRAINING_ID = TRAINING_ID;
 									store.load();
 									Ext.Msg.alert('Delete', 'User successfully deleted.');
 								}
@@ -210,5 +218,88 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 		} else {
 			Ext.Msg.alert('Application Error', 'You did not select any participant.');
 		}
-	}
+	},
+
+	/* Trainers */
+	manageTrainers: function(record) {
+		var parent = record.up().up();
+		var selected = parent.getSelectionModel().getSelection();
+		if(selected.length > 0) {
+			var store = Ext.create(MyIndo.getNameSpace('store.Transaction.TrainingTrainers'));
+			store.proxy.extraParams.TRAINING_ID = selected[0].data.ID;
+			var manageTrainersWindow = Ext.create(MyIndo.getNameSpace('view.Transaction.Trainings.ManageTrainers'), {
+				store: store,
+				trTrainingId: selected[0].data.ID
+			});
+			store.load();
+			manageTrainersWindow.show();
+		} else {
+			Ext.Msg.alert('Application Error', 'You did not select any Training.');
+		}
+	},
+
+	onManageAddTrainer: function(record) {
+		var parent = record.up().up();
+		var trTrainingId = parent.trTrainingId;
+		var addWindow = Ext.create(MyIndo.getNameSpace('view.Transaction.Trainings.AddTrainers'));
+		var form = addWindow.items.items[0].getForm();
+		form.setValues({
+			TRAINING_ID: trTrainingId
+		});
+		addWindow.show();
+	},
+
+	onAddSaveTrainer: function(record) {
+		var parent = record.up().up();
+		var form = parent.items.items[0].getForm();
+		var me = this;
+		if(form.isValid()) {
+			Ext.Msg.confirm('Save Trainer', 'Are you sure want to save this data ?', function(btn) {
+				if(btn == 'yes') {
+					me.showLoadingWindow();
+					form.submit({
+						success: function(act, res) {
+							var json = Ext.decode(res.response.responseText);
+							me.closeLoadingWindow();
+							if(me.isLogin(json)) {
+								Ext.Msg.alert('Message', 'Data successfully saved.');
+								var mainContent = Ext.getCmp('manage-trainer-grid');
+								var store = mainContent.getStore();
+								var TRAINING_ID = store.proxy.extraParams.TRAINING_ID;
+								store.proxy.extraParams = {};
+								store.proxy.extraParams.TRAINING_ID = TRAINING_ID;
+								store.load();
+								form.reset();
+							}
+						},
+						failure: function(act, res) {
+							var json = Ext.decode(res.response.responseText);
+							me.closeLoadingWindow();
+							if(me.isLogin(json)) {
+								Ext.Msg.alert('Application Error', '<strong>Error Code</strong>: ' + json.error_code + '<br/><strong>Message</strong>: ' + json.error_message);
+							}
+						}
+					});
+				}
+			});
+		} else {
+			Ext.Msg.alert('Application Error', 'Please complete form first.');
+		}
+	},
+
+	onManageUpdateTrainer: function(record) {
+		var parent = record.up().up();
+		var grid = parent.items.items[0];
+		var selected = grid.getSelectionModel().getSelection();
+		var me = this;
+		if(selected.length > 0) {
+			var data = selected[0].data;
+			var updateWindow = Ext.create(MyIndo.getNameSpace('view.Transaction.Trainings.UpdateTrainers'));
+			var form = updateWindow.items.items[0].getForm();
+			form.setValues(data);
+			updateWindow.show();
+		} else {
+			Ext.Msg.alert('Application Error', 'You did not select any trainer.');
+		}
+	},
 });

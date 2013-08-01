@@ -17,59 +17,50 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.ManageTrainers'), {
 				minHeight: 200,
 				store: this.store,
 				columns: [{
-					text: 'Name',
+					text: 'Full Name',
 					flex: 1,
-					dataIndex: 'PARTICIPANT_NAME'
+					dataIndex: 'TRAINER_NAME'
 				},{
-					text: 'Surname',
-					width: 90,
-					dataIndex: 'PARTICIPANT_SNAME'
+					text: 'Nickname',
+					width: 120,
+					dataIndex: 'TRAINER_NICKNAME'
 				},{
-					text: 'Organization',
+					text: 'Roles',
 					width: 150,
-					dataIndex: 'ORGANIZATION_NAME'
-				},{
-					text: 'Position',
-					width: 80,
 					align: 'center',
-					dataIndex: 'POSITION_NAME'
-				},{
-					text: 'Gender',
-					width: 60,
-					align: 'center',
-					dataIndex: 'PARTICIPANT_GENDER'
-				},{
-					text: 'Birthdate',
-					width: 80,
-					align: 'center',
-					dataIndex: 'PARTICIPANT_BDATE',
-					hidden: true
+					dataIndex: 'ROLE_NAME'
 				},{
 					text: 'Mobile No',
-					width: 100,
+					width: 150,
 					align: 'center',
-					dataIndex: 'PARTICIPANT_MOBILE_NO',
+					dataIndex: 'TRAINER_MOBILE_NO'
+				},{
+					text: 'Phone No',
+					width: 150,
+					align: 'center',
+					dataIndex: 'TRAINER_PHONE_NO',
 					hidden: true
 				},{
 					text: 'Email',
-					width: 120,
-					dataIndex: 'PARTICIPANT_EMAIL',
+					width: 150,
+					align: 'center',
+					dataIndex: 'TRAINER_EMAIL1',
 					hidden: true
 				},{
-					text: 'Pre-Test',
+					text: 'City',
+					width: 80,
 					align: 'center',
-					width: 60,
-					dataIndex: 'PRE_TEST'
+					dataIndex: 'CITY_NAME'
 				},{
-					text: 'Post-Test',
+					text: 'Province',
+					width: 80,
 					align: 'center',
-					width: 60,
-					dataIndex: 'POST_TEST'
+					dataIndex: 'PROVINCE_NAME'
 				},{
-					text: 'Difference',
+					text: 'Country',
+					width: 80,
 					align: 'center',
-					width: 60,
-					dataIndex: 'DIFF'
+					dataIndex: 'COUNTRY_NAME'
 				}]
 			}],
 			tbar: [{
