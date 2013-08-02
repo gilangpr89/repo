@@ -145,4 +145,99 @@ class Trtrainingtrainers_RequestController extends MyIndo_Controller_Action
 			$this->exception($e);
 		}
 	}
+
+	public function updateAction()
+	{
+		try {
+			$this->_required[] = 'ID';
+			$valid = true;
+			foreach($this->_required as $r) {
+				if(!isset($this->_posts[$r])) {
+					$valid = false;
+				} else {
+					$this->_sData[$r] = $this->_posts[$r];
+				}
+			}
+			if($valid) {
+				$id = $this->_enc->base64decrypt($this->_sData['ID']);
+				$roleId = $this->_enc->base64decrypt($this->_sData['ROLE_ID']);
+				$countryId = $this->_enc->base64decrypt($this->_sData['COUNTRY_ID']);
+				$provinceId = $this->_enc->base64decrypt($this->_sData['PROVINCE_ID']);
+				$cityId = $this->_enc->base64decrypt($this->_sData['CITY_ID']);
+
+				try {
+					$error = false;
+					$errorMsg = array();
+
+					/* Check for valid Role */
+					if(!$this->_modelRole->isExist('ID', $roleId)) {
+						$error = true;
+						$errorMsg[] = 'Invalid role.';
+					}
+
+					/* Check for valid Country */
+					if(!$this->_modelCountry->isExist('ID', $countryId)) {
+						$error = true;
+						$errorMsg[] = 'Invalid country.';
+					}
+
+					/* Check for valid Province */
+					if(!$this->_modelProvince->isExist('ID', $provinceId)) {
+						$error = true;
+						$errorMsg[] = 'Invalid province.';
+					}
+
+					/* Check for valid City */
+					if(!$this->_modelCity->isExist('ID', $cityId)) {
+						$error = true;
+						$errorMsg[] = 'Invalid city.';
+					}
+
+					if(!$error) {
+						try {
+							$this->_model->update(array(
+								'ROLE_ID' => $roleId,
+								'COUNTRY_ID' => $countryId,
+								'PROVINCE_ID' => $provinceId,
+								'CITY_ID' => $cityId
+								), $this->_model->getAdapter()->quoteInto('ID = ?', $id));
+						} catch(Exception $e) {
+							$this->exception($e);
+						}
+					} else {
+						$msg = '';
+						foreach($errorMsg as $k=>$e) {
+							if($k>0) {
+								$msg .= '<br/>';
+							}
+							$msg .= $e;
+						}
+						$this->error(901, $msg);
+					}
+				} catch(Exception $e) {
+					$this->exception($e);
+				}
+			}
+		} catch(Exception $e) {
+			$this->exception($e);
+		}
+	}
+
+	public function destroyAction()
+	{
+		try {
+			if(isset($this->_posts['ID'])) {
+				$id = $this->_enc->base64decrypt($this->_posts['ID']);
+				if($this->_model->isExist('ID', $id)) {
+					$this->_model->delete($this->_model->getAdapter()->quoteInto('ID = ?', $id));
+				} else {
+					$this->error(102);
+				}
+			} else {
+				$this->error(901);
+			}
+		} catch(Exception $e) {
+			$this->exception($e);
+		}
+	}
 }

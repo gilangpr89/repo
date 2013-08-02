@@ -49,8 +49,14 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 			'managetrtrainingtrainerswindow button[action=update]': {
 				click: this.onManageUpdateTrainer
 			},
+			'managetrtrainingtrainerswindow button[action=delete]': {
+				click: this.onManageDeleteTrainer
+			},
 			'managetrainersaddwindow button[action=add-save]': {
 				click: this.onAddSaveTrainer
+			},
+			'managetrainerupdatewindow button[action=update-save]': {
+				click: this.onManageSaveUpdateTrainer
 			},
 
 			'trtrainingsaddwindow button': {
@@ -208,7 +214,7 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 									store.proxy.extraParams = {};
 									store.proxy.extraParams.TRAINING_ID = TRAINING_ID;
 									store.load();
-									Ext.Msg.alert('Delete', 'User successfully deleted.');
+									Ext.Msg.alert('Delete', 'Participant successfully deleted.');
 								}
 							}
 						}
@@ -302,4 +308,77 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 			Ext.Msg.alert('Application Error', 'You did not select any trainer.');
 		}
 	},
+
+	onManageSaveUpdateTrainer: function(record) {
+		var parent = record.up().up();
+		var form = parent.items.items[0].getForm();
+		var me = this;
+		if(form.isValid()) {
+			Ext.Msg.confirm('Update Trainer', 'Are you sure want to update this trainer ?', function(btn) {
+				if(btn == 'yes') {
+					me.showLoadingWindow();
+					form.submit({
+						success: function(act, res) {
+							var json = Ext.decode(res.response.responseText);
+							me.closeLoadingWindow();
+							if(me.isLogin(json)) {
+								Ext.Msg.alert('Message', 'Data successfully saved.');
+								var mainContent = Ext.getCmp('manage-trainer-grid');
+								var store = mainContent.getStore();
+								var TRAINING_ID = store.proxy.extraParams.TRAINING_ID;
+								store.proxy.extraParams = {};
+								store.proxy.extraParams.TRAINING_ID = TRAINING_ID;
+								store.load();
+								parent.close();
+							}
+						},
+						failure: function(act, res) {
+							var json = Ext.decode(res.response.responseText);
+							me.closeLoadingWindow();
+							if(me.isLogin(json)) {
+								Ext.Msg.alert('Application Error', '<strong>Error Code</strong>: ' + json.error_code + '<br/><strong>Message</strong>: ' + json.error_message);
+							}
+						}
+					});
+				}
+			});
+		} else {
+			Ext.Msg.alert('Application Error', 'Please complete form first.');
+		}
+	},
+
+	onManageDeleteTrainer: function(record) {
+		var parent = record.up().up();
+		var grid = parent.items.items[0];
+		var selected = grid.getSelectionModel().getSelection();
+		var me = this;
+		if(selected.length > 0) {
+			Ext.Msg.confirm('Remove Participant', 'Are you sure want to remove this trainer ?', function(btn) {
+				if(btn == 'yes') {
+					me.showLoadingWindow();
+					Ext.Ajax.request({
+						url: MyIndo.siteUrl('trtrainingtrainers/request/destroy'),
+						params: selected[0].data,
+						success: function(r) {
+							var json = Ext.decode(r.responseText);
+							me.closeLoadingWindow();
+							if(me.isLogin(json)) {
+								if(me.isSuccess(json)) {
+									var mainContent = Ext.getCmp('manage-trainer-grid');
+									var store = mainContent.getStore();
+									var TRAINING_ID = store.proxy.extraParams.TRAINING_ID;
+									store.proxy.extraParams = {};
+									store.proxy.extraParams.TRAINING_ID = TRAINING_ID;
+									store.load();
+									Ext.Msg.alert('Delete', 'Trainer successfully deleted.');
+								}
+							}
+						}
+					})
+				}
+			});
+		} else {
+			Ext.Msg.alert('Application Error', 'You did not select any trainer.');
+		}
+	}
 });
