@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.8.1deb1
+-- version 3.5.6
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Aug 02, 2013 at 06:25 PM
--- Server version: 5.5.32-0ubuntu0.12.10.1
--- PHP Version: 5.3.14
+-- Host: 127.0.0.1:3306
+-- Generation Time: Aug 13, 2013 at 09:18 AM
+-- Server version: 5.5.32-0ubuntu0.13.04.1
+-- PHP Version: 5.4.16
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -33,14 +33,15 @@ CREATE TABLE IF NOT EXISTS `GROUPS` (
   `CREATED_DATE` datetime NOT NULL,
   `MODIFIED_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`GROUP_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=30 ;
 
 --
 -- Dumping data for table `GROUPS`
 --
 
 INSERT INTO `GROUPS` (`GROUP_ID`, `NAME`, `ACTIVE`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES
-(28, 'Administrator', 1, '2013-07-02 02:37:37', '2013-07-11 09:00:27');
+(28, 'Administrator', 1, '2013-07-02 02:37:37', '2013-07-11 09:00:27'),
+(29, 'Sub Admin', 1, '2013-08-03 22:12:26', '2013-08-03 15:12:26');
 
 -- --------------------------------------------------------
 
@@ -945,7 +946,7 @@ CREATE TABLE IF NOT EXISTS `TR_TRAINING_TRAINERS` (
   KEY `CITY_ID` (`CITY_ID`),
   KEY `PROVINCE_ID` (`PROVINCE_ID`),
   KEY `COUNTRY_ID` (`COUNTRY_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1009,7 +1010,7 @@ CREATE TABLE IF NOT EXISTS `USERS` (
 --
 
 INSERT INTO `USERS` (`USER_ID`, `USERNAME`, `PASSWORD`, `EMAIL`, `ACTIVE`, `IP_ADDRESS`, `LAST_IP_ADDRESS`, `LAST_LOGIN`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES
-(1, 'admin', '7b3311da916a2454a0c47a6aa2e0c69279a6b85e', 'admin@satudunia.com', 1, '127.0.0.1', '127.0.0.1', '2013-08-02 14:42:30', '2013-06-28 15:49:48', '2013-08-02 07:42:30');
+(1, 'admin', '7b3311da916a2454a0c47a6aa2e0c69279a6b85e', 'admin@satudunia.com', 1, '127.0.0.1', '127.0.0.1', '2013-08-13 15:34:49', '2013-06-28 15:49:48', '2013-08-13 08:34:49');
 
 -- --------------------------------------------------------
 
