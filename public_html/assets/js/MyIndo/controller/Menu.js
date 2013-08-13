@@ -11,6 +11,7 @@ Ext.define('MyIndo.controller.Menu', {
 	'MyIndo.view.Administrator.Groups.Manage',
 	'MyIndo.view.Administrator.Groups.AddUser',
 	'MyIndo.view.Administrator.Groups.Filter',
+	'MyIndo.view.Administrator.Groups.ManagePrivilege',
 
 	/* Users */
 	'MyIndo.view.Administrator.Users.View',
@@ -23,7 +24,8 @@ Ext.define('MyIndo.controller.Menu', {
 	'MyIndo.store.MenuActions',
 	'MyIndo.store.Groups',
 	'MyIndo.store.Users',
-	'MyIndo.store.GroupUsers'
+	'MyIndo.store.GroupUsers',
+	'MyIndo.store.Privileges'
 	],
 
 	init: function() {
@@ -86,64 +88,6 @@ Ext.define('MyIndo.controller.Menu', {
 			});
 		}
 		mainContent.setActiveTab(menuId);
-		// if(!mainContent.items.get(menuId)) {
-		// 	var menuStore = Ext.create('MyIndo.store.MenuActions');
-		// 	var me = this;
-		// 	if(typeof(MyIndo.tbar[menuId]) === 'undefined') {
-		// 		var LD = Ext.create('MyIndo.view.Loading');
-		// 		LD.show();
-		// 		menuStore.proxy.extraParams = {MENU_ID:menuId};
-		// 		menuStore.load({
-		// 			callback: function(record, r) {
-		// 				var tbar = new Array();
-						
-		// 				if(typeof(r.response) !== 'undefined') {
-		// 					store.load({
-		// 						callback: function(model, data) {
-		// 							var json = Ext.decode(data.response.responseText);
-		// 							if(me.isLogin(json)) {
-										
-		// 							}
-		// 						}
-		// 					});
-		// 					Ext.each(record, function(r, i) {
-		// 						tbar[i] = {
-		// 							'text'		: r.data.MENU_TITLE,
-		// 							'iconCls'	: r.data.ICONCLS,
-		// 							'action'	: r.data.ACTION
-		// 						};				
-								
-		// 					});
-		// 					MyIndo.tbar[menuId] = tbar;
-		// 					mainContent.add(Ext.create(xtype, {
-		// 						title: menuTitle,
-		// 						id: menuId,
-		// 						closable: true,
-		// 						store: store,
-		// 						tbar: tbar
-		// 					}));
-		// 					mainContent.setActiveTab(menuId);
-
-		// 				} else {
-		// 					me.isLogin({
-		// 						login: false
-		// 					});
-		// 				}
-		// 				LD.close();
-		// 			}
-		// 		});
-		// 	} else {
-		// 		store.load();
-		// 		mainContent.add(Ext.create(xtype, {
-		// 			title: menuTitle,
-		// 			id: menuId,
-		// 			closable: true,
-		// 			store: store,
-		// 			tbar: MyIndo.tbar[menuId]
-		// 		}));
-		// 	}
-		// }
-		// mainContent.setActiveTab(menuId);
 	},
 
 	onMenuClicked: function(record) {
@@ -230,6 +174,6 @@ Ext.define('MyIndo.controller.Menu', {
 	/* Menu Managements */
 
 	onMenuManagementClicked: function(menuTitle, menuId, mainContent) {
-		
+
 	}
 });

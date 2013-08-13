@@ -40,6 +40,9 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 				case 'manage':
 					this.manage(record);
 					break;
+				case 'privilege':
+					this.privilege(record);
+					break;
 				case 'filter':
 					this.filter();
 					break;
@@ -384,5 +387,27 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 				me.closeLoadingWindow();
 			}
 		});
+	},
+
+	privilege: function(record) {
+		var parent = record.up().up();
+		var selected = parent.getSelectionModel().getSelection();
+		var me = this;
+		if(selected.length > 0) {
+			var store = Ext.create('MyIndo.store.Privileges');
+			store.proxy.extraParams = {
+				GROUP_ID: selected[0].data.GROUP_ID
+			};
+			store.load();
+			var manageWindow = Ext.create('MyIndo.view.Administrator.Groups.ManagePrivilege', {
+				title: 'Manage Privilege: ' + selected[0].data.NAME,
+				store: store,
+				id: 'manage-privilege-' + selected[0].data.GROUP_ID,
+				groupName: selected[0].data.NAME
+			});
+			manageWindow.show();
+		} else {
+			Ext.Msg.alert('Application Error', 'You did not select any Groups.');
+		}
 	}
 });
