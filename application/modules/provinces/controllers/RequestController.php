@@ -56,13 +56,13 @@ class Provinces_RequestController extends MyIndo_Controller_Action
 			if(isset($this->_posts['query']) && !empty($this->_posts['query'])) {
 				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['query'] . '%');
 			}
-			if(isset($this->_posts['COUNTRY_ID'])) {
+			if(isset($this->_posts['COUNTRY_ID']) && !empty($this->_posts['COUNTRY_ID'])) {
 				$countryId = $this->_enc->base64decrypt($this->_posts['COUNTRY_ID']);
 				if($this->_modelCountry->isExists(array($this->_modelCountry->getAdapter()->quoteInto('ID = ?', $countryId)))) {
 					$this->_where[] = $this->_modelView->getAdapter()->quoteInto('COUNTRY_ID = ?', $countryId);
 				}
 			}
-			if(isset($this->_posts['NAME'])) {
+			if(isset($this->_posts['NAME']) && !empty($this->_posts['NAME'])) {
 				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
 			}
 			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
@@ -75,7 +75,7 @@ class Provinces_RequestController extends MyIndo_Controller_Action
 	public function updateAction()
 	{
 		try {
-			if(isset($this->_posts['ID']) && isset($this->_posts['NAME'])) {
+			if(isset($this->_posts['ID']) && isset($this->_posts['NAME']) && !empty(($this->_posts['ID']) && !empty($this->_posts['NAME']))) {
 				$id = $this->_enc->base64decrypt($this->_posts['ID']);
 				$name = $this->_posts['NAME'];
 				$valid = true;
@@ -109,7 +109,7 @@ class Provinces_RequestController extends MyIndo_Controller_Action
 	public function destroyAction()
 	{
 		try {
-			if(isset($this->_posts['ID'])) {
+			if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
 				$id = $this->_enc->base64decrypt($this->_posts['ID']);
 				if($this->_model->isExist('ID', $id)) {
 					$this->_model->delete($this->_model->getAdapter()->quoteInto('ID = ?', $id));

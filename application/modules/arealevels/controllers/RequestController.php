@@ -16,7 +16,7 @@ class Arealevels_RequestController extends MyIndo_Controller_Action
 	public function createAction()
 	{
 		try {
-			if(isset($this->_posts['NAME']) && isset($this->_posts['TYPE'])) {
+			if(isset($this->_posts['NAME']) && isset($this->_posts['TYPE']) && !empty($this->_posts['NAME']) && !empty($this->_posts['TYPE'])) {
 				if(!$this->_model->isExist('NAME', $this->_posts['NAME'])) {
 					
 					$this->_model->insert(array(
@@ -38,13 +38,13 @@ class Arealevels_RequestController extends MyIndo_Controller_Action
 	public function readAction()
 	{
 		try {
-			if(isset($this->_posts['query'])) {
+			if(isset($this->_posts['query']) && !empty($this->_posts['query'])) {
 				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['query'] . '%');
 			}
-			if(isset($this->_posts['NAME'])) {
+			if(isset($this->_posts['NAME']) && !empty($this->_posts['NAME']) {
 				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
 			}
-			if(isset($this->_posts['TYPE'])) {
+			if(isset($this->_posts['TYPE']) && !empty($this->_posts['TYPE'])) {
 				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('TYPE LIKE ?', '%' . $this->_posts['TYPE'] . '%');
 			}
 			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
@@ -57,7 +57,7 @@ class Arealevels_RequestController extends MyIndo_Controller_Action
 	public function updateAction()
 	{
 		try {
-			if(isset($this->_posts['ID']) && isset($this->_posts['NAME']) && isset($this->_posts['TYPE'])) {
+			if(isset($this->_posts['ID']) && isset($this->_posts['NAME']) && isset($this->_posts['TYPE']) && !empty($this->_posts['ID']) && !empty($this->_posts['NAME']) && !empty($this->_posts['TYPE'])) {
 				$id = $this->_enc->base64decrypt($this->_posts['ID']);
 				$name = $this->_posts['NAME'];
 				$valid = true;
@@ -92,7 +92,7 @@ class Arealevels_RequestController extends MyIndo_Controller_Action
 	public function destroyAction()
 	{
 		try {
-			if(isset($this->_posts['ID'])) {
+			if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
 				$id = $this->_enc->base64decrypt($this->_posts['ID']);
 				if($this->_model->isExist('ID', $id)) {
 					$this->_model->delete($this->_model->getAdapter()->quoteInto('ID = ?', $id));
