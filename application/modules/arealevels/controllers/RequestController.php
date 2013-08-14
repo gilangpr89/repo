@@ -41,7 +41,7 @@ class Arealevels_RequestController extends MyIndo_Controller_Action
 			if(isset($this->_posts['query']) && !empty($this->_posts['query'])) {
 				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['query'] . '%');
 			}
-			if(isset($this->_posts['NAME']) && !empty($this->_posts['NAME']) {
+			if(isset($this->_posts['NAME']) && !empty($this->_posts['NAME'])) {
 				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
 			}
 			if(isset($this->_posts['TYPE']) && !empty($this->_posts['TYPE'])) {
