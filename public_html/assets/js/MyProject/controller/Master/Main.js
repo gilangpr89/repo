@@ -40,6 +40,14 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
 			case 'filter-cancel':
 				this.filterCancel(record);
 				break;
+				
+			/* Print */
+			case 'print':
+				this.print(record);
+				break;
+			case 'print-cancle':
+				this.printCancle(record);
+				break;
 		}
 	},
 
@@ -241,6 +249,28 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
 
 	filterCancel: function(record) {
 		record.up().up().close();
-	}
+	},
 	/* End of : Filter */
+	
+	/* Print */
+	
+	print: function(record) {
+		var panel = Ext.getCmp('main-content');
+		var activePanel = panel.getActiveTab();
+		var store = activePanel.getStore();
+		var extraParams = store.proxy.extraParams;
+		var parent = record.up().up();
+		var actions = parent.actions;
+		var filterWindow = Ext.create(actions.print);
+		var form = filterWindow.items.items[0].getForm();
+		form.setValues(extraParams);
+		filterWindow.show();
+	},
+	
+	printCancel: function(record) {
+		record.up().up().close();
+	}
+	
+	/* End Print */
+	
 });

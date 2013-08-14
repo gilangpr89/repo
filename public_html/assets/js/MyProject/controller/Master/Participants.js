@@ -4,7 +4,8 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Participants'), {
 	requires: [
 	MyIndo.getNameSpace('view.Master.Participants.Add'),
 	MyIndo.getNameSpace('view.Master.Participants.Update'),
-	MyIndo.getNameSpace('view.Master.Participants.Filter')
+	MyIndo.getNameSpace('view.Master.Participants.Filter'),
+	MyIndo.getNameSpace('view.Master.Participants.Print')
 	],
 
 	init: function() {
@@ -19,6 +20,9 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Participants'), {
 				click: this.onButtonClicked
 			},
 			'participantsfilterwindow button': {
+				click: this.onButtonClicked
+			},
+			'participantsprintwindow button': {
 				click: this.onButtonClicked
 			}
 		});

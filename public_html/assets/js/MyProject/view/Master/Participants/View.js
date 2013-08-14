@@ -70,7 +70,8 @@ Ext.define(MyIndo.getNameSpace('view.Master.Participants.View'), {
 			actions: {
 				add: MyIndo.getNameSpace('view.Master.Participants.Add'),
 				update: MyIndo.getNameSpace('view.Master.Participants.Update'),
-				filter: MyIndo.getNameSpace('view.Master.Participants.Filter')
+				filter: MyIndo.getNameSpace('view.Master.Participants.Filter'),
+				print: MyIndo.getNameSpace('view.Master.Participants.Print')
 			},
 			filters: ['NAME','SNAME','MOBILE_NO','EMAIL1'],
 			url: {
