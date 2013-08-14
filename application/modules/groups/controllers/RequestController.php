@@ -14,7 +14,7 @@ class Groups_RequestController extends MyIndo_Controller_Action
 	public function readAction()
 	{
 		try {
-			if(isset($this->_posts['NAME'])) {
+			if(isset($this->_posts['NAME']) && !empty($this->_posts['NAME'])) {
 				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
 			}
 			$data = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
@@ -28,7 +28,7 @@ class Groups_RequestController extends MyIndo_Controller_Action
 	public function createAction()
 	{
 		try {
-			if(isset($this->_posts['NAME'])) {
+			if(isset($this->_posts['NAME']) && !empty($this->_posts['NAME'])) {
 				
 				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME = ?', $this->_posts['NAME']);
 				if($this->_model->count($this->_where) == 0) {
@@ -51,7 +51,7 @@ class Groups_RequestController extends MyIndo_Controller_Action
 	public function updateAction()
 	{
 		try {
-			if(isset($this->_posts['GROUP_ID']) && isset($this->_posts['NAME'])) {
+			if(isset($this->_posts['GROUP_ID']) && isset($this->_posts['NAME']) && !empty($this->_posts['GROUP_ID']) && !empty($this->_posts['NAME'])) {
 				
 				$groupId = $this->_enc->base64decrypt($this->_posts['GROUP_ID']);
 				$groupName = $this->_posts['NAME'];
@@ -92,7 +92,7 @@ class Groups_RequestController extends MyIndo_Controller_Action
 	public function destroyAction()
 	{
 		try {
-			if(isset($this->_posts['GROUP_ID']) && isset($this->_posts['NAME'])) {
+			if(isset($this->_posts['GROUP_ID']) && isset($this->_posts['NAME']) && !empty($this->_posts['GROUP_ID']) && !empty($this->_posts['NAME'])) {
 				$groupId = $this->_enc->base64decrypt($this->_posts['GROUP_ID']);
 				$groupName = $this->_posts['NAME'];
 				$this->_where[] = $this->_model->getAdapter()->quoteInto('GROUP_ID = ?', $groupId);

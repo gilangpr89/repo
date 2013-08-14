@@ -51,19 +51,19 @@ class Trainers_RequestController extends MyIndo_Controller_Action
 	public function readAction()
 	{
 		try {
-			if(isset($this->_posts['query'])) {
+			if(isset($this->_posts['query']) && !empty($this->_posts['query'])) {
 				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['query'] . '%');
 			}
-			if(isset($this->_posts['NAME'])) {
+			if(isset($this->_posts['NAME']) && !empty($this->_posts['NAME'])) {
 				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
 			}
-			if(isset($this->_posts['NICKNAME'])) {
+			if(isset($this->_posts['NICKNAME']) && !empty($this->_posts['NICKNAME'])) {
 				$this->_where[] = $this->_model->getAdapter()->quoteInto('NICKNAME LIKE ?', '%' . $this->_posts['NICKNAME'] . '%');
 			}
-			if(isset($this->_posts['MOBILE_NO'])) {
+			if(isset($this->_posts['MOBILE_NO']) && !empty($this->_posts['MOBILE_NO'])) {
 				$this->_where[] = $this->_model->getAdapter()->quoteInto('MOBILE_NO LIKE ?', '%' . $this->_posts['MOBILE_NO'] . '%');
 			}
-			if(isset($this->_posts['EMAIL1'])) {
+			if(isset($this->_posts['EMAIL1']) && !empty($this->_posts['EMAIL1'])) {
 				$this->_where[] = $this->_model->getAdapter()->quoteInto('EMAIL1 LIKE ?', '%' . $this->_posts['EMAIL1'] . '%');
 			}
 			$this->_data['items'] = $this->_model->getList($this->_limit, $this->_start, $this->_order, $this->_where);
@@ -104,7 +104,7 @@ class Trainers_RequestController extends MyIndo_Controller_Action
 	public function destroyAction()
 	{
 		try {
-			if(isset($this->_posts['ID'])) {
+			if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
 				$id = $this->_enc->base64decrypt($this->_posts['ID']);
 				if($this->_model->isExist('ID', $id)) {
 					$this->_model->delete($this->_model->getAdapter()->quoteInto('ID = ?', $id));

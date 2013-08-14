@@ -54,19 +54,19 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	public function readAction()
 	{
 		try {
-			if(isset($this->_posts['query'])) {
+			if(isset($this->_posts['query']) && !empty($this->_posts['query'])) {
 				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['query'] . '%');
 			}
-			if(isset($this->_posts['NAME'])) {
+			if(isset($this->_posts['NAME']) && !empty($this->_posts['NAME'])) {
 				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
 			}
-			if(isset($this->_posts['SNAME'])) {
+			if(isset($this->_posts['SNAME']) && !empty($this->_posts['SNAME'])) {
 				$this->_where[] = $this->_model->getAdapter()->quoteInto('SNAME LIKE ?', '%' . $this->_posts['SNAME'] . '%');
 			}
-			if(isset($this->_posts['MOBILE_NO'])) {
+			if(isset($this->_posts['MOBILE_NO']) && !empty($this->_posts['MOBILE_NO'])) {
 				$this->_where[] = $this->_model->getAdapter()->quoteInto('MOBILE_NO LIKE ?', '%' . $this->_posts['MOBILE_NO'] . '%');
 			}
-			if(isset($this->_posts['EMAIL1'])) {
+			if(isset($this->_posts['EMAIL1']) && !empty($this->_posts['EMAIL1'])) {
 				$this->_where[] = $this->_model->getAdapter()->quoteInto('EMAIL1 LIKE ?', '%' . $this->_posts['EMAIL1'] . '%');
 			}
 			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);

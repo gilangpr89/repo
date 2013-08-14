@@ -13,7 +13,7 @@ class Groupusers_RequestController extends MyIndo_Controller_Action
 	public function readAction()
 	{
 		try {
-			if(isset($this->_posts['GROUP_ID'])) {
+			if(isset($this->_posts['GROUP_ID']) && !empty($this->_posts['GROUP_ID'])) {
 				$data = $this->_api->getListGroupUsers($this->_posts['GROUP_ID'], $this->_order);
 				$this->_data = $data;
 			} else {
@@ -27,7 +27,7 @@ class Groupusers_RequestController extends MyIndo_Controller_Action
 	public function createAction()
 	{
 		try {
-			if(isset($this->_posts['GROUP_ID']) && isset($this->_posts['USER_ID'])) {
+			if(isset($this->_posts['GROUP_ID']) && isset($this->_posts['USER_ID']) && !empty($this->_posts['GROUP_ID']) && !empty($this->_posts['USER_ID'])) {
 				
 				$data = $this->_api->addGroupUser($this->_posts['GROUP_ID'], $this->_posts['USER_ID']);
 				if(!$data['success']) {
@@ -45,7 +45,7 @@ class Groupusers_RequestController extends MyIndo_Controller_Action
 	public function destroyAction()
 	{
 		try {
-			if(isset($this->_posts['GROUP_ID']) && isset($this->_posts['USER_ID'])) {
+			if(isset($this->_posts['GROUP_ID']) && isset($this->_posts['USER_ID']) && !empty($this->_posts['GROUP_ID']) && !empty($this->_posts['USER_ID'])) {
 				
 				$data = $this->_api->deleteGroupUser($this->_posts['GROUP_ID'], $this->_posts['USER_ID']);
 				if(!$data['success']) {

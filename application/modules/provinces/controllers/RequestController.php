@@ -75,7 +75,7 @@ class Provinces_RequestController extends MyIndo_Controller_Action
 	public function updateAction()
 	{
 		try {
-			if(isset($this->_posts['ID']) && isset($this->_posts['NAME']) && !empty(($this->_posts['ID']) && !empty($this->_posts['NAME']))) {
+			if(isset($this->_posts['ID']) && isset($this->_posts['NAME']) && !empty($this->_posts['ID']) && !empty($this->_posts['NAME'])) {
 				$id = $this->_enc->base64decrypt($this->_posts['ID']);
 				$name = $this->_posts['NAME'];
 				$valid = true;

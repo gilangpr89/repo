@@ -32,7 +32,7 @@ class Fundingsources_RequestController extends MyIndo_Controller_Action
 		try {
 			$valid = true;
 			foreach($this->_required as $r) {
-				if(!isset($this->_posts[$r])) {
+				if(!isset($this->_posts[$r]) && !empty($this->_posts[$r])) {
 					$valid = false;
 				} else {
 					$this->_sData[$r] = $this->_posts[$r];
@@ -55,21 +55,21 @@ class Fundingsources_RequestController extends MyIndo_Controller_Action
 	public function readAction()
 	{
 		try {
-			if(isset($this->_posts['query'])) {
+			if(isset($this->_posts['query']) && !empty($this->_posts['query'])) {
 				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['query'] . '%');
 			}
-			if(isset($this->_posts['NAME'])) {
+			if(isset($this->_posts['NAME']) && !empty($this->_posts['NAME'])) {
 				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
 			}
-			if(isset($this->_posts['CITY_ID'])) {
+			if(isset($this->_posts['CITY_ID']) && !empty($this->_posts['CITY_ID'])) {
 				$cityId = $this->_enc->base64decrypt($this->_posts['CITY_ID']);
 				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('CITY_ID = ?', (int)$cityId);
 			}
-			if(isset($this->_posts['PROVINCE_ID'])) {
+			if(isset($this->_posts['PROVINCE_ID']) && !empty($this->_posts['PROVINCE_ID'])) {
 				$provinceId = $this->_enc->base64decrypt($this->_posts['PROVINCE_ID']);
 				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('PROVINCE_ID = ?', (int)$provinceId);
 			}
-			if(isset($this->_posts['COUNTRY_ID'])) {
+			if(isset($this->_posts['COUNTRY_ID']) && !empty($this->_posts['COUNTRY_ID'])) {
 				$countryId = $this->_enc->base64decrypt($this->_posts['COUNTRY_ID']);
 				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('COUNTRY_ID = ?', (int)$countryId);
 			}
@@ -115,7 +115,7 @@ class Fundingsources_RequestController extends MyIndo_Controller_Action
 	public function destroyAction()
 	{
 		try {
-			if(isset($this->_posts['ID'])) {
+			if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
 				$id = $this->_enc->base64decrypt($this->_posts['ID']);
 				if($this->_model->isExist('ID', $id)) {
 					$this->_model->delete($this->_model->getAdapter()->quoteInto('ID = ?', $id));

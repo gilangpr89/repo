@@ -15,7 +15,7 @@ class Privileges_RequestController extends MyIndo_Controller_Action
 	public function readAction()
 	{
 		try {
-			if(isset($this->_posts['GROUP_ID'])) {
+			if(isset($this->_posts['GROUP_ID']) && !empty($this->_posts['GROUP_ID'])) {
 				$groupId = $this->_enc->base64decrypt($this->_posts['GROUP_ID']);
 				$query = $this->_modelGroups->select()->where('GROUP_ID = ?', $groupId);
 				
