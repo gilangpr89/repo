@@ -60,7 +60,8 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.AddParticipants'), {
 					pageSize: 25,
 					store: storePositions,
 					allowBlank: false,
-					emptyText: 'Select position..'
+					emptyText: 'Select position..',
+					editable: false
 				},{
 					xtype: 'numberfield',
 					name: 'PRE_TEST',

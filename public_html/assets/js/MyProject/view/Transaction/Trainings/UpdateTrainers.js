@@ -91,7 +91,8 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.UpdateTrainers'), {
 					pageSize: 25,
 					store: storeRoles,
 					allowBlank: false,
-					emptyText: 'Select role..'
+					emptyText: 'Select role..',
+					editable: false
 				},{
 					xtype: 'combobox',
 					fieldLabel: 'Country',

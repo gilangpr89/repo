@@ -6,3 +6,4 @@ extras/documentation
 .buildpath
 .project
 .settings
+.DS_Store

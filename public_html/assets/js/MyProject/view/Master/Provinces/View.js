@@ -7,6 +7,10 @@ Ext.define(MyIndo.getNameSpace('view.Master.Provinces.View'), {
 		flex: 1,
 		dataIndex: 'NAME'
 	},{
+		text: 'Country',
+		width: 200,
+		dataIndex: 'COUNTRY_NAME'
+	},{
 		text: 'Created Date',
 		align: 'center',
 		width: 150,

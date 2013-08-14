@@ -4,12 +4,14 @@ class Provinces_RequestController extends MyIndo_Controller_Action
 {
 	protected $_unique;
 	protected $_modelCountry;
+	protected $_modelView;
 
 	public function init()
 	{
 		$this->_model = new provinces_Model_Provinces();
 		$this->_unique = 'Province';
 		$this->_modelCountry = new countries_Model_Country();
+		$this->_modelView = new provinces_Model_ProvincesView();
 	}
 
 	public function createAction()
@@ -52,19 +54,19 @@ class Provinces_RequestController extends MyIndo_Controller_Action
 	{
 		try {
 			if(isset($this->_posts['query']) && !empty($this->_posts['query'])) {
-				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['query'] . '%');
+				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['query'] . '%');
 			}
 			if(isset($this->_posts['COUNTRY_ID'])) {
 				$countryId = $this->_enc->base64decrypt($this->_posts['COUNTRY_ID']);
 				if($this->_modelCountry->isExists(array($this->_modelCountry->getAdapter()->quoteInto('ID = ?', $countryId)))) {
-					$this->_where[] = $this->_model->getAdapter()->quoteInto('COUNTRY_ID = ?', $countryId);
+					$this->_where[] = $this->_modelView->getAdapter()->quoteInto('COUNTRY_ID = ?', $countryId);
 				}
 			}
 			if(isset($this->_posts['NAME'])) {
-				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
+				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
 			}
-			$this->_data['items'] = $this->_model->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-			$this->_data['totalCount'] = $this->_model->count($this->_where);
+			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+			$this->_data['totalCount'] = $this->_modelView->count($this->_where);
 		} catch(Exception $e) {
 			$this->exception($e);
 		}

@@ -7,6 +7,9 @@ Ext.define(MyIndo.getNameSpace('model.Master.Province'), {
 		name: 'COUNTRY_ID',
 		type: 'string'
 	},{
+		name: 'COUNTRY_NAME',
+		type: 'string'
+	},{
 		name: 'NAME',
 		type: 'string'
 	},{
