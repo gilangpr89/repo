@@ -232,7 +232,7 @@ class Trtrainings_RequestController extends MyIndo_Controller_Action
 	public function destroyAction()
 	{
 		try {
-			if(isset($this->_posts['ID'])) {
+			if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
 				$id = $this->_enc->base64decrypt($this->_posts['ID']);
 				if($this->_model->isExist('ID', $id)) {
 					$this->_model->delete($this->_model->getAdapter()->quoteInto('ID = ?', $id));
