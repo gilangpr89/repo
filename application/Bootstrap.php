@@ -41,6 +41,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	
     	$front = $this->bootstrap("frontController")->frontController;
     	$modules = $front->getControllerDirectory();
+    	//autoload fpdf
+//     	$autoLoader = Zend_Loader_Autoloader::getInstance();
+//     	$autoLoader->registerNamespace('fpdf_');
+//     	return $autoLoader;
+    	//end fpdf
     	$default = $front->getDefaultModule();
     	foreach (array_keys($modules) as $module) {
     		if ($module === $default) {
@@ -56,6 +61,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     {
         $al = Zend_Loader_Autoloader::getInstance();
         $al->registerNamespace('MyIndo_');
+        $al->registerNamespace('fpdf_');
     }
     
     protected function _initPlugin()
