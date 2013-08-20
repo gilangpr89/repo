@@ -9,6 +9,13 @@ defined('DS')
 // Define application environment
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
+    
+//define image path
+    defined('LOGOREPORT_PATH')
+    || define('LOGOREPORT_PATH', realpath(dirname(__FILE__) . '/..'));
+    
+    // define PDF_PATH
+    defined('PDF_PATH') || define ('PDF_PATH',realpath(dirname(__FILE__).'/../'));
 
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
