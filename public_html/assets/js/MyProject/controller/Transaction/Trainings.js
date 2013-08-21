@@ -10,7 +10,9 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 
 	MyIndo.getNameSpace('view.Transaction.Trainings.ManageTrainers'),
 	MyIndo.getNameSpace('view.Transaction.Trainings.AddTrainers'),
-	MyIndo.getNameSpace('view.Transaction.Trainings.UpdateTrainers')
+	MyIndo.getNameSpace('view.Transaction.Trainings.UpdateTrainers'),
+	MyIndo.getNameSpace('view.Transaction.Trainings.Modules'),
+	MyIndo.getNameSpace('view.Transaction.Trainings.UploadModule')
 	],
 
 	init: function() {
@@ -23,6 +25,9 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 			},
 			'trtrainingsview button[action=manage-trainers]': {
 				click: this.manageTrainers
+			},
+			'trtrainingsview button[action=training-modules]': {
+				click: this.trainingModules
 			},
 
 			/* Participants */
@@ -67,6 +72,16 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 			},
 			'trtrainingsfilterwindow button': {
 				click: this.onButtonClicked
+			},
+
+			/* Training Modules */
+			'trainingmodules button': {
+				click: this.onTrainingModulesButtonClicked
+			},
+
+			/* Training Upload Module Window */
+			'traininguploadmodules button': {
+				click: this.onTrainingModulesButtonClicked
 			}
 		});
 	},
@@ -379,6 +394,85 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 			});
 		} else {
 			Ext.Msg.alert('Application Error', 'You did not select any trainer.');
+		}
+	},
+
+	trainingModules: function(record) {
+		var parent = record.up().up();
+		var grid = parent.items.items[0];
+		var selected = grid.getSelectionModel().getSelection();
+		var me = this;
+		if(selected.length > 0) {
+			Ext.create(MyIndo.getNameSpace('view.Transaction.Trainings.Modules'), {
+				trainingId: selected[0].data.TRAINING_ID
+			}).show();
+		} else {
+			Ext.Msg.alert('Application Error', 'You did not select any training.');
+		}
+	},
+
+	onTrainingModulesButtonClicked: function(record) {
+		var action = record.action;
+		switch(action) {
+			case 'training-upload-module':
+				this.trainingUploadModule(record);
+				break;
+			case 'training-download-module':
+				this.trainingDownloadModule(record);
+				break;
+			case 'training-delete-module':
+				this.trainingDeleteModule(record);
+				break;
+
+			/* Upload Module Window */
+			case 'do-upload-module':
+				this.doUploadModule(record);
+				break;
+			case 'cancel-upload-module':
+				record.up().up().close();
+				break;
+
+			default:
+				console.log(action);
+		}
+	},
+
+	trainingUploadModule: function(record) {
+		var parent = record.up().up();
+		Ext.create(MyIndo.getNameSpace('view.Transaction.Trainings.UploadModule'), {
+			trainingId: parent.trainingId
+		}).show();
+	},
+
+	doUploadModule: function(record) {
+		var parent = record.up().up();
+		var form = parent.items.items[0].getForm();
+		var me = this;
+		if(form.isValid()) {
+			Ext.Msg.confirm('Upload Module', 'Are you sure want to upload this module ?', function(btn) {
+				if(btn == 'yes') {
+					form.setValues({
+						TRAINING_ID: parent.trainingId
+					});
+					form.submit({
+						url: MyIndo.baseUrl('trtrainingmodules/request/create'),
+						success: function(form, record) {
+							var json = Ext.decode(record.response.responseText);
+							if(me.isLogin(json)) {
+								Ext.Msg.alert('Upload Module', 'File successfully uploaded.');
+							}
+						},
+						failure: function(form, record) {
+							var json = Ext.decode(record.response.responseText);
+							if(me.isLogin(json)) {
+								Ext.Msg.alert('Application Error', '<strong>Error : </strong>[' + json.error_code + '] ' + json.error_message);
+							}
+						}
+					});
+				}
+			});
+		} else {
+			Ext.Msg.alert('Application Error', 'Please complete form first.');
 		}
 	}
 });

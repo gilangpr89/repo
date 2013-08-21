@@ -115,3 +115,15 @@
 .icon-tab-go {
 	background-image: url(../images/icons/tab_go.png) !important;
 }
+
+.icon-file-extension-pps {
+	background-image: url(../images/icons/file_extension_pps.png) !important;
+}
+
+.icon-inbox-upload {
+	background-image: url(../images/icons/inbox_upload.png) !important;
+}
+
+.icon-inbox-download {
+	background-image: url(../images/icons/inbox_download.png) !important;
+}
