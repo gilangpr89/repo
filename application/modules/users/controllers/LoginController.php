@@ -134,6 +134,59 @@ class Users_LoginController extends Zend_Controller_Action
 		}
 	}
 
+    public function changePasswordAction()
+    {
+        $this->_helper->layout()->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+        $return = array(
+            'hasAccess' => true,
+            'success' => false,
+            'login' => true,
+            'error_code' => 0,
+            'error_message' => ''
+            );
+        if($this->getRequest()->isPost()) {
+            if($this->getRequest()->isXmlHttpRequest()) {
+                $p = $this->getRequest()->getPost();
+                if(isset($p['OLD_PASSWORD']) && isset($p['NEW_PASSWORD']) && isset($p['NEW_PASSWORD_CONF'])) {
+                    if($p['NEW_PASSWORD'] == $p['NEW_PASSWORD_CONF']) {
+                        $model = new MyIndo_Model_Users();
+                        $q = $model->select()
+                        ->where('USER_ID = ?', $this->view->USER_ID)
+                        ->where('PASSWORD = ?', MyIndo_Encryption_Password::makePassword($p['OLD_PASSWORD']));
+                        if($q->query()->rowCount() > 0) {
+                            try {
+                                $return['success'] = true;
+                                $model->update(array(
+                                    'PASSWORD' => MyIndo_Encryption_Password::makePassword($p['NEW_PASSWORD'])
+                                    ), $model->getAdapter()->quoteInto('USER_ID = ?', $this->view->USER_ID));
+                            } catch(Exception $e) {
+                                $return['error_code'] = $e->getCode();
+                                $return['error_message'] = $e->getMessage();
+                            }
+                        } else {
+                            $return['error_code'] = 902;
+                            $return['error_message'] = 'Invalid old password.';
+                        }
+                    } else {
+                        $return['error_code'] = 902;
+                        $return['error_message'] = 'New password does not match.';
+                    }
+                } else {
+                    $return['error_code'] = '901.';
+                    $return['error_message'] = 'Invalid request.';
+                }
+            } else {
+                $return['error_code'] = '901.';
+                $return['error_message'] = 'Invalid request.';
+            }
+        } else {
+            $return['error_code'] = '901.';
+            $return['error_message'] = 'Invalid request.';
+        }
+        echo Zend_Json::encode($return);
+    }
+
 	public function logoutAction()
     {
         $this->_helper->viewRenderer->setNoRender(true);

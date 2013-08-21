@@ -5,7 +5,8 @@ Ext.define('MyIndo.view.Layout.NorthPanel', {
 	border: false,
 	tbar: [{
 		text: 'Change Password',
-		iconCls: 'icon-lock-break'
+		iconCls: 'icon-lock-break',
+		action: 'change-password'
 	},{
 		text: 'Close All Tabs',
 		iconCls: 'icon-tab-delete',

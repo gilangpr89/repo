@@ -4,6 +4,8 @@ Ext.define('MyIndo.controller.Menu', {
 	requires: [
 	'MyIndo.view.Loading',
 
+	'MyIndo.view.Administrator.ChangePassword',
+
 	/* Groups */
 	'MyIndo.view.Administrator.Groups.View',
 	'MyIndo.view.Administrator.Groups.Add',
@@ -40,6 +42,9 @@ Ext.define('MyIndo.controller.Menu', {
 				}
 			},
 			'northpanel button': {
+				click: this.onUserMenuButtonClicked
+			},
+			'changepasswordwindow button': {
 				click: this.onUserMenuButtonClicked
 			}
 		});
@@ -115,13 +120,69 @@ Ext.define('MyIndo.controller.Menu', {
 	onUserMenuButtonClicked: function(record) {
 		var action = record.action;
 		switch(action) {
+			case 'change-password':
+				this.changePassword();
+				break;
 			case 'logout':
 				this.logout();
 				break;
 			case 'tab-close':
 				this.closeAllTabs();
 				break;
+			case 'do-change-password':
+				this.doChangePassword(record);
+				break;
+			case 'cancel-change-password':
+				this.cancelChangePassword(record);
+				break;
+			default:
+				console.log(record);
 		}
+	},
+
+	/* Change Password */
+	changePassword: function() {
+		if(typeof(Ext.getCmp('change-password-window')) === 'undefined') {
+			Ext.create('MyIndo.view.Administrator.ChangePassword').show();
+		}
+	},
+
+	doChangePassword: function(record) {
+		var parentWindow = record.up().up().up();
+		var form = record.up().up();
+		var me = this;
+		if(form.isValid()) {
+			var vals = form.getValues();
+			if(typeof(vals.OLD_PASSWORD) !== 'undefined' && typeof(vals.NEW_PASSWORD) !== 'undefined' && typeof(vals.NEW_PASSWORD_CONF) !== 'undefined') {
+				if(vals.NEW_PASSWORD === vals.NEW_PASSWORD_CONF) {
+					form.submit({
+						url: MyIndo.baseUrl('users/login/change-password'),
+						success: function(data, record) {
+							var json = Ext.decode(record.response.responseText);
+							if(me.isLogin(json)) {
+								Ext.Msg.alert('Change Password', 'Password successfully changed.');
+							}
+						},
+						failure: function(data, record) {
+							var json = Ext.decode(record.response.responseText);
+							if(me.isLogin(json)) {
+								Ext.Msg.alert('Application Error', '<strong>Error</strong> : [' + json.error_code + '] ' + json.error_message);
+							}
+						}
+					});
+				} else {
+					Ext.Msg.alert('Change Password', 'New password does not match.');
+				}
+			} else {
+				Ext.Msg.alert('Change Password', 'Please complete form first.');
+			}
+		} else {
+			Ext.Msg.alert('Change Password', 'Please complete form first.');
+		}
+	},
+
+	cancelChangePassword: function(record) {
+		record.up().up().up().close();
 	},
 
 	/* Logout */
