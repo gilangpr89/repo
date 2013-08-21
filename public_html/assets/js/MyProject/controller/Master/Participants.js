@@ -5,7 +5,7 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Participants'), {
 	MyIndo.getNameSpace('view.Master.Participants.Add'),
 	MyIndo.getNameSpace('view.Master.Participants.Update'),
 	MyIndo.getNameSpace('view.Master.Participants.Filter'),
-	MyIndo.getNameSpace('view.Master.Participants.ReportParticipants')
+	MyIndo.getNameSpace('view.Report.Participants')
 	],
 
 	init: function() {
@@ -35,10 +35,10 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Participants'), {
 		var parent = record.up().up();
 		var selected = parent.getSelectionModel().getSelection();
 		if(selected.length > 0) {
-			var store = Ext.create(MyIndo.getNameSpace('store.Master.Reportparticipants'));
+			var store = Ext.create(MyIndo.getNameSpace('store.Report.Participants'));
 			var id = selected[0].data.ID;
 			store.proxy.extraParams.ID =  selected[0].data.ID;
-			var reportParticipantsWindow = Ext.create(MyIndo.getNameSpace('view.Master.Participants.ReportParticipants'),{
+			var reportParticipantsWindow = Ext.create(MyIndo.getNameSpace('view.Report.Participants'),{
 				store: store,
 				id : id
 			});
@@ -54,17 +54,16 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Participants'), {
 		var grid = parent.items.items[0];
 		var selected = grid.getSelectionModel().getSelection();
 		var me = this;
-		if(selected.length > 0) {
+		var ID = parent.id;
+	  if(selected.length > 0) {
 			Ext.Msg.confirm('Print Participant', 'Are you sure want to print this participant ?', function(btn) {
 				if(btn == 'yes') {
 					me.showLoadingWindow();
-					
 					Ext.Ajax.request({
 						url: MyIndo.siteUrl('participants/request/print'),
 						params: selected[0].data,
 						success: function(r) {
 							var json = Ext.decode(r.responseText);
-							console.log(json);
 							me.closeLoadingWindow();
 							if(me.isLogin(json)) {
 								if(me.isSuccess(json)) {

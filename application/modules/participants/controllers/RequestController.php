@@ -5,6 +5,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 {
 	protected $_unique;
 	protected $_modelView;
+	protected $_modelDetail;
 	protected $_required;
 	protected $_sData;
 
@@ -12,8 +13,9 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	{
 		$this->_helper->layout()->disableLayout();
 		$this->_helper->viewRenderer->setNoRender(true);
-
+        
 		$this->_model = new participants_Model_Participants();
+		$this->_modelDetail = new trainingparticipants_Model_TrainingParticipantsView();
 		$this->_modelView = new participants_Model_ParticipantsView();
 		$this->_unique = 'Participant';
 		$this->_required = array(
@@ -127,43 +129,41 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	}
 	
 
-	public function detaiAction()
-	{
-		try {
-			$id = $this->_enc->base64decrypt($this->_posts['ID']);
-			$q = $this->_model->select()
-			->from('MS_PARTICIPANTS',array('*'))
-			->where('ID = ?', $id);
-			$q->query()->fetchAll();
-			$list = $q->query()->fetchAll();
-			print_r($list);
+// 	public function detaiAction()
+// 	{
+// 		try {
+// 			$id = $this->_enc->base64decrypt($this->_posts['ID']);
+// 			$q = $this->_model->select()
+// 			->from('MS_PARTICIPANTS',array('*'))
+// 			->where('ID = ?', $id);
+// 			$q->query()->fetchAll();
+// 			$list = $q->query()->fetchAll();
+// 			print_r($list);
 			
-			if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
-				$this->_where[] = $this->_model->getAdapter()->quoteInto('ID = ?', $id);
-			}
-			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-			$this->_data['totalCount'] = $this->_modelView->count($this->_where);
-		} catch (Exception $e) {
-			$this->exception($e);
-		}
+// 			if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
+// 				$this->_where[] = $this->_model->getAdapter()->quoteInto('ID = ?', $id);
+// 			}
+// 			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+// 			$this->_data['totalCount'] = $this->_modelView->count($this->_where);
+// 		} catch (Exception $e) {
+// 			$this->exception($e);
+// 		}
 		
 			
 		
-	}
+// 	}
 	
 	public function detailAction()
 	{
 		try {
 			if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
 				$Id = (int)$this->_enc->base64decrypt($this->_posts['ID']);
-				if($this->_model->isExist('ID', $Id)) {
-					$this->_where[] = $this->_modelView->getAdapter()->quoteInto('ID = ?', $Id);
-				} else {
-					$this->_where[] = $this->_modelView->getAdapter()->quoteInto('ID = ?', 0);
-				}
+				if($this->_modelDetail->isExist('PARTICIPANT_ID', $Id)) {
+					$this->_where[] = $this->_modelDetail->getAdapter()->quoteInto('PARTICIPANT_ID = ?', $Id);
+				} 
 			}
-			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-			$this->_data['totalCount'] = $this->_modelView->count($this->_where);
+			$this->_data['items'] = $this->_modelDetail->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+			$this->_data['totalCount'] = $this->_modelDetail->count($this->_where);
 		} catch(Exception $e) {
 			$this->exception($e);
 		}
@@ -171,6 +171,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	
 	public function printAction()
 	{	
+		
 		$pdf = new myfpdf();
 		$h = 13;
 		$left = 40;
@@ -178,49 +179,73 @@ class Participants_RequestController extends MyIndo_Controller_Action
 		
 		$pdf->SetFont('Times','',12);
 		$pdf->AliasNbPages();
-		$pdf->AddPage(); 
+		$pdf->AddPage();
 		
-		if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
-			$id = $this->_enc->base64decrypt($this->_posts['ID']);
-			$q = $this->_modelView->select()
-			->from('MS_PARTICIPANTS_VIEW',array('*'))
-			->where('ID = ?', $id);
+		if(isset($this->_posts['PARTICIPANT_ID']) && !empty($this->_posts['PARTICIPANT_ID'])) {
+			$id = $this->_enc->base64decrypt($this->_posts['PARTICIPANT_ID']);
+// 			if($this->_model->isExist('PARTICIPANT_ID', $id)) {
+// 				$this->_where[] = $this->_modelDetail->getAdapter()->quoteInto('PARTICIPANT_ID = ?', $id);
+// 			} else {
+// 				$this->_where[] = $this->_modelDetail->getAdapter()->quoteInto('PARTICIPANT_ID = ?', 0);
+// 			}
+		
+			
+			$q = $this->_modelDetail->select()
+			//->from('TR_TRAINING_PARTICIPANTS_VIEW',array('*'))
+			->from('TR_TRAINING_PARTICIPANTS_VIEW',array('ID','TRAINING_ID','TRAINING_NAME','PARTICIPANT_ID','PARTICIPANT_NAME','PARTICIPANT_FNAME','PARTICIPANT_MNAME','PARTICIPANT_LNAME',
+					'PARTICIPANT_SNAME','PARTICIPANT_GENDER','PARTICIPANT_BDATE','PARTICIPANT_MOBILE_NO','PARTCIPANT_PHONE_NO','PARTICIPANT_EMAIL1','PARTICIPANT_EMAIL2','PARTICIPANT_FB',
+					'PARTICIPANT_TWITTER','ORGANIZATION_ID','ORGANIZATION_CITY_ID','ORGANIZATION_CITY_NAME','ORGANIZATION_PROVINCE_ID','ORGANIZATION_PROVINCE_NAME','ORGANIZATION_COUNTRY_ID',
+					'ORGANIZATION_COUNTRY_NAME','ORGANIZATION_NAME','ORGANIZATION_PHONE_NO1','ORGANIZATION_PHONE_NO2','ORGANIZATION_EMAIL1','ORGANIZATION_EMAIL2','ORGANIZATION_WEBSITE',
+			        'ORGANIZATION_ADDRESS','POSITION_ID','POSITION_NAME','PRE_TEST','POST_TEST','DIFF','CREATED_DATE','MODIFIED_DATE'))
+			->where('PARTICIPANT_ID = ?', $id);
 			$q->query()->fetchAll();
 			$list = $q->query()->fetchAll();
 			
+			//$list = $this->_modelDetail->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+			//print_r($list);die();
+
+			
 			$filename ='ReportParticipant.' . $this->_posts['ID'] . '.' . date('Y-m-d-H-i-s');
 			
-			foreach ($list as $row) {   
-	        
+			foreach ($list as $row) {
+				
+		    $columns = array();
+	        $col = array();
+		    $col[] = array('text' => 'Training :' .$row['TRAINING_NAME'],
+		    		       'width' => '95',
+		    		       'height'=>'8', 
+	        		       'align' => 'L',
+		    		       'linearea' => '',
+		    		       );
+		    
+		   $columns[] = $col;
+	       $pdf->WriteTable($columns);
+		    
 	        $columns = array();
 	        $col = array();
-	        $col[] = array('text' => 'Name : '.$row['NAME'] , 
+	        $col[] = array('text' => 'Name : '.$row['PARTICIPANT_NAME'] , 
 	        		       'width' => '95',
 	        		       'height'=>'5', 
 	        		       'align' => 'L',
 	        		       'linearea'=>'',
 	        		       );
-	        
-	        
 	        $columns[] = $col;
 	        $pdf->WriteTable($columns);
 	        
 	        $columns = array();
 	        $col = array();
-	        $col[] = array('text' => 'First Name : '.$row['FNAME'] , 
+	        $col[] = array('text' => 'First Name : '.$row['PARTICIPANT_FNAME'] , 
 	        		       'width' => '95',
 	        		       'height'=>'5', 
 	        		       'align' => 'L',
 	        		       'linearea'=>'',
-	        		       );
-	        
-	        
+	        		       );        
 	        $columns[] = $col;
 	        $pdf->WriteTable($columns);
 	        
 	        $columns = array();
 	        $col = array();
-	        $col[] = array ('text' => 'Middle Name : '.$row['MNAME'] ,
+	        $col[] = array ('text' => 'Middle Name : '.$row['PARTICIPANT_MNAME'] ,
 	        		'width' => '95',
 	        		'height'=>'5',
 	        		'align' => 'L',
@@ -230,7 +255,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	        
 	        $columns = array();
 	        $col = array();
-	        $col[] = array ('text' => 'Last Name : '.$row['LNAME'] ,
+	        $col[] = array ('text' => 'Last Name : '.$row['PARTICIPANT_NAME'] ,
 	        		'width' => '95',
 	        		'height'=>'5',
 	        		'align' => 'L',
@@ -240,7 +265,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	        
 	        $columns = array();
 	        $col = array();
-	        $col[] = array ('text' => 'Surname : '.$row['SNAME'] ,
+	        $col[] = array ('text' => 'Surname : '.$row['PARTICIPANT_SNAME'] ,
 	        		'width' => '95',
 	        		'height'=>'5',
 	        		'align' => 'L',
@@ -250,7 +275,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	        
 	        $columns = array();
 	        $col = array();
-	        $col[] = array ('text' => 'Gender : '.$row['GENDER'] ,
+	        $col[] = array ('text' => 'Gender : '.$row['PARTICIPANT_GENDER'] ,
 	        		'width' => '95',
 	        		'height'=>'5',
 	        		'align' => 'L',
@@ -260,7 +285,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	        
 	        $columns = array();
 	        $col = array();
-	        $col[] = array ('text' => 'Brith Date : '.$row['BDATE'] ,
+	        $col[] = array ('text' => 'Brith Date : '.$row['PARTICIPANT_BDATE'] ,
 	        		'width' => '95',
 	        		'height'=>'5',
 	        		'align' => 'L',
@@ -270,7 +295,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	        
 	        $columns = array();
 	        $col = array();
-	        $col[] = array ('text' => 'Mobile Number : '.$row['MOBILE_NO'] ,
+	        $col[] = array ('text' => 'Mobile Number : '.$row['PARTICIPANT_MOBILE_NO'] ,
 	        		'width' => '95',
 	        		'height'=>'5',
 	        		'align' => 'L',
@@ -280,7 +305,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	        
 	        $columns = array();
 	        $col = array();
-	        $col[] = array ('text' => 'Phone Number : '.$row['PHONE_NO'] ,
+	        $col[] = array ('text' => 'Phone Number : '.$row['PARTCIPANT_PHONE_NO'] ,
 	        		'width' => '95',
 	        		'height'=>'5',
 	        		'align' => 'L',
@@ -290,7 +315,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	        
 	        $columns = array();
 	        $col = array();
-	        $col[] = array ('text' => 'First Email : '.$row['EMAIL1'] ,
+	        $col[] = array ('text' => 'First Email : '.$row['PARTICIPANT_EMAIL1'] ,
 	        		'width' => '95',
 	        		'height'=>'5',
 	        		'align' => 'L',
@@ -300,7 +325,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	        
 	        $columns = array();
 	        $col = array();
-	        $col[] = array ('text' => 'Second Email : '.$row['EMAIL2'] ,
+	        $col[] = array ('text' => 'Second Email : '.$row['PARTICIPANT_EMAIL2'] ,
 	        		'width' => '95',
 	        		'height'=>'5',
 	        		'align' => 'L',
@@ -310,7 +335,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 			
 	        $columns = array();
 	        $col = array();
-	        $col[] = array ('text' => 'Facebook : '.$row['FB'] ,
+	        $col[] = array ('text' => 'Facebook : '.$row['PARTICIPANT_FB'] ,
 	        		'width' => '95',
 	        		'height'=>'5',
 	        		'align' => 'L',
@@ -320,7 +345,147 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	        
 	        $columns = array();
 	        $col = array();
-	        $col[] = array ('text' => 'Twitter : '.$row['TWITTER'] ,
+	        $col[] = array ('text' => 'Twitter : '.$row['PARTICIPANT_TWITTER'] ,
+	        		'width' => '95',
+	        		'height'=>'5',
+	        		'align' => 'L',
+	        		'linearea'=>'',);
+	        $columns[] = $col;
+	        $pdf->WriteTable($columns);
+	        
+	        $columns = array();
+	        $col = array();
+	        $col[] = array ('text' => 'Organization City : '.$row['ORGANIZATION_CITY_NAME'] ,
+	        		'width' => '95',
+	        		'height'=>'5',
+	        		'align' => 'L',
+	        		'linearea'=>'',);
+	        $columns[] = $col;
+	        $pdf->WriteTable($columns);
+	        
+	        $columns = array();
+	        $col = array();
+	        $col[] = array ('text' => 'Organization Province : '.$row['ORGANIZATION_PROVINCE_NAME'] ,
+	        		'width' => '95',
+	        		'height'=>'5',
+	        		'align' => 'L',
+	        		'linearea'=>'',);
+	        $columns[] = $col;
+	        $pdf->WriteTable($columns);
+	        
+	        $columns = array();
+	        $col = array();
+	        $col[] = array ('text' => 'Organization Country : '.$row['ORGANIZATION_COUNTRY_NAME'] ,
+	        		'width' => '95',
+	        		'height'=>'5',
+	        		'align' => 'L',
+	        		'linearea'=>'',);
+	        $columns[] = $col;
+	        $pdf->WriteTable($columns);
+	        
+	        $columns = array();
+	        $col = array();
+	        $col[] = array ('text' => 'Organization Name : '.$row['ORGANIZATION_NAME'] ,
+	        		'width' => '95',
+	        		'height'=>'5',
+	        		'align' => 'L',
+	        		'linearea'=>'',);
+	        $columns[] = $col;
+	        $pdf->WriteTable($columns);
+	        
+	        $columns = array();
+	        $col = array();
+	        $col[] = array ('text' => 'Organization Phone : '.$row['ORGANIZATION_PHONE_NO1'] ,
+	        		'width' => '95',
+	        		'height'=>'5',
+	        		'align' => 'L',
+	        		'linearea'=>'',);
+	        $columns[] = $col;
+	        $pdf->WriteTable($columns);
+	        
+	        $columns = array();
+	        $col = array();
+	        $col[] = array ('text' => 'Organization Second Phone : '.$row['ORGANIZATION_PHONE_NO2'] ,
+	        		'width' => '95',
+	        		'height'=>'5',
+	        		'align' => 'L',
+	        		'linearea'=>'',);
+	        $columns[] = $col;
+	        $pdf->WriteTable($columns);
+	        
+	        $columns = array();
+	        $col = array();
+	        $col[] = array ('text' => 'Organization Email : '.$row['ORGANIZATION_EMAIL1'] ,
+	        		'width' => '95',
+	        		'height'=>'5',
+	        		'align' => 'L',
+	        		'linearea'=>'',);
+	        $columns[] = $col;
+	        $pdf->WriteTable($columns);
+	        
+	        $columns = array();
+	        $col = array();
+	        $col[] = array ('text' => 'Organization Second Email : '.$row['ORGANIZATION_EMAIL2'] ,
+	        		'width' => '95',
+	        		'height'=>'5',
+	        		'align' => 'L',
+	        		'linearea'=>'',);
+	        $columns[] = $col;
+	        $pdf->WriteTable($columns);
+	        
+	        $columns = array();
+	        $col = array();
+	        $col[] = array ('text' => 'Organization Website : '.$row['ORGANIZATION_WEBSITE'] ,
+	        		'width' => '95',
+	        		'height'=>'5',
+	        		'align' => 'L',
+	        		'linearea'=>'',);
+	        $columns[] = $col;
+	        $pdf->WriteTable($columns);
+	        
+	        $columns = array();
+	        $col = array();
+	        $col[] = array ('text' => 'Organization Address : '.$row['ORGANIZATION_ADDRESS'] ,
+	        		'width' => '95',
+	        		'height'=>'5',
+	        		'align' => 'L',
+	        		'linearea'=>'',);
+	        $columns[] = $col;
+	        $pdf->WriteTable($columns);
+	        
+	        $columns = array();
+	        $col = array();
+	        $col[] = array ('text' => 'Position Name : '.$row['POSITION_NAME'] ,
+	        		'width' => '95',
+	        		'height'=>'5',
+	        		'align' => 'L',
+	        		'linearea'=>'',);
+	        $columns[] = $col;
+	        $pdf->WriteTable($columns);
+	        
+	        $columns = array();
+	        $col = array();
+	        $col[] = array ('text' => 'Pre Test : '.$row['PRE_TEST'] ,
+	        		'width' => '95',
+	        		'height'=>'5',
+	        		'align' => 'L',
+	        		'linearea'=>'',);
+	        $columns[] = $col;
+	        $pdf->WriteTable($columns);
+	        
+	        $columns = array();
+	        $col = array();
+	        $col[] = array ('text' => 'Post Test : '.$row['POST_TEST'] ,
+	        		'width' => '95',
+	        		'height'=>'5',
+	        		'align' => 'L',
+	        		'linearea'=>'',);
+	        $columns[] = $col;
+	        $pdf->WriteTable($columns);
+	        
+	        $columns = array();
+	        $col = array();
+	        $col[] = array ('text' => 'Diff : '.$row['DIFF'] ,
 	        		'width' => '95',
 	        		'height'=>'5',
 	        		'align' => 'L',
@@ -337,104 +502,12 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	        		'linearea'=>'',);
 	        $columns[] = $col;
 	        $pdf->WriteTable($columns);
+	        
 			}
-			//$pdf->Output('' . $filename . '.pdf','F');
 			$pdf->Output('pdf/participants/' . $filename . '.pdf','F');
 			
 			$this->_data['fileName'] = $filename . '.pdf';
 			$this->_data['path'] = 'pdf/participants/';
 		}
-		
-		
-// 		header("Pragma: public");
-// 		header('Content-Description: File Transfer');
-// 		header('Content-Transfer-Encoding: binary');
-// 		header("Cache-Control: no-store, no-cache, must-revalidate");
-// 		header("Cache-Control: pre-check=0, post-check=0, max-age=0");
-// 		header("Pragma: no-cache");
-// 		header("Expires: 0");
-//         header('Content-Encoding: none');
-//         header('Content-Type: application/pdf');  // Change this mime type if the file is not PDF
-//         header('Content-Disposition: attachment; filename="' . $filename . '.pdf"');
-
-
-// 		header('Content-type: application/pdf');
-// 		header('Content-Disposition: attachment; filename="' . $filename . '"');
-// 		header('Content-Transfer-Encoding: binary');
-// 		header('Content-Length: ' . filesize($file));
-// 		header('Accept-Ranges: bytes');
-		
-// 		 $this->getResponse()->setHeader('Content-Type','application/pdf; charset=binary')
-// 		  					->setHeader('Content-Disposition', 'attachment; filename="10.pdf"');
-//          $filename = $this->sanitizeFilename($this->getRequest()->getParam('filename'));
-//          $this->getResponse()->appendBody(file_get_contents($filename)); 
-		
-// 		header("Pragma: public");
-// 		header("Cache-Control: no-store, no-cache, must-revalidate");
-// 		header("Cache-Control: pre-check=0, post-check=0, max-age=0");
-// 		header("Pragma: no-cache");
-// 		header("Expires: 0");
-// 		header("Content-Transfer-Encoding: none");
-// 		header("Content-Type: application/pdf;");
-// 		header("Content-Disposition: attachment; filename=report2_opendebitsummary".date('Ymd').".pdf");
-// 		$this->getResponse()
-// 					->setHeader('Content-type', 'application/pdf; charset=binary')
-// 					->setHeader('Content-Disposition', 'attachment; filename="10.pdf"');
-// 		echo $this->getResponse->setContent(file_get_contents(APPLICATION_PATH . '/../public_html' . $id, 'FILE_PATH'));
-		
-// 		if ($this->_helper->contextSwitch()->getCurrentContext() == 'file') {
-// 			$this->getResponse()
-// 			->setHeader('Content-type', 'application/pdf; charset=binary')
-// 			->setHeader('Content-Disposition', 'attachment; filename="10.pdf"')
-// 			->setHeader('Content-length', filesize(APPLICATION_PATH . "/../public_html/pdf/10.pdf"))
-// 			->setHeader('Cache-control', 'private');
-// 			readfile(APPLICATION_PATH . '/../public_html/pdf/10.pdf');
-// 			$this->getResponse()->sendResponse();
-		
-// 		} else {
-// 			throw new Zend_Controller_Action_Exception('File not found', 404);
-// 		}
-
-// 		$pdf = new fpdf();
-// 		$pdf->SetFont('Arial','B',14);
-// 		$pdf->AddPage();
-// 		$filename ='ReportParticipant';
-		
-// 		$pdf->SetFont('Times','B',14);
-// 		$pdf->SetXY(10,17);
-		
-// 		try {
-// 			if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
-// 				$id = $this->_enc->base64decrypt($this->_posts['ID']);
-// 				if($this->_model->isExist('ID', $id)) {
-// 					$q = $this->_model->select()
-// 					->from('MS_PARTICIPANTS',array('*'))
-// 					->where('ID = ?', $id);
-// 					$q->query()->fetchAll();
-// 					$list = $q->query()->fetchAll();
-// 					//print_R($list);
-					
-// 					$columns = array();
-// 					$col = array();
-// 					foreach ($list as $row) {
-											
-// 					$col[] = array('text' => $row['FNAME'] , 'width' => '75','height'=>'25', 'align' => 'C','font_size'=>'45','font_style'=>'B','linearea'=>'');
-// 					$columns[] = $col;
-//                     print_r($columns);
-//                     print_r($row['FNAME']);echo "<br />";
-//                     $pdf->Cell(30,10,$row['FNAME'],1,'L',0);
-//                     $pdf->Output();
-								
-// 					}
-
-// 				} else {
-// 					$this->error(102);
-// 				}
-// 			} else {
-// 				$this->error(901);
-// 			}
-// 		} catch(Exception $e) {
-// 			$this->exception($e);
-// 		}
 	}
 }

@@ -17,7 +17,8 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 	MyIndo.getNameSpace('view.Master.Trainings.View'),
 	MyIndo.getNameSpace('view.Master.Venues.View'),
 
-	MyIndo.getNameSpace('view.Transaction.Trainings.View')
+	MyIndo.getNameSpace('view.Transaction.Trainings.View'),
+	MyIndo.getNameSpace('view.Report.View')
 	],
 	
 	stores: [
@@ -40,7 +41,9 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 
 	'Transaction.Trainings',
 	'Transaction.TrainingParticipants',
-	'Transaction.TrainingTrainers'
+	'Transaction.TrainingTrainers',
+	
+	'Report.Participants'
 	],
 
 
@@ -116,5 +119,10 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 	onTrTrainingsClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Transaction.Trainings'));
 		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Transaction.Trainings.View'));
+	},
+	
+	onReportParticipantsClicked: function(menuTitle, menuId, mainContent) {
+		var store = Ext.create(MyIndo.getNameSpace('store.Report.Participants'));
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Report.View'));
 	}
 });

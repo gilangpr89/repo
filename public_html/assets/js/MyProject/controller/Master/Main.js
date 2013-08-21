@@ -42,11 +42,11 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
 				break;
 				
 			/* Print */
-			case 'reportparticipants':
-				this.reportParticipants(record);
+			case 'report':
+				this.report(record);
 				break;
-			case 'report-participants-cancle':
-				this.reportarticipantsCancle(record);
+			case 'report-cancle':
+				this.reportCancle(record);
 				break;
 		}
 	},

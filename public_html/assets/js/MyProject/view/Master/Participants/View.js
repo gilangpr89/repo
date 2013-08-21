@@ -4,7 +4,7 @@ Ext.define(MyIndo.getNameSpace('view.Master.Participants.View'), {
 	border: false,
 	columns: [{
 		text: 'Name',
-		width: 263,
+		width: 163,
 		dataIndex: 'NAME'
 	},{
 		text: 'Surname',
