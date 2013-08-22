@@ -49,6 +49,12 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.Modules'), {
 				text: 'Delete Module',
 				iconCls: 'icon-cross',
 				action: 'training-delete-module'
+			}],
+			dockedItems: [{
+				xtype: 'pagingtoolbar',
+				displayInfo: true,
+				dock: 'bottom',
+				store: this.store
 			}]
 		});
 		this.callParent(arguments);

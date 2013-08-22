@@ -29,6 +29,7 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.UploadModule'), {
 		            emptyText: 'Select file..',
 		            fieldLabel: 'Module',
 		            name: 'FILE',
+		            id: 'upload-module-file-box',
 		            allowBlank: false
 				}]
 			}],

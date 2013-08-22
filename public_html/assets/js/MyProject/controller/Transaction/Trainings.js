@@ -402,10 +402,14 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 		var grid = parent.items.items[0];
 		var selected = grid.getSelectionModel().getSelection();
 		var me = this;
+		var store = Ext.create(MyIndo.getNameSpace('store.Transaction.TrainingModules'));
+		store.proxy.extraParams = {TRAINING_ID: selected[0].data.ID};
 		if(selected.length > 0) {
 			Ext.create(MyIndo.getNameSpace('view.Transaction.Trainings.Modules'), {
-				trainingId: selected[0].data.TRAINING_ID
+				trainingId: selected[0].data.ID,
+				store: store
 			}).show();
+			store.load();
 		} else {
 			Ext.Msg.alert('Application Error', 'You did not select any training.');
 		}
@@ -431,11 +435,10 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 			case 'cancel-upload-module':
 				record.up().up().close();
 				break;
-
-			default:
-				console.log(action);
 		}
 	},
+
+	/* Upload Module */
 
 	trainingUploadModule: function(record) {
 		var parent = record.up().up();
@@ -448,31 +451,98 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 		var parent = record.up().up();
 		var form = parent.items.items[0].getForm();
 		var me = this;
+		var allowedFileExtension = ['ppt','doc','docx','xls','xlsx','pdf'];
+		var allowed = false;
 		if(form.isValid()) {
 			Ext.Msg.confirm('Upload Module', 'Are you sure want to upload this module ?', function(btn) {
 				if(btn == 'yes') {
 					form.setValues({
 						TRAINING_ID: parent.trainingId
 					});
-					form.submit({
-						url: MyIndo.baseUrl('trtrainingmodules/request/create'),
-						success: function(form, record) {
-							var json = Ext.decode(record.response.responseText);
-							if(me.isLogin(json)) {
-								Ext.Msg.alert('Upload Module', 'File successfully uploaded.');
+					var fileNameExploded = Ext.getCmp('upload-module-file-box').value.split('.');
+					var fileExtension = fileNameExploded[fileNameExploded.length-1];
+					for(var i = 0; i < allowedFileExtension.length; i++) {
+						if(allowedFileExtension[i] == fileExtension) {
+							allowed = true;
+						}
+					}
+					if(allowed) {
+						me.showLoadingWindow();
+						form.submit({
+							url: MyIndo.baseUrl('trtrainingmodules/request/create'),
+							success: function(form, record) {
+								var json = Ext.decode(record.response.responseText);
+								if(me.isLogin(json)) {
+									Ext.getCmp('training-modules-grid').getStore().load();
+									Ext.Msg.alert('Upload Module', 'File successfully uploaded.');
+								}
+								me.closeLoadingWindow();
+							},
+							failure: function(form, record) {
+								var json = Ext.decode(record.response.responseText);
+								if(me.isLogin(json)) {
+									Ext.Msg.alert('Application Error', '<strong>Error : </strong>[' + json.error_code + '] ' + json.error_message);
+								}
+								me.closeLoadingWindow();
 							}
-						},
-						failure: function(form, record) {
-							var json = Ext.decode(record.response.responseText);
+						});
+					} else {
+						Ext.Msg.alert('Application Error', 'Not allowed file extension \'' + fileExtension + '\'');
+					}
+				}
+			});
+		} else {
+			Ext.Msg.alert('Application Error', 'Please complete form first.');
+		}
+	},
+
+	/* End of : Uplaod Module */
+
+	/* Download Module */
+	trainingDownloadModule: function(record) {
+		try {
+			var parent = record.up().up();
+			var grid = parent.items.get(0);
+			var selected = grid.getSelectionModel().getSelection();
+			if(selected.length > 0) {
+				document.location = MyIndo.baseUrl(selected[0].data.FILE_PATH);
+			} else {
+				Ext.Msg.alert('Application Error', 'You did not select any module.');
+			}
+		} catch(e) {
+			Ext.Msg.alert('Application Error', e);
+		}
+	},
+	/* End of : Download Module */
+
+	/* Delete Module */
+	trainingDeleteModule: function(record) {
+		var parent = record.up().up();
+		var grid = parent.items.get(0);
+		var selected = grid.getSelectionModel().getSelection();
+		var me = this;
+		if(selected.length > 0) {
+			Ext.Msg.confirm('Delete Module', 'Are you sure want to delete this module ?', function(btn) {
+				if(btn == 'yes') {
+					me.showLoadingWindow();
+					Ext.Ajax.request({
+						url: MyIndo.baseUrl('trtrainingmodules/request/delete'),
+						params: selected[0].data,
+						success: function(r) {
+							var json = Ext.decode(r.responseText);
+							me.closeLoadingWindow();
 							if(me.isLogin(json)) {
-								Ext.Msg.alert('Application Error', '<strong>Error : </strong>[' + json.error_code + '] ' + json.error_message);
+								if(me.isSuccess(json)) {
+									Ext.getCmp('training-modules-grid').getStore().load();
+									Ext.Msg.alert('Delete Module', 'Module successfully deleted.');
+								}
 							}
 						}
 					});
 				}
 			});
 		} else {
-			Ext.Msg.alert('Application Error', 'Please complete form first.');
+			Ext.Msg.alert('Application Error', 'You did not select any module.');
 		}
 	}
 });

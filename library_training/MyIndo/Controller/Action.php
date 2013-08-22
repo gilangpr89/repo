@@ -123,7 +123,7 @@ Class MyIndo_Controller_Action extends Zend_Controller_Action
 
 		// Set default $_order :
 		if(isset($this->_posts['sort'])) {
-			$sort = Zend_Json::decode($this->_posts['sort']);
+			$sort = Zend_Json::decode(str_replace("\\","",$this->_posts['sort']));
 			if(isset($sort[0]['property']) && isset($sort[0]['direction'])) {
 				$this->_order = $sort[0]['property'] . ' ' . $sort[0]['direction'];
 			} else {
