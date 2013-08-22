@@ -4,7 +4,7 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.View'), {
 	border: false,
 	columns: [{
 		text: 'Training Name',
-		width: 200,
+		width: 213,
 		dataIndex: 'TRAINING_NAME'
 	},{
 		text: 'Area Level',

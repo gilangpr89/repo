@@ -155,6 +155,7 @@ Ext.define('MyIndo.controller.Menu', {
 			var vals = form.getValues();
 			if(typeof(vals.OLD_PASSWORD) !== 'undefined' && typeof(vals.NEW_PASSWORD) !== 'undefined' && typeof(vals.NEW_PASSWORD_CONF) !== 'undefined') {
 				if(vals.NEW_PASSWORD === vals.NEW_PASSWORD_CONF) {
+					me.showLoadingWindow();
 					form.submit({
 						url: MyIndo.baseUrl('users/login/change-password'),
 						success: function(data, record) {
@@ -162,12 +163,14 @@ Ext.define('MyIndo.controller.Menu', {
 							if(me.isLogin(json)) {
 								Ext.Msg.alert('Change Password', 'Password successfully changed.');
 							}
+							me.closeLoadingWindow();
 						},
 						failure: function(data, record) {
 							var json = Ext.decode(record.response.responseText);
 							if(me.isLogin(json)) {
 								Ext.Msg.alert('Application Error', '<strong>Error</strong> : [' + json.error_code + '] ' + json.error_message);
 							}
+							me.closeLoadingWindow();
 						}
 					});
 				} else {
