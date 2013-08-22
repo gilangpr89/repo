@@ -14,42 +14,6 @@ class Report_RequestController extends MyIndo_Controller_Action
 		$this->_modelView = new trainingparticipants_Model_TrainingParticipantsView();
 	}
 
-	public function createAction()
-	{
-		try {
-			if(isset($this->_posts['NAME'])) {
-					
-				$countryId = (isset($this->_posts['COUNTRY_ID'])) ? $this->_enc->base64decrypt($this->_posts['COUNTRY_ID']) : '';
-				
-				if($this->_modelCountry->isExists(array($this->_modelCountry->getAdapter()->quoteInto('ID = ?', $countryId)))) {
-
-					if(!$this->_model->isExists(array(
-						$this->_model->getAdapter()->quoteInto('COUNTRY_ID = ?', $countryId),
-						$this->_model->getAdapter()->quoteInto('NAME = ?', $this->_posts['NAME'])
-						))) {
-
-							$this->_model->insert(array(
-								'COUNTRY_ID' => $countryId,
-								'NAME' => $this->_posts['NAME'],
-								'CREATED_DATE' => $this->_date
-								));
-
-					} else {
-						$this->error(101, $this->_unique . ' already registered, please input another name.');
-					}
-					
-				} else {
-					$this->error(102, 'Invalid country.' . $countryId);
-				}
-
-			} else {
-				$this->error(901);
-			}
-		} catch(Exception $e) {
-			$this->exception($e);
-		}
-	}
-
     public function cboAction()
 	{
 	     try {
@@ -104,24 +68,5 @@ class Report_RequestController extends MyIndo_Controller_Action
  		} catch (Exception $e) {
  			$this->exception($e);
  		}
-	}
-
-
-	public function destroyAction()
-	{
-		try {
-			if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
-				$id = $this->_enc->base64decrypt($this->_posts['ID']);
-				if($this->_model->isExist('ID', $id)) {
-					$this->_model->delete($this->_model->getAdapter()->quoteInto('ID = ?', $id));
-				} else {
-					$this->error(102);
-				}
-			} else {
-				$this->error(901);
-			}
-		} catch(Exception $e) {
-			$this->exception($e);
-		}
 	}
 }
