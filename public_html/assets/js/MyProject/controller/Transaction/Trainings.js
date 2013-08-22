@@ -73,6 +73,7 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 
 	manageParticipants: function(record) {
 		var parent = record.up().up();
+		console.log(parent);console.log('aaaaaa');
 		var selected = parent.getSelectionModel().getSelection();
 		if(selected.length > 0) {
 			var store = Ext.create(MyIndo.getNameSpace('store.Transaction.TrainingParticipants'));

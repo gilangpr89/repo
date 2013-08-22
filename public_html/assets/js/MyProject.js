@@ -25,7 +25,7 @@ Ext.application({
 	'Administrator.Groups',
 	'Administrator.MenuManagements',
 
-	/* Master */
+	/* Master Controller */
 	'Master.City',
 	'Master.AreaLevels',
 	'Master.Beneficiaries',
@@ -40,8 +40,10 @@ Ext.application({
 	'Master.Trainings',
 	'Master.Venues',
 
-	/* Transaction */
-	'Transaction.Trainings'
+	/* Transaction Controller*/
+	'Transaction.Trainings',
+	'Report.CapacityProfile.Individual.Cpindividual',
+	'Report.CapacityProfile.Cbo.Cpcbo'
 	],
 
 	autoCreateViewport: true,

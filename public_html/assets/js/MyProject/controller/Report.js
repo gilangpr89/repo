@@ -1,33 +1,17 @@
-Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
+Ext.define(MyIndo.getNameSpace('controller.Report'), {
 	extend: 'MyIndo.app.Controller',
 
 	onButtonClicked: function(record) {
 		switch(record.action) {
-			/* Add */
-			case 'add':
-				this.add(record);
+			/* Search */
+			case 'search':
+				this.search(record);
 				break;
-			case 'add-save':
-				this.addSave(record);
+			case 'start-search':
+				this.startSearch(record);
 				break;
-			case 'add-cancel':
-				this.addCancel(record);
-				break;
-
-			/* Edit */
-			case 'update':
-				this.update(record);
-				break;
-			case 'update-save':
-				this.updateSave(record);
-				break;
-			case 'update-cancel':
-				this.updateCancel(record);
-				break;
-
-			/* Delete */
-			case 'delete':
-				this.delete(record);
+			case 'search-cancel':
+				this.SearchCancel(record);
 				break;
 
 			/* Filter */
@@ -41,31 +25,81 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
 				this.filterCancel(record);
 				break;
 				
-			/* Print */
-			case 'report':
-				this.report(record);
+			/* print */
+			case 'print':
+				this.print(record);
 				break;
-			case 'report-cancle':
-				this.reportCancle(record);
+			case 'print-cancel':
+				this.printCancel(record);
+				break;
+			
+			case 'onManageReportindividual':
+				this.onManageReportindividual(record);
 				break;
 		}
 	},
 
 	/* Add */
-
-	add: function(record) {
+	
+	onManageReportindividual: function(record) {
 		var parent = record.up().up();
-		var actions = parent.actions;
-		var addWindow = Ext.create(actions.add);
-		addWindow.show();
+		var grid = parent.items.items[0];
+		var get = grid.getStore().data.items;
+		console.log(grid);console.log('aaaa');
+		//console.log(get);console.log('aaaa');
+		var grid = parent.items.items[0];
+		var selected = grid.getSelectionModel().getSelection();
+		//console.log(selected);console.log('aaaa');
+		var me = this;
+		var ID = parent.id;
+	  if(selected.length > 0) {
+			Ext.Msg.confirm('Print Participant', 'Are you sure want to print ?', function(btn) {
+				if(btn == 'yes') {
+					me.showLoadingWindow();
+					Ext.Ajax.request({
+						url: MyIndo.siteUrl('report/request/print'),
+						params: selected[0].data,
+						success: function(r) {
+							var json = Ext.decode(r.responseText);
+							me.closeLoadingWindow();
+							if(me.isLogin(json)) {
+								if(me.isSuccess(json)) {
+									var mainContent = Ext.getCmp('report-participant-grid');
+									var store = mainContent.getStore();
+									var ID = store.proxy.extraParams.ID;
+									store.proxy.extraParams = {};
+									store.proxy.extraParams.ID = ID;
+									store.load();
+									Ext.Msg.alert('Print', 'Participant successfully Printed.');
+									window.open(MyIndo.siteUrl(json.data.path + json.data.fileName));
+								}
+							}
+						}
+					})
+				}
+			});
+		} else {
+			Ext.Msg.alert('Application Error', 'You did not select any participant.');
+		}
+	},
+	
+	aaa: function() {
+		alert('asdasd');
 	},
 
-	addSave: function(record) {
+	search: function(record) {
+		var parent = record.up().up();
+		var actions = parent.actions;
+		var searchWindow = Ext.create(actions.search);
+		searchWindow.show();
+	},
+
+	startSearch: function(record) {
 		var parent = record.up().up();
 		var form = parent.items.items[0].getForm();
 		var me = this;
 		if(form.isValid()) {
-			Ext.Msg.confirm('Add Confirmation', 'Are you sure want to save this data ?', function(btn) {
+			Ext.Msg.confirm('Add Confirmation', 'Search Data Now ?', function(btn) {
 				if(btn == 'yes') {
 					me.showLoadingWindow();
 					form.submit({
@@ -73,11 +107,11 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
 							var json = Ext.decode(res.response.responseText);
 							me.closeLoadingWindow();
 							if(me.isLogin(json)) {
-								Ext.Msg.alert('Message', 'Data successfully saved.');
+								//Ext.Msg.alert('Message', 'Data successfully saved.');
 								var mainContent = Ext.getCmp('main-content');
 								var store = mainContent.getActiveTab().getStore();
 								store.proxy.extraParams = {};
-								store.load();
+								//store.load();
 								form.reset();
 							}
 						},
@@ -252,8 +286,6 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
 	},
 	/* End of : Filter */
 	
-	/* Print */
-	
 	print: function(record) {
 		var panel = Ext.getCmp('main-content');
 		var activePanel = panel.getActiveTab();
@@ -261,15 +293,13 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
 		var extraParams = store.proxy.extraParams;
 		var parent = record.up().up();
 		var actions = parent.actions;
-		var addWindow = Ext.create(actions.add);
-		addWindow.show();
-		
+		var filterWindow = Ext.create(actions.print);
+		var form = filterWindow.items.items[0].getForm();
+		form.setValues(extraParams);
+		filterWindow.show();
 	},
 	
 	printCancel: function(record) {
 		record.up().up().close();
 	}
-	
-	/* End Print */
-	
 });
