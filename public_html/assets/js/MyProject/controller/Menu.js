@@ -21,7 +21,7 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 	MyIndo.getNameSpace('view.Report.Participants.View'),
 	MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.Search'),
 	MyIndo.getNameSpace('view.Report.CapacityProfile.Cbo.View'),
-	MyIndo.getNameSpace('view.Report.CapacityProfile.Sr.View')
+//	MyIndo.getNameSpace('view.Report.CapacityProfile.Sr.View')
 	],
 	
 	stores: [
@@ -50,7 +50,7 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 	'Report.Participants',
 	'Report.CapacityProfile.Individuals',
 	'Report.CapacityProfile.Cbos',
-	'Report.CapacityProfile.Srs'
+//	'Report.CapacityProfile.Srs'
 	],
 
 
