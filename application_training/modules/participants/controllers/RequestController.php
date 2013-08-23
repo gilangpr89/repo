@@ -1,6 +1,6 @@
 <?php
-require_once''.APPLICATION_PATH.'/../library/fpdf/fpdf.php';
-require_once''.APPLICATION_PATH.'/../library/fpdf/myfpdf.php';
+require_once''.APPLICATION_PATH.'/../library_training/fpdf/fpdf.php';
+require_once''.APPLICATION_PATH.'/../library_training/fpdf/myfpdf.php';
 class Participants_RequestController extends MyIndo_Controller_Action
 {
 	protected $_unique;

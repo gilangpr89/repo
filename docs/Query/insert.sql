@@ -1,0 +1,4 @@
+/* insert menu report */
+INSERT INTO `ihp_training`.`MENUS` (`MENU_ID`, `MENU_TITLE`, `ACTIVE`, `INDEX`, `ACTION`, `TYPE`, `ICONCLS`, `PARENT_ID`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES (NULL, 'Report', '1', '3', NULL, 'MENU', '', '0', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+/* insert submenu report participants */
+INSERT INTO `ihp_training`.`MENUS` (`MENU_ID`, `MENU_TITLE`, `ACTIVE`, `INDEX`, `ACTION`, `TYPE`, `ICONCLS`, `PARENT_ID`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES (NULL, 'Participant', '1', '0', 'onReportParticipantsClicked', 'SUBMENU', '', '95', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

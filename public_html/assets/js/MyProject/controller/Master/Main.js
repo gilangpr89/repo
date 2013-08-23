@@ -261,10 +261,9 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
 		var extraParams = store.proxy.extraParams;
 		var parent = record.up().up();
 		var actions = parent.actions;
-		var filterWindow = Ext.create(actions.print);
-		var form = filterWindow.items.items[0].getForm();
-		form.setValues(extraParams);
-		filterWindow.show();
+		var addWindow = Ext.create(actions.add);
+		addWindow.show();
+		
 	},
 	
 	printCancel: function(record) {

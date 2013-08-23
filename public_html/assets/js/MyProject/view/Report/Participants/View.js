@@ -1,4 +1,4 @@
-Ext.define(MyIndo.getNameSpace('view.Report.View'), {
+Ext.define(MyIndo.getNameSpace('view.Report.Participants.View'), {
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.reportparticipantsview',
 	border: false,
@@ -29,8 +29,7 @@ Ext.define(MyIndo.getNameSpace('view.Report.View'), {
 				text: 'Organization Country',
 				width: 80,
 				align: 'center',
-				dataIndex: 'ORGANIZATION_COUNTRY_NAME',
-				hidden: true
+				dataIndex: 'ORGANIZATION_COUNTRY_NAME'
 			},{
 				text: 'Organization',
 				width: 60,

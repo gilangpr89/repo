@@ -18,7 +18,10 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 	MyIndo.getNameSpace('view.Master.Venues.View'),
 
 	MyIndo.getNameSpace('view.Transaction.Trainings.View'),
-	MyIndo.getNameSpace('view.Report.View')
+	MyIndo.getNameSpace('view.Report.Participants.View'),
+	MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.Search'),
+	MyIndo.getNameSpace('view.Report.CapacityProfile.Cbo.View'),
+	MyIndo.getNameSpace('view.Report.CapacityProfile.Sr.View')
 	],
 	
 	stores: [
@@ -44,7 +47,10 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 	'Transaction.TrainingTrainers',
 	'Transaction.TrainingModules',
 	
-	'Report.Participants'
+	'Report.Participants',
+	'Report.CapacityProfile.Individuals',
+	'Report.CapacityProfile.Cbos',
+	'Report.CapacityProfile.Srs'
 	],
 
 
@@ -124,6 +130,21 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 	
 	onReportParticipantsClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Report.Participants'));
-		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Report.View'));
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Report.Participants.View'));
+	},
+	
+	onReportCapacityProfileIndividualClicked: function(menuTitle, menuId, mainContent) {
+		var store = Ext.create(MyIndo.getNameSpace('store.Report.CapacityProfile.Individuals'));
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.View'));
+	},
+	
+	onReportCapacityProfileCboClicked: function(menuTitle, menuId, mainContent) {	
+		var store = Ext.create(MyIndo.getNameSpace('store.Report.CapacityProfile.Cbos'));
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Report.CapacityProfile.Cbo.View'));
+	},
+	
+		onReportCapacityProfileSrClicked: function(menuTitle, menuId, mainContent) {	
+			var store = Ext.create(MyIndo.getNameSpace('store.Report.CapacityProfile.Srs'));
+			this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Report.CapacityProfile.Sr.View'));	
 	}
 });
