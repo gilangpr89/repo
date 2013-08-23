@@ -4,7 +4,7 @@ Ext.define(MyIndo.getNameSpace('store.Report.CapacityProfile.Individuals'), {
 	proxy: {
 		type: 'ajax',
 		api: {
-			read: MyIndo.siteUrl('report/request/individual')
+			read: MyIndo.siteUrl('reports/request/individual')
 		},
 		actionMethods: MyIndo.config.defaultActionMethods,
 		reader: MyIndo.config.defaultReader

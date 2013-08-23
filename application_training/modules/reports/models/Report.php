@@ -1,6 +1,6 @@
 <?php
 
-class Report_Model_Report extends MyIndo_Db_Table_Abstract
+class Reports_Model_Report extends MyIndo_Db_Table_Abstract
 {
 	protected $_name = 'TR_TRAININGS';
 	protected $_primary = array('ID','TRAINING_ID');

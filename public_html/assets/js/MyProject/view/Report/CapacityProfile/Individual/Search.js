@@ -42,7 +42,7 @@ Ext.define(MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.Search'),
 				layout: 'form',
 				border: false,
 				bodyPadding: '5 5 5 5',
-				url: MyIndo.siteUrl('report/request/individual'),
+				url: MyIndo.siteUrl('reports/request/individual'),
 				items: [{
 					fieldLabel:'Start Date',
 					xtype: 'datefield',
