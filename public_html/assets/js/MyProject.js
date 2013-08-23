@@ -43,7 +43,8 @@ Ext.application({
 	/* Transaction Controller*/
 	'Transaction.Trainings',
 	'Report.CapacityProfile.Individual.Cpindividual',
-	'Report.CapacityProfile.Cbo.Cpcbo'
+	'Report.CapacityProfile.Cbo.Cpcbo',
+	'Report.CapacityProfile.Sr.Csr'
 	],
 
 	autoCreateViewport: true,
