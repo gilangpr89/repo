@@ -11,7 +11,7 @@ class Trtrainingmodules_RequestController extends MyIndo_Controller_Action
 	{
 		$this->_model = new trtrainingmodules_Model_TrainingModules();
 		$this->_upload_path = APPLICATION_PATH . '/../public_html/uploads/modules/';
-		$this->_allowed_file_extension = array('ppt','doc','docx','xls','xlsx','pdf');
+		$this->_allowed_file_extension = array('ppt','pptx','doc','docx','xls','xlsx','pdf');
 		$this->_modelTraining = new trtrainings_Model_TrTrainings();
 		$this->_max_file_size = 10 * 1024 * 1024;
 	}

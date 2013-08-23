@@ -451,7 +451,7 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 		var parent = record.up().up();
 		var form = parent.items.items[0].getForm();
 		var me = this;
-		var allowedFileExtension = ['ppt','doc','docx','xls','xlsx','pdf'];
+		var allowedFileExtension = ['ppt', 'pptx', 'doc','docx','xls','xlsx','pdf'];
 		var allowed = false;
 		if(form.isValid()) {
 			Ext.Msg.confirm('Upload Module', 'Are you sure want to upload this module ?', function(btn) {
@@ -467,23 +467,21 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 						}
 					}
 					if(allowed) {
-						me.showLoadingWindow();
 						form.submit({
 							url: MyIndo.baseUrl('trtrainingmodules/request/create'),
+							waitMsg: 'Uploading file, please wait..',
 							success: function(form, record) {
 								var json = Ext.decode(record.response.responseText);
 								if(me.isLogin(json)) {
 									Ext.getCmp('training-modules-grid').getStore().load();
 									Ext.Msg.alert('Upload Module', 'File successfully uploaded.');
 								}
-								me.closeLoadingWindow();
 							},
 							failure: function(form, record) {
 								var json = Ext.decode(record.response.responseText);
 								if(me.isLogin(json)) {
 									Ext.Msg.alert('Application Error', '<strong>Error : </strong>[' + json.error_code + '] ' + json.error_message);
 								}
-								me.closeLoadingWindow();
 							}
 						});
 					} else {

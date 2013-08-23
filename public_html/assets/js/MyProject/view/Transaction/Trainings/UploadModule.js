@@ -15,6 +15,7 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.UploadModule'), {
 				layout: 'form',
 				bodyPadding: '5',
 				border: false,
+				waitMsgTarget: true,
 				items: [{
 					xtype: 'hidden',
 					name: 'TRAINING_ID'
