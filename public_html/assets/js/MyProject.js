@@ -42,8 +42,11 @@ Ext.application({
 
 	/* Transaction Controller*/
 	'Transaction.Trainings',
-	'Report.CapacityProfile.Individual.Cpindividual',
-	'Report.CapacityProfile.Cbo.Cpcbo',
+	
+	/* Reports */
+	'Report.CapacityProfile.Individual'
+//	'Report.CapacityProfile.Individual.Cpindividual',
+//	'Report.CapacityProfile.Cbo.Cpcbo',
 //	'Report.CapacityProfile.Sr.Csr'
 	],
 

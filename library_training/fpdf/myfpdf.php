@@ -34,7 +34,7 @@ class myfpdf extends FPDF
 		$scaleY			=	17;
 		
 		//Logo
-		$this->Image(LOGOREPORT_PATH. '/library/fpdf/hivos.png',$positionX,$positionY,$scaleX,$scaleY);
+		$this->Image(LOGOREPORT_PATH. '/library_training/fpdf/hivos.png',$positionX,$positionY,$scaleX,$scaleY);
 		//Arial bold 15
 		$this->SetFont('Arial','B',15);
 		//pindah ke posisi ke tengah untuk membuat judul

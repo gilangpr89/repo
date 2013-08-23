@@ -47,8 +47,11 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 	'Transaction.TrainingTrainers',
 	'Transaction.TrainingModules',
 	
+	/* Reports */
 	'Report.Participants',
 	'Report.CapacityProfile.Individuals',
+	'Report.CapacityProfile.IndividualTrainings',
+	
 	'Report.CapacityProfile.Cbos',
 //	'Report.CapacityProfile.Srs'
 	],
