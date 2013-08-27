@@ -3,11 +3,14 @@
 class Reports_RequestController extends MyIndo_Controller_Action
 {
 	protected $_unique;
-	protected $_model;
+	protected $_modelTrtrainingView;
 	protected $_modelTraining;
 	protected $_modelView;
 	protected $_modelParticipants;
 	protected $_modelParticipantsView;
+	protected $_modelOrganizationsView;
+	protected $_modelCountryView;
+	protected $_modelRegionView;
 
 	public function init()
 	{
@@ -17,23 +20,74 @@ class Reports_RequestController extends MyIndo_Controller_Action
 		
 		$this->_modelParticipants = new participants_Model_Participants();
 		$this->_modelParticipantsView = new participants_Model_ParticipantsView();
+		$this->_modelOrganizationsView = new organizations_Model_OrganizationsView();
+		$this->_modelCountryView = new countries_Model_Country();
+		$this->_modelRegionView = new arealevels_Model_AreaLevelsView();
+		
 	}
-
-    public function cboAction()
-	{
-	     try {
-	     	
-			if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
-				$Id = (int)$this->_enc->base64decrypt($this->_posts['ID']);
-				if($this->_modelDetail->isExist('TRAINING_ID', $Id)) {
-					$this->_where[] = $this->_modelTraining->getAdapter()->quoteInto('TRAINING_ID = ?', $Id);
-				} 
+	
+	public function trainingAction() {
+		try {
+			if(isset($this->_posts['TRAINING_NAME'])) {
+				$name = $this->_posts['TRAINING_NAME'];
+				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('TRAINING_NAME LIKE ?', '%' . $name . '%');
 			}
-			
-			$list = $this->_modelTraining->getList($this->_limit, $this->_start, $this->_order);
-			
-			$this->_data['items'] = $this->_modelTraining->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-			$this->_data['totalCount'] = $this->_modelTraining->count($this->_where);
+			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+			$this->_data['totalCount'] = $this->_modelView->count($this->_where);
+		} catch (Exception $e) {
+			$this->exception($e);
+		}
+	}
+    
+	/* Get List Organization */
+    public function cboAction()
+	{   
+		try {
+			if(isset($this->_posts['NAME'])) {
+			$name = $this->_posts['NAME'];
+			$this->_where[] = $this->_modelOrganizationsView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $name . '%');
+			}
+			$this->_data['items'] = $this->_modelOrganizationsView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+			$this->_data['totalCount'] = $this->_modelOrganizationsView->count($this->_where);
+		} catch(Exception $e) {
+			$this->exception($e);
+		}
+	}
+	
+	/* Get List Organization Training */
+	public function cboTrainingsAction()
+	{
+		try {
+			$list = array();
+			if(isset($this->_posts['ORGANIZATION_ID']) && !empty($this->_posts['ORGANIZATION_ID'])) {
+				$id = $this->_enc->base64decrypt($this->_posts['ORGANIZATION_ID']);
+				if($this->_modelTraining->isExist('ORGANIZATION_ID', $id)) {
+						
+					$q = $this->_modelTraining->select()->where('ORGANIZATION_ID = ?', $id);
+					$list = $q->query()->fetchAll();
+					print_r($list);
+					if(count($list) > 0) {
+						$trainingIds = array();
+						foreach($list as $k => $v) {
+							if(!in_array($v['TRAINING_ID'], $trainingIds)) {
+								$trainingIds[] = $v['TRAINING_ID'];
+							}
+						}
+	
+						$this->_where[] = $this->_model->getAdapter()->quoteInto('TRAINING_ID IN (?)', $trainingIds);
+	
+						$list = $this->_model->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+						$this->_totalCount = $this->_model->count($this->_where);
+	
+					}
+				} else {
+					$this->error(101, 'Invalid Cbo.');
+				}
+			} else {
+				$this->error(101, 'Invalid Cbo.');
+			}
+			$this->_data['items'] = $list;
+			$this->_data['totalCount'] = $this->_totalCount;
 		} catch(Exception $e) {
 			$this->exception($e);
 		}
@@ -41,8 +95,12 @@ class Reports_RequestController extends MyIndo_Controller_Action
 	
 	/* Get List Participant */
 	public function individualAction()
-	{
+	{		
 	     try {
+	     	if(isset($this->_posts['NAME'])) {
+	     		$name = $this->_posts['NAME'];
+	     		$this->_where[] = $this->_modelParticipantsView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $name . '%');
+	     	}
 			$this->_data['items'] = $this->_modelParticipantsView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
 			$this->_data['totalCount'] = $this->_modelParticipantsView->count($this->_where);
 		} catch(Exception $e) {
@@ -88,12 +146,113 @@ class Reports_RequestController extends MyIndo_Controller_Action
 			$this->exception($e);
 		}
 	}
+	
+	public function srcountryAction()
+	{
+		try {
+			if(isset($this->_posts['NAME'])) {
+				$name = $this->_posts['NAME'];
+				$this->_where[] = $this->_modelCountryView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $name . '%');
+			}
+			$this->_data['items'] = $this->_modelCountryView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+			$this->_data['totalCount'] = $this->_modelCountryView->count($this->_where);
+		} catch(Exception $e) {
+			$this->exception($e);
+		}
+	}
+	
+	/* Get List Organization Training */
+	public function srcountryTrainingsAction()
+	{
+		try {
+			$list = array();
+			if(isset($this->_posts['ORGANIZATION_COUNTRY_ID']) && !empty($this->_posts['ORGANIZATION_COUNTRY_ID'])) {
+				$id = $this->_enc->base64decrypt($this->_posts['ORGANIZATION_COUNTRY_ID']);
+				if($this->_modelTraining->isExist('ORGANIZATION_COUNTRY_ID', $id)) {
+	
+					$q = $this->_modelTraining->select()->where('ORGANIZATION_COUNTRY_ID = ?', $id);
+					$list = $q->query()->fetchAll();
+					if(count($list) > 0) {
+						$trainingIds = array();
+						foreach($list as $k => $v) {
+							if(!in_array($v['TRAINING_ID'], $trainingIds)) {
+								$trainingIds[] = $v['TRAINING_ID'];
+							}
+						}
+	
+						$this->_where[] = $this->_model->getAdapter()->quoteInto('TRAINING_ID IN (?)', $trainingIds);
+	
+						$list = $this->_model->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+						$this->_totalCount = $this->_model->count($this->_where);
+	
+					}
+				} else {
+					$this->error(101, 'Invalid Country.');
+				}
+			} else {
+				$this->error(101, 'Invalid Country.');
+			}
+			$this->_data['items'] = $list;
+			$this->_data['totalCount'] = $this->_totalCount;
+		} catch(Exception $e) {
+			$this->exception($e);
+		}
+	}
 
+	public function regionAction()
+	{
+		try {
+			if(isset($this->_posts['NAME'])) {
+				$name = $this->_posts['NAME'];
+				$this->_where[] = $this->_modelRegionView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $name . '%');
+			}
+			$this->_data['items'] = $this->_modelRegionView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+			$this->_data['totalCount'] = $this->_modelRegionView->count($this->_where);
+		} catch(Exception $e) {
+			$this->exception($e);
+		}
+	}
+	
+	public function regionTrainingsAction()
+	{
+		try {
+			$list = array();
+			if(isset($this->_posts['REGION_ID']) && !empty($this->_posts['REGION_ID'])) {
+				$id = $this->_enc->base64decrypt($this->_posts['REGION_ID']);
+				if($this->_modelRegionView->isExist('ID', $id)) {
+					$q = $this->_model->select()->where('AREA_LEVEL_ID = ?', $id);
+					$list = $q->query()->fetchAll();
+					if(count($list) > 0) {
+						$trainingIds = array();
+						foreach($list as $k => $v) {
+							if(!in_array($v['TRAINING_ID'], $trainingIds)) {
+								$trainingIds[] = $v['TRAINING_ID'];
+							}
+						}
+	
+						$this->_where[] = $this->_model->getAdapter()->quoteInto('TRAINING_ID IN (?)', $trainingIds);
+	
+						$list = $this->_model->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+						$this->_totalCount = $this->_model->count($this->_where);
+					}
+				} else {
+					$this->error(101, 'Invalid Region.');
+				}
+			} else {
+				$this->error(101, 'Invalid Region.');
+			}
+			$this->_data['items'] = $list;
+			$this->_data['totalCount'] = $this->_totalCount;
+		} catch(Exception $e) {
+			$this->exception($e);
+		}
+	}
+	
 	public function searchAction()
 	{
         $start_date = $this->_posts['SDATE'];
  		$end_date = $this->_posts['EDATE'];
- 		
+
  		try {
  		   $id = $this->_model->getTrainingid($start_date, $end_date);
  		   $this->_where[] = $this->_modelView->getAdapter()->quoteInto('TRAINING_ID IN(?)', $id);

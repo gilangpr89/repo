@@ -2,7 +2,11 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.View'), {
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.trtrainingsview',
 	border: false,
-	columns: [{
+	columns: [{text: 'Start Date',
+		width:150,
+		dataIndex:'SDATE',
+		renderer: Ext.util.Format.dateRenderer('d F Y')
+	},{	
 		text: 'Training Name',
 		width: 213,
 		dataIndex: 'TRAINING_NAME'

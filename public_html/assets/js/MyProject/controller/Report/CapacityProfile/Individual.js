@@ -3,6 +3,7 @@ Ext.define(MyIndo.getNameSpace('controller.Report.CapacityProfile.Individual'), 
 	
 	requires: [
 	MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.View'),
+	MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.Filter'),
 	MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.Detail')
 	],
 	
@@ -13,6 +14,9 @@ Ext.define(MyIndo.getNameSpace('controller.Report.CapacityProfile.Individual'), 
 			},
 			'capacityprofileindividualdetail button': {
 				click: this.onButtonClicked
+			},
+			'capacityprofileindividualfilterwindow button':{
+				click:this.onButtonClicked
 			}
 //			'individusearchwindow button': {
 //				click: this.onButtonClicked
@@ -28,10 +32,9 @@ Ext.define(MyIndo.getNameSpace('controller.Report.CapacityProfile.Individual'), 
 	
 	printIndividual: function(record) {
 		var parent = record.up().up();
-		var grid = parent.items.get(0)
+		var grid = parent.items.get(0);
 		var selected = grid.getSelectionModel().getSelection();
 		var store = Ext.create(MyIndo.getNameSpace('store.Report.CapacityProfile.IndividualTrainings'));
-		
 		if(selected.length > 0) {
 			store.proxy.extraParams = {
 				PARTICIPANT_ID: selected[0].data.ID

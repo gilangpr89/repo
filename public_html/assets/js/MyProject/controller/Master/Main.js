@@ -41,13 +41,13 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
 				this.filterCancel(record);
 				break;
 				
-			/* Print */
-			case 'report':
-				this.report(record);
-				break;
-			case 'report-cancle':
-				this.reportCancle(record);
-				break;
+//			/* Print */
+//			case 'report':
+//				this.report(record);
+//				break;
+//			case 'report-cancle':
+//				this.reportCancle(record);
+//				break;
 		}
 	},
 
@@ -254,21 +254,21 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
 	
 	/* Print */
 	
-	print: function(record) {
-		var panel = Ext.getCmp('main-content');
-		var activePanel = panel.getActiveTab();
-		var store = activePanel.getStore();
-		var extraParams = store.proxy.extraParams;
-		var parent = record.up().up();
-		var actions = parent.actions;
-		var addWindow = Ext.create(actions.add);
-		addWindow.show();
-		
-	},
-	
-	printCancel: function(record) {
-		record.up().up().close();
-	}
+//	print: function(record) {
+//		var panel = Ext.getCmp('main-content');
+//		var activePanel = panel.getActiveTab();
+//		var store = activePanel.getStore();
+//		var extraParams = store.proxy.extraParams;
+//		var parent = record.up().up();
+//		var actions = parent.actions;
+//		var addWindow = Ext.create(actions.add);
+//		addWindow.show();
+//		
+//	},
+//	
+//	printCancel: function(record) {
+//		record.up().up().close();
+//	}
 	
 	/* End Print */
 	

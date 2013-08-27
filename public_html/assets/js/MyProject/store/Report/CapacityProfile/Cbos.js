@@ -4,13 +4,13 @@ Ext.define(MyIndo.getNameSpace('store.Report.CapacityProfile.Cbos'), {
 	proxy: {
 		type: 'ajax',
 		api: {
-			read: MyIndo.siteUrl('report/request/cbo')
+			read: MyIndo.siteUrl('reports/request/cbo')
 		},
 		actionMethods: MyIndo.config.defaultActionMethods,
 		reader: MyIndo.config.defaultReader
 	},
 	sorters: {
-		property: 'TRAINING_NAME',
+		property: 'NAME',
 		direction: 'ASC'
 	},
 	remoteSort: true

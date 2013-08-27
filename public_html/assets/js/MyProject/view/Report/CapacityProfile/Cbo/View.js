@@ -1,11 +1,11 @@
 Ext.define(MyIndo.getNameSpace('view.Report.CapacityProfile.Cbo.View'), {
 	extend: 'Ext.grid.Panel',
-	alias: 'widget.cboview',
+	alias: 'widget.capacityprofilecboview',
 	border: false,
 	columns: [{
-		text: 'Training Name',
+		text: 'Name',
 		flex: 1,
-		dataIndex: 'TRAINING_NAME'
+		dataIndex: 'NAME'
 	},{
 		text: 'Created Date',
 		align: 'center',
@@ -21,8 +21,8 @@ Ext.define(MyIndo.getNameSpace('view.Report.CapacityProfile.Cbo.View'), {
 	initComponent: function() {
 		Ext.apply(this, {
 			actions: {
-				search: MyIndo.getNameSpace('view.Report.CapacityProfile.Cbo.Search'),
-				onManageReportindividual: MyIndo.getNameSpace('view.Report.CapacityProfile.Cbo.View')
+				filter: MyIndo.getNameSpace('view.Report.CapacityProfile.Cbo.Filter')
+				//onManageReportindividual: MyIndo.getNameSpace('view.Report.CapacityProfile.Cbo.View')
 			},
 			filters: ['NAME'],
 			url: {

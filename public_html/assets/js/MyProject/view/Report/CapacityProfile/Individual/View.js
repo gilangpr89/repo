@@ -68,8 +68,8 @@ Ext.define(MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.View'), {
 	initComponent: function() {
 		Ext.apply(this, {
 			actions: {
-				search: MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.Search'),
-				onManageReportindividual: MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.View')
+				filter: MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.Filter')
+				//onManageReportindividual: MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.View')
 			},
 			filters: ['NAME'],
 			url: {

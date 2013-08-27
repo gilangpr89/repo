@@ -18,10 +18,14 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 	MyIndo.getNameSpace('view.Master.Venues.View'),
 
 	MyIndo.getNameSpace('view.Transaction.Trainings.View'),
+	/* Reports */
 	MyIndo.getNameSpace('view.Report.Participants.View'),
-	MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.Search'),
+	MyIndo.getNameSpace('view.Report.Organization.View'),
+	MyIndo.getNameSpace('view.Report.TrainingEvaluation.View'),
+	MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.View'),
 	MyIndo.getNameSpace('view.Report.CapacityProfile.Cbo.View'),
-//	MyIndo.getNameSpace('view.Report.CapacityProfile.Sr.View')
+	MyIndo.getNameSpace('view.Report.CapacityProfile.Srcountry.View'),
+	MyIndo.getNameSpace('view.Report.CapacityProfile.Region.View')
 	],
 	
 	stores: [
@@ -49,11 +53,19 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 	
 	/* Reports */
 	'Report.Participants',
+	'Report.ParticipantTrainings',
+	'Report.Organizations',
+	'Report.OrganizationTrainings',
+	'Report.TrainingEvaluations',
 	'Report.CapacityProfile.Individuals',
 	'Report.CapacityProfile.IndividualTrainings',
 	
 	'Report.CapacityProfile.Cbos',
-//	'Report.CapacityProfile.Srs'
+	'Report.CapacityProfile.CboTrainings',
+	'Report.CapacityProfile.Srcountrys',
+	'Report.CapacityProfile.SrcountryTrainings',
+	'Report.CapacityProfile.Regions',
+	'Report.CapacityProfile.RegionTrainings'
 	],
 
 
@@ -131,9 +143,24 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Transaction.Trainings.View'));
 	},
 	
+	/* Report Panel */
 	onReportParticipantsClicked: function(menuTitle, menuId, mainContent) {
 		var store = Ext.create(MyIndo.getNameSpace('store.Report.Participants'));
 		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Report.Participants.View'));
+	},
+	
+	onReportOrganizationClicked: function(menuTitle, menuId, mainContent) {
+		var store = Ext.create(MyIndo.getNameSpace('store.Report.Organizations'));
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Report.Organization.View'));
+	},
+	
+	onReportTrainingEvaluationClicked: function(menuTitle, menuId, mainContent) {
+		console.log(menuTitle);
+		console.log(menuId);
+		console.log(mainContent);
+		console.log('aaaaaa');
+		var store = Ext.create(MyIndo.getNameSpace('store.Report.TrainingEvaluations'));
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Report.TrainingEvaluation.View'));
 	},
 	
 	onReportCapacityProfileIndividualClicked: function(menuTitle, menuId, mainContent) {
@@ -146,8 +173,13 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Report.CapacityProfile.Cbo.View'));
 	},
 	
-		onReportCapacityProfileSrClicked: function(menuTitle, menuId, mainContent) {	
-			var store = Ext.create(MyIndo.getNameSpace('store.Report.CapacityProfile.Srs'));
-			this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Report.CapacityProfile.Sr.View'));	
-	}
+	onReportCapacityProfileSrClicked: function(menuTitle, menuId, mainContent) {
+			var store = Ext.create(MyIndo.getNameSpace('store.Report.CapacityProfile.Srcountrys'));
+			this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Report.CapacityProfile.Srcountry.View'));	
+	},
+	
+	onReportCapacityProfileRegionClicked: function(menuTitle, menuId, mainContent) {	
+		var store = Ext.create(MyIndo.getNameSpace('store.Report.CapacityProfile.Regions'));
+		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Report.CapacityProfile.Region.View'));
+	},
 });

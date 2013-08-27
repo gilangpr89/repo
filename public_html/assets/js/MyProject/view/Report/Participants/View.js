@@ -3,8 +3,13 @@ Ext.define(MyIndo.getNameSpace('view.Report.Participants.View'), {
 	alias: 'widget.reportparticipantsview',
 	border: false,
 	columns: [{text: 'Training Name',
-	       flex:100,
-	       dataIndex:'TRAINING_NAME'
+	          flex:100,
+	          dataIndex:'TRAINING_NAME'
+			},{
+				text: 'Participant Id',
+				width:60,
+				dataIndex:'PARTICIPANT_ID',
+				hidden: true
 			},{
 				text: 'Name',
 				width: 90,
@@ -27,7 +32,7 @@ Ext.define(MyIndo.getNameSpace('view.Report.Participants.View'), {
 				hidden: true
 			},{
 				text: 'Organization Country',
-				width: 80,
+				flex:100,
 				align: 'center',
 				dataIndex: 'ORGANIZATION_COUNTRY_NAME'
 			},{
@@ -135,12 +140,9 @@ Ext.define(MyIndo.getNameSpace('view.Report.Participants.View'), {
 	initComponent: function() {
 		Ext.apply(this, {
 			actions: {
-				add: MyIndo.getNameSpace('view.Report.Participants.Add'),
-				update: MyIndo.getNameSpace('view.Report.Participants.Update'),
-				filter: MyIndo.getNameSpace('view.Report.Participants.Filter'),
-				reportparticipants: MyIndo.getNameSpace('view.Report.Participants')
+				filter: MyIndo.getNameSpace('view.Report.Participants.Filter')
 			},
-			filters: ['NAME','SNAME','MOBILE_NO','EMAIL1'],
+			filters: ['TRAINING_NAME'],
 			url: {
 				delete: MyIndo.baseUrl('participants/request/destroy')
 			},

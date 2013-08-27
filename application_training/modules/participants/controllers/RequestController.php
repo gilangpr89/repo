@@ -6,6 +6,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	protected $_unique;
 	protected $_modelView;
 	protected $_modelDetail;
+	protected $_modelTrtrainingView;
 	protected $_required;
 	protected $_sData;
 
@@ -15,6 +16,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 		$this->_helper->viewRenderer->setNoRender(true);
         
 		$this->_model = new participants_Model_Participants();
+		$this->_modelTrtrainingView = new trtrainings_Model_TrTrainingsView();
 		$this->_modelDetail = new trainingparticipants_Model_TrainingParticipantsView();
 		$this->_modelView = new participants_Model_ParticipantsView();
 		$this->_unique = 'Participant';
@@ -129,38 +131,55 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	}
 	
 
-// 	public function detaiAction()
-// 	{
-// 		try {
-// 			$id = $this->_enc->base64decrypt($this->_posts['ID']);
-// 			$q = $this->_model->select()
-// 			->from('MS_PARTICIPANTS',array('*'))
-// 			->where('ID = ?', $id);
-// 			$q->query()->fetchAll();
-// 			$list = $q->query()->fetchAll();
-// 			print_r($list);
-			
-// 			if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
-// 				$this->_where[] = $this->_model->getAdapter()->quoteInto('ID = ?', $id);
-// 			}
-// 			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-// 			$this->_data['totalCount'] = $this->_modelView->count($this->_where);
-// 		} catch (Exception $e) {
-// 			$this->exception($e);
-// 		}
-		
-			
-		
-// 	}
+    public function participantTrainingsAction()
+	{
+		try {
+			$list = array();
+			if(isset($this->_posts['PARTICIPANTS_ID'])) {
+				$id = $this->_enc->base64decrypt($this->_posts['PARTICIPANTS_ID']);
+				//print_r($id);
+				if($this->_modelDetail->isExist('PARTICIPANT_ID', $id)) {
+					$q = $this->_modelDetail->select()->where('PARTICIPANT_ID = ?', $id);
+					//echo "$q";
+					$list = $q->query()->fetchAll();
+					//print_r($list);
+					if(count($list) > 0) {
+						$trainingIds = array();
+						foreach($list as $k => $v) {
+							if(!in_array($v['TRAINING_ID'], $trainingIds)) {
+								$trainingIds[] = $v['TRAINING_ID'];
+							}
+						}
+						
+						$this->_where[] = $this->_modelTrtrainingView->getAdapter()->quoteInto('TRAINING_ID IN (?)', $trainingIds);
+						
+						$list = $this->_modelTrtrainingView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+						$this->_totalCount = $this->_model->count($this->_where);
+						
+					}
+				} else {
+					$this->error(101, 'Invalid Participant.');
+				}
+			} else {
+				$this->error(101, 'Invalid Participant.');
+			}
+			$this->_data['items'] = $list;
+			$this->_data['totalCount'] = $this->_totalCount;
+		} catch(Exception $e) {
+			$this->exception($e);
+		}
+	}
 	
 	public function detailAction()
 	{
 		try {
-			if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
-				$Id = (int)$this->_enc->base64decrypt($this->_posts['ID']);
-				if($this->_modelDetail->isExist('PARTICIPANT_ID', $Id)) {
-					$this->_where[] = $this->_modelDetail->getAdapter()->quoteInto('PARTICIPANT_ID = ?', $Id);
-				} 
+// 			if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
+// 				$Id = (int)$this->_enc->base64decrypt($this->_posts['ID']);
+// 				print_r($Id);
+			if(isset($this->_posts['TRAINING_NAME'])) {
+			$name = $this->_posts['TRAINING_NAME'];
+			$this->_where[] = $this->_modelDetail->getAdapter()->quoteInto('TRAINING_NAME LIKE ?', '%' . $name . '%');
+			//}
 			}
 			$this->_data['items'] = $this->_modelDetail->getList($this->_limit, $this->_start, $this->_order, $this->_where);
 			$this->_data['totalCount'] = $this->_modelDetail->count($this->_where);
@@ -183,12 +202,8 @@ class Participants_RequestController extends MyIndo_Controller_Action
 		
 		if(isset($this->_posts['PARTICIPANT_ID']) && !empty($this->_posts['PARTICIPANT_ID'])) {
 			$id = $this->_enc->base64decrypt($this->_posts['PARTICIPANT_ID']);
-// 			if($this->_model->isExist('PARTICIPANT_ID', $id)) {
-// 				$this->_where[] = $this->_modelDetail->getAdapter()->quoteInto('PARTICIPANT_ID = ?', $id);
-// 			} else {
-// 				$this->_where[] = $this->_modelDetail->getAdapter()->quoteInto('PARTICIPANT_ID = ?', 0);
-// 			}
-		
+		    
+			
 			
 			$q = $this->_modelDetail->select()
 			//->from('TR_TRAINING_PARTICIPANTS_VIEW',array('*'))
@@ -197,12 +212,13 @@ class Participants_RequestController extends MyIndo_Controller_Action
 					'PARTICIPANT_TWITTER','ORGANIZATION_ID','ORGANIZATION_CITY_ID','ORGANIZATION_CITY_NAME','ORGANIZATION_PROVINCE_ID','ORGANIZATION_PROVINCE_NAME','ORGANIZATION_COUNTRY_ID',
 					'ORGANIZATION_COUNTRY_NAME','ORGANIZATION_NAME','ORGANIZATION_PHONE_NO1','ORGANIZATION_PHONE_NO2','ORGANIZATION_EMAIL1','ORGANIZATION_EMAIL2','ORGANIZATION_WEBSITE',
 			        'ORGANIZATION_ADDRESS','POSITION_ID','POSITION_NAME','PRE_TEST','POST_TEST','DIFF','CREATED_DATE','MODIFIED_DATE'))
+			->join('TR_TRAINING_PARTICIPANTS_VIEW', 'TR_TRAINING_PARTICIPANTS_VIEW.TRAINING_ID = TR_TRAININGS_VIEW.TRAINING_ID', array('BENEFICIARIES_NAME'))
 			->where('PARTICIPANT_ID = ?', $id);
 			$q->query()->fetchAll();
 			$list = $q->query()->fetchAll();
 			
 			//$list = $this->_modelDetail->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-			//print_r($list);die();
+			print_r($list);die();
 
 			
 			$filename ='ReportParticipant.' . $this->_posts['ID'] . '.' . date('Y-m-d-H-i-s');

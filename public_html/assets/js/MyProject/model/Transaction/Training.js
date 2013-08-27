@@ -155,7 +155,7 @@ Ext.define(MyIndo.getNameSpace('model.Transaction.Training'), {
 		type: 'string'
 	},{
 		name: 'SDATE',
-		type: 'string'
+		type: 'date'
 	},{
 		name: 'EDATE',
 		type: 'string'

@@ -44,10 +44,13 @@ Ext.application({
 	'Transaction.Trainings',
 	
 	/* Reports */
-	'Report.CapacityProfile.Individual'
-//	'Report.CapacityProfile.Individual.Cpindividual',
-//	'Report.CapacityProfile.Cbo.Cpcbo',
-//	'Report.CapacityProfile.Sr.Csr'
+	'Report.Participant',
+	'Report.Organization',
+	'Report.TrainingEvaluation',
+	'Report.CapacityProfile.Individual',
+	'Report.CapacityProfile.Cbo',
+	'Report.CapacityProfile.Srcountry',
+	'Report.CapacityProfile.Region'
 	],
 
 	autoCreateViewport: true,

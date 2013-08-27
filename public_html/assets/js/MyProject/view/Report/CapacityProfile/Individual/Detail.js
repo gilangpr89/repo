@@ -23,7 +23,7 @@ Ext.define(MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.Detail'),
 					'</tr>' +
 					'<tr>' +
 						'<td>Last Name</td><td>:</td><td>' + this.participantData.LNAME + '</td>' + 
-					'</tr>' +
+					'</tr>' + '<td>Surname</td><td>:</td><td>' + this.participantData.SNAME + '</td>' +
 				'</table>'
 			},{
 				xtype: 'gridpanel',

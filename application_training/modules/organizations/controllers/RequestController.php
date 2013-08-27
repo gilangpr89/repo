@@ -133,11 +133,14 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 	public function detailAction()
 	{
 		try {
-			if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
-				$Id = (int)$this->_enc->base64decrypt($this->_posts['ID']);
-				if($this->_modelView->isExist('ID', $Id)) {
-					$this->_where[] = $this->_modelView->getAdapter()->quoteInto('ID = ?', $Id);
-				}
+// 			if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
+// 				$Id = (int)$this->_enc->base64decrypt($this->_posts['ID']);
+// 				if($this->_modelView->isExist('ID', $Id)) {
+// 					$this->_where[] = $this->_modelView->getAdapter()->quoteInto('ID = ?', $Id);
+// 				}
+// 			}
+			if(isset($this->_posts['NAME']) && !empty($this->_posts['NAME'])) {
+				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
 			}
 			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
 			$this->_data['totalCount'] = $this->_modelView->count($this->_where);

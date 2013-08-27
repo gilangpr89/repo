@@ -1,379 +1,286 @@
-<?php
-require_once('myfpdf.php');
+<?php 
+require_once('fpdf.php');
 
-
-
-class templatepdf extends MYFPDF
-{
-    
-    var $encrypted = false;  //whether document is protected
-	var $Uvalue;             //U entry in pdf document
-	var $Ovalue;             //O entry in pdf document
-	var $Pvalue;             //P entry in pdf document
-	var $enc_obj_id;   
+class myfpdf extends FPDF {
 	
-	var $angle=0;    // for function watermark
+	var $tablewidths;
+	var $headerset;
+	var $footerset;
 	
-	//var $borderActive ;
-	//var $userLocation ;
-	//var $lnHeader ;
-	
-	function Header()
-	{
-	
-	    
-	$this->SetFont('Arial','B',25);
-	$this->SetTextColor(255,192,203);
-	$this->RotatedText(80,220,'BERLAKU SEBAGAI FAKTUR PAJAK',45);
-	$this->RotatedText(100,225,'SETELAH LUNAS',45);
-	
-	/*
-	 * images config
-	 */
-	$positionX 		=	15;
-	$positionY		=	5;
-	$scaleX			=	53;
-	$scaleY			=	17;
-	
-	$this->SetFont('Arial','',12);
-	
-	$this->Image(LOGOINVOICE_PATH.'/docs/invoicelogo/logo-jict.gif',$positionX,$positionY,$scaleX,$scaleY);
-
-	$this->Cell(145);
-	$this->SetFont('Arial','',11);
-	$this->SetTextColor(0,0,0);
-	$this->Cell(0,7,'   NOMOR : '.INVOICENUMBER.'',1,2,'L');
-	$this->ln(8);
-		$this->SetFont('Arial','',9);
-
-		$columns = array();  
-		$col = array();
-    		$col[] = array('text' =>'ALAMAT ' , 'width' => '36','height'=>'5', 'align' => 'L','linearea'=>'');
-    		$col[] = array('text' => ':' , 'width' => '3','height'=>'5', 'align' => 'L','linearea'=>'');
-    		$col[] = array('text' => 'Jl.Sulawesi Ujung No.1 Tanjung Priok,Jakarta 14310' , 'width' => '100','height'=>'5', 'align' => 'L','linearea'=>'');
-    	$columns[] = $col;
-	$this->WriteTable($columns);
-    
-		$columns = array();  
-		$col = array();
-    		$col[] = array('text' =>'N.P.W.P ' , 'width' => '36','height'=>'5', 'align' => 'L','linearea'=>'' );
-    		$col[] = array('text' => ':' , 'width' => '3','height'=>'5', 'align' => 'L','linearea'=>'');
-    		$col[] = array('text' => '01.886.839.8-092.000' , 'width' => '50','height'=>'5', 'align' => 'L','linearea'=>'');
-    	$columns[] = $col;
-	$this->WriteTable($columns);
-    
-		$columns = array();  
-		$col = array();
-    		$col[] = array('text' =>'Tanggal Pengukuhan PKP ' , 'width' => '36','height'=>'5', 'align' => 'L','linearea'=>'');
-    		$col[] = array('text' => ':' , 'width' => '3','height'=>'5', 'align' => 'L','linearea'=>'');
-    		$col[] = array('text' => '1 Juli 2002' , 'width' => '30','height'=>'5', 'align' => 'L','linearea'=>'');
-    	$columns[] = $col;
-	$this->WriteTable($columns);
-    $this->setY(21);
-    $this->setX(117);
-    
-	$this->Cell(70,5,'Kode & Seri Faktur pajak : ',$borderActive ,2);
-	$this->Cell(70,5,'Nota dan Perhitungan Pelayanan jasa ini berlaku sebagai Faktur Pajak',$borderActive ,2);
-	$this->Cell(70,5,'berdasarkan : Keputusan Direktur Jenderal Pajak No. PER-10/PJ./2010',$borderActive ,2);
-	$this->Cell(70,5,'tanggal 09 Maret 2010',$borderActive ,2);
-    // buat garis
-    $this->ln(1);
-			$columns = array();  
-		$col = array();
-    		$col[] = array('text' =>'______________________________________________________________________________________________________________________________' , 'width' => '200','height'=>'5', 'align' => 'L','linearea'=>'', 'textcolor' => '0,0,0');
-    	$columns[] = $col;
-	$this->WriteTable($columns);
-	
-	
-	}
-
-
-	//Page footer
-	function Footer(){
-	 //$this->Cell(50);
-	    
-	    $this->SetY(-50);
-	// Go to 1.5 cm from bottom
-    
-    // Select Arial italic 8
-    
-    $this->SetTextColor(1,1,1);
-    $this->SetFont('Arial','',8);
-    
-
-		$this->SetX(5);
-    $this->Cell(70,5,'_________________________________________________________________________________________________________________________________',$borderActive ,2);
-	$this->Cell(70,5,'KETENTUAN : ',$borderActive ,2);
-	$this->Cell(70,5,'1.Dalam waktu 8 hari kerja setelah nota ini diterima,tidak ada pengajuan keberaran',$borderActive ,2);
-	$this->Cell(70,5,'   saudara dianggap setuju',$borderActive ,2);
-	$this->Cell(70,5,'2.Terhadap Nota yang diajukan koreksi harus dilunasi terlebih dahulu.',$borderActive ,2);
-	$this->Cell(70,5,'3.Pembayaran harus dilunasi dalam 8 hari kerja setelah nota ini diterima jika, ',$borderActive ,2);
-	$this->Cell(70,5,'   tidak, dikenakan denda 2% perbulan atas sangsi lainnya ',$borderActive ,2);
-	$this->Cell(70,5,'4.Tidak dibenarkan memberi imbalan kepada petugas. ',$borderActive ,2);
-
-	$this->SetY(237);
-	$this->SetX(138);
-	$this->Cell(111,50,'JAKARTA , '.DATEINVOICE.' ',$borderActive ,2);
-
-	$this->SetY(241);
-	$this->SetX(138);
-	$this->Cell(120,50,'JAKARTA INTERNATIONAL CONTAINER TERMINAL. ',$borderActive ,2);
-
-	$this->SetY(250);
-	$this->SetX(180);
-	$this->Cell(135,50,NAME,$borderActive ,2);
-	
-	$this->SetY(250);
-	$this->SetX(175);
-	$this->Cell(130,50,'____________________  ',$borderActive ,2);
-	
-	
-	$this->SetY(253);
-	$this->SetX(180);
-	$this->Cell(135,50,'ID : '.ID.'',$borderActive ,2);
-	
-	
-		
-	// for logo footer
-	$positionX 		=	125;
-	$positionY		=	270;
-	$scaleX			=	53;
-	$scaleY			=	17;
-	
-	$this->SetFont('Arial','',12);
-	
-	$this->Image(LOGOINVOICE_PATH.'/docs/invoicelogo/logo-jict.gif',$positionX,$positionY,$scaleX,$scaleY);
-	
-	//$this->SetX(1);
-	
-	
-	}
-	
-	/* start of fungsi for watermark
-	 * 
-	 */
-	
-	
-// test function water mark
-
-
-function Rotate($angle,$x=-1,$y=-1)
-{
-	if($x==-1)
-		$x=$this->x;
-	if($y==-1)
-		$y=$this->y;
-	if($this->angle!=0)
-		$this->_out('Q');
-	$this->angle=$angle;
-	if($angle!=0)
-	{
-		$angle*=M_PI/180;
-		$c=cos($angle);
-		$s=sin($angle);
-		$cx=$x*$this->k;
-		$cy=($this->h-$y)*$this->k;
-		$this->_out(sprintf('q %.5F %.5F %.5F %.5F %.2F %.2F cm 1 0 0 1 %.2F %.2F cm',$c,$s,-$s,$c,$cx,$cy,-$cx,-$cy));
-	}
+function _beginpage($orientation, $format) {
+    $this->page++;
+    if(!$this->pages[$this->page]) // solves the problem of overwriting a page if it already exists
+        $this->pages[$this->page]='';
+    $this->state=2;
+    $this->x=$this->lMargin;
+    $this->y=$this->tMargin;
+    $this->FontFamily='';
+    //Check page size
+    if($orientation=='')
+        $orientation=$this->DefOrientation;
+    else
+        $orientation=strtoupper($orientation[0]);
+    if($format=='')
+        $format=$this->DefPageFormat;
+    else
+    {
+        if(is_string($format))
+            $format=$this->_getpageformat($format);
+    }
+    if($orientation!=$this->CurOrientation || $format[0]!=$this->CurPageFormat[0] || $format[1]!=$this->CurPageFormat[1])
+    {
+        //New size
+        if($orientation=='P')
+        {
+            $this->w=$format[0];
+            $this->h=$format[1];
+        }
+        else
+        {
+            $this->w=$format[1];
+            $this->h=$format[0];
+        }
+        $this->wPt=$this->w*$this->k;
+        $this->hPt=$this->h*$this->k;
+        $this->PageBreakTrigger=$this->h-$this->bMargin;
+        $this->CurOrientation=$orientation;
+        $this->CurPageFormat=$format;
+    }
+    if($orientation!=$this->DefOrientation || $format[0]!=$this->DefPageFormat[0] || $format[1]!=$this->DefPageFormat[1])
+        $this->PageSizes[$this->page]=array($this->wPt, $this->hPt);
 }
 
-function RotatedText($x, $y, $txt, $angle)
+function Header()
 {
-	//Text rotated around its origin
-	$this->Rotate($angle,$x,$y);
-	$this->Text($x,$y,$txt);
-	$this->Rotate(0);
+    global $maxY;
+
+    // Check if header for this page already exists
+    if(!$this->headerset[$this->page]) {
+
+        foreach($this->tablewidths as $width) {
+            $fullwidth += $width;
+        }
+        $this->SetY(($this->tMargin) - ($this->FontSizePt/$this->k)*2);
+        $this->cellFontSize = $this->FontSizePt ;
+        $this->SetFont('Arial','',( ( $this->titleFontSize) ? $this->titleFontSize : $this->FontSizePt ));
+        $this->Cell(0,$this->FontSizePt,$this->titleText,0,1,'C');
+        $l = ($this->lMargin);
+        $this->SetFont('Arial','',$this->cellFontSize);
+        foreach($this->colTitles as $col => $txt) {
+            $this->SetXY($l,($this->tMargin));
+            $this->MultiCell($this->tablewidths[$col], $this->FontSizePt,$txt);
+            $l += $this->tablewidths[$col] ;
+            $maxY = ($maxY < $this->getY()) ? $this->getY() : $maxY ;
+        }
+        $this->SetXY($this->lMargin,$this->tMargin);
+        $this->setFillColor(200,200,200);
+        $l = ($this->lMargin);
+        foreach($this->colTitles as $col => $txt) {
+            $this->SetXY($l,$this->tMargin);
+            $this->cell($this->tablewidths[$col],$maxY-($this->tMargin),'',1,0,'L',1);
+            $this->SetXY($l,$this->tMargin);
+            $this->MultiCell($this->tablewidths[$col],$this->FontSizePt,$txt,0,'C');
+            $l += $this->tablewidths[$col];
+        }
+        $this->setFillColor(255,255,255);
+        // set headerset
+        $this->headerset[$this->page] = 1;
+    }
+
+    $this->SetY($maxY);
 }
 
-function _endpage()
+function WriteTable($tcolums)
 {
-	if($this->angle!=0)
+	 
+	// go through all colums
+	for ($i = 0; $i < sizeof($tcolums); $i++)
 	{
-		$this->angle=0;
-		$this->_out('Q');
+	$current_col = $tcolums[$i];
+	$height = 0;
+	 
+	// get max height of current col
+	$nb=0;
+	for($b = 0; $b < sizeof($current_col); $b++)
+	{
+	$this->fillColor 	= (  array_key_exists( 'fillcolor', $current_col[$b] )   )? $current_col[$b]['fillcolor'] :  $this->fillColor ;
+	$this->fontName 	= (  array_key_exists( 'font_name', $current_col[$b] )   )? $current_col[$b]['font_name'] :  $this->fontName ;
+			$this->font_style 	= (  array_key_exists( 'font_style', $current_col[$b])  )? $current_col[$b]['font_style'] :  $this->font_style ;
+			$this->textcolor 	= (  array_key_exists( 'textcolor', $current_col[$b])  )? $current_col[$b]['textcolor'] :  $this->textcolor ;
+					$this->font_size 	= (  array_key_exists( 'font_size', $current_col[$b])  )? $current_col[$b]['font_size'] :  $this->font_size ;
+					$this->linewidth 	= (  array_key_exists( 'linewidth', $current_col[$b])  )? $current_col[$b]['linewidth'] :  $this->linewidth ;
+					$this->drawcolor 	= (  array_key_exists( 'drawcolor', $current_col[$b])  )? $current_col[$b]['drawcolor'] :  $this->drawcolor ;
+					$this->linearea 	= (  array_key_exists( 'linearea', $current_col[$b])  )? $current_col[$b]['linearea'] :  $this->linearea ;
+					$this->height 		= (  array_key_exists( 'height', $current_col[$b])  )? $current_col[$b]['height'] :  $this->height ;
+					// set style
+					$this->SetFont( $this->fontName, $this->font_style , $this->font_size );
+					$color = explode(",", $this->fillColor);
+			$this->SetFillColor($color[0], $color[1], $color[2]);
+
+			$color = explode(",", $this->textcolor );
+			$this->SetTextColor($color[0], $color[1], $color[2]);
+
+			$color = explode(",", $this->drawcolor );
+			$this->SetDrawColor($color[0], $color[1], $color[2]);
+			$this->SetLineWidth( $this->linewidth );
+
+			$nb = max($nb, $this->NbLines($current_col[$b]['width'], $current_col[$b]['text']));
+			$height = $this->height ;
 	}
-	parent::_endpage();
-}
+	$h=$height*$nb;
+	 
+	 
+	// Issue a page break first if needed
+	$this->CheckPageBreak($h);
+	 
+	// Draw the cells of the row
+	for($b = 0; $b < sizeof( $current_col ); $b++)
+	{
+	$this->fillColor 	= (  array_key_exists( 'fillcolor', $current_col[$b] )   )? $current_col[$b]['fillcolor'] :  $this->fillColor ;
+	$this->fontName 	= (  array_key_exists( 'font_name', $current_col[$b] )   )? $current_col[$b]['font_name'] :  $this->fontName ;
+	$this->align 		= (  array_key_exists( 'align', $current_col[$b] 	 )   )? $current_col[$b]['align'] 	  :  $this->align ;
+	$this->font_style 	= (  array_key_exists( 'font_style', $current_col[$b])   )? $current_col[$b]['font_style']:  $this->font_style ;
+	$this->textcolor 	= (  array_key_exists( 'textcolor', $current_col[$b])  )? $current_col[$b]['textcolor'] :  $this->textcolor ;
+	$this->font_size 	= (  array_key_exists( 'font_size', $current_col[$b])  )? $current_col[$b]['font_size'] :  $this->font_size ;
+	$this->linewidth 	= (  array_key_exists( 'linewidth', $current_col[$b])  )? $current_col[$b]['linewidth'] :  $this->linewidth ;
+	$this->drawcolor 	= (  array_key_exists( 'drawcolor', $current_col[$b])  )? $current_col[$b]['drawcolor'] :  $this->drawcolor ;
+	$this->linearea 	= (  array_key_exists( 'linearea', $current_col[$b])  )? $current_col[$b]['linearea'] :  $this->linearea ;
+			$this->height 		= (  array_key_exists( 'height', $current_col[$b])  )? $current_col[$b]['height'] :  $this->height ;
+
+			$w = $current_col[$b]['width'];
+			$a = $this->align;
+
+			// Save the current position
+			$x=$this->GetX();
+			$y=$this->GetY();
+
+			// set style
+					$this->SetFont( $this->fontName , $this->font_style , $this->font_size	 );
+					$color = explode(",", $this->fillColor );
+					$this->SetFillColor($color[0], $color[1], $color[2]);
+
+					$color = explode(",", $this->textcolor );
+					$this->SetTextColor($color[0], $color[1], $color[2]);
+					 
+					$color = explode(",", $this->drawcolor );
+	$this->SetDrawColor($color[0], $color[1], $color[2]);
+	$this->SetLineWidth( $this->linewidth );
+
+	$color = explode(",", $this->fillColor );
+	$this->SetDrawColor($color[0], $color[1], $color[2]);
 
 
-/*
- * end of function watermark
- */
+	// Draw Cell Background
+	$this->Rect($x, $y, $w, $h, 'FD');
+
+	$color = explode(",", $this->drawcolor );
+	 
+	$this->SetDrawColor($color[0], $color[1], $color[2]);
+
+	// Draw Cell Border
+	if (substr_count( $this->linearea , "T") > 0)
+	{
+		$this->Line($x, $y, $x+$w, $y);
+	}
+
+	if (substr_count( $this->linearea , "B") > 0)
+	{
+	$this->Line($x, $y+$h, $x+$w, $y+$h);
+	}
+
+	if (substr_count( $this->linearea , "L") > 0)
+	{
+	$this->Line($x, $y, $x, $y+$h);
+	}
+
+	if (substr_count( $this->linearea , "R") > 0)
+	{
+	$this->Line($x+$w, $y, $x+$w, $y+$h);
+	}
+
+
+	// Print the text
+	$this->MultiCell($w, $this->height , $current_col[$b]['text'], 0, $a, 0);
+
+	// Put the position to the right of the cell
+	$this->SetXY($x+$w, $y);
+	}
+	 
+	// Go to the next line
+	$this->Ln($h);
+	}
+	}
 	
-	// fungsi for password pdf
-	
-	/*
-	
-if(function_exists('mcrypt_encrypt'))
-{
-	function RC4($key, $data)
-	{
-		return mcrypt_encrypt(MCRYPT_ARCFOUR, $key, $data, MCRYPT_MODE_STREAM, '');
-	}
+function Footer() {
+    // Check if footer for this page already exists
+    if(!$this->footerset[$this->page]) {
+        $this->SetY(-15);
+        //Page number
+        $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
+        // set footerset
+        $this->footerset[$this->page] = 1;
+    }
 }
-else
-{
-	function RC4($key, $data)
-	{
-		static $last_key, $last_state;
 
-		if($key != $last_key)
-		{
-			$k = str_repeat($key, 256/strlen($key)+1);
-			$state = range(0, 255);
-			$j = 0;
-			for ($i=0; $i<256; $i++){
-				$t = $state[$i];
-				$j = ($j + $t + ord($k[$i])) % 256;
-				$state[$i] = $state[$j];
-				$state[$j] = $t;
-			}
-			$last_key = $key;
-			$last_state = $state;
-		}
-		else
-			$state = $last_state;
+function morepagestable($lineheight=8) {
+    // some things to set and 'remember'
+    $l = $this->lMargin;
+    $startheight = $h = $this->GetY();
+    $startpage = $currpage = $this->page;
 
-		$len = strlen($data);
-		$a = 0;
-		$b = 0;
-		$out = '';
-		for ($i=0; $i<$len; $i++){
-			$a = ($a+1) % 256;
-			$t = $state[$a];
-			$b = ($b+$t) % 256;
-			$state[$a] = $state[$b];
-			$state[$b] = $t;
-			$k = $state[($state[$a]+$state[$b]) % 256];
-			$out .= chr(ord($data[$i]) ^ $k);
-		}
-		return $out;
-	}
-}
-	*/
+    // calculate the whole width
+    foreach($this->tablewidths as $width) {
+        $fullwidth += $width;
+    }
 
-function SetProtection($permissions=array(), $user_pass='', $owner_pass=null)
-	{
-		$options = array('print' => 4, 'modify' => 8, 'copy' => 16, 'annot-forms' => 32 );
-		$protection = 192;
-		foreach($permissions as $permission)
-		{
-			if (!isset($options[$permission]))
-				$this->Error('Incorrect permission: '.$permission);
-			$protection += $options[$permission];
-		}
-		if ($owner_pass === null)
-			$owner_pass = uniqid(rand());
-		$this->encrypted = true;
-		$this->padding = "\x28\xBF\x4E\x5E\x4E\x75\x8A\x41\x64\x00\x4E\x56\xFF\xFA\x01\x08".
-						"\x2E\x2E\x00\xB6\xD0\x68\x3E\x80\x2F\x0C\xA9\xFE\x64\x53\x69\x7A";
-		$this->_generateencryptionkey($user_pass, $owner_pass, $protection);
-	}
+    // Now let's start to write the table
+    $row = 0;
+    while($data=mysql_fetch_row($this->results)) {
+        $this->page = $currpage;
+        // write the horizontal borders
+        $this->Line($l,$h,$fullwidth+$l,$h);
+        // write the content and remember the height of the highest col
+        foreach($data as $col => $txt) {
 
-/****************************************************************************
-*                                                                           *
-*                              Private methods                              *
-*                                                                           *
-****************************************************************************/
+            $this->page = $currpage;
+            $this->SetXY($l,$h);
+            $this->MultiCell($this->tablewidths[$col],$lineheight,$txt,0,$this->colAlign[$col]);
 
-	function _putstream($s)
-	{
-		if ($this->encrypted) {
-			$s = RC4($this->_objectkey($this->n), $s);
-		}
-		parent::_putstream($s);
-	}
+            $l += $this->tablewidths[$col];
 
-	function _textstring($s)
-	{
-		if ($this->encrypted) {
-			$s = RC4($this->_objectkey($this->n), $s);
-		}
-		return parent::_textstring($s);
-	}
-
-	/**
-	* Compute key depending on object number where the encrypted data is stored
-	*/
-	function _objectkey($n)
-	{
-		return substr($this->_md5_16($this->encryption_key.pack('VXxx',$n)),0,10);
-	}
-
-	function _putresources()
-	{
-		parent::_putresources();
-		if ($this->encrypted) {
-			$this->_newobj();
-			$this->enc_obj_id = $this->n;
-			$this->_out('<<');
-			$this->_putencryption();
-			$this->_out('>>');
-			$this->_out('endobj');
-		}
-	}
-
-	function _putencryption()
-	{
-		$this->_out('/Filter /Standard');
-		$this->_out('/V 1');
-		$this->_out('/R 2');
-		$this->_out('/O ('.$this->_escape($this->Ovalue).')');
-		$this->_out('/U ('.$this->_escape($this->Uvalue).')');
-		$this->_out('/P '.$this->Pvalue);
-	}
-
-	function _puttrailer()
-	{
-		parent::_puttrailer();
-		if ($this->encrypted) {
-			$this->_out('/Encrypt '.$this->enc_obj_id.' 0 R');
-			$this->_out('/ID [()()]');
-		}
-	}
-
-	/**
-	* Get MD5 as binary string
-	*/
-	function _md5_16($string)
-	{
-		return pack('H*',md5($string));
-	}
-
-	/**
-	* Compute O value
-	*/
-	function _Ovalue($user_pass, $owner_pass)
-	{
-		$tmp = $this->_md5_16($owner_pass);
-		$owner_RC4_key = substr($tmp,0,5);
-		return RC4($owner_RC4_key, $user_pass);
-	}
-
-	/**
-	* Compute U value
-	*/
-	function _Uvalue()
-	{
-		return RC4($this->encryption_key, $this->padding);
-	}
-
-	/**
-	* Compute encryption key
-	*/
-	function _generateencryptionkey($user_pass, $owner_pass, $protection)
-	{
-		// Pad passwords
-		$user_pass = substr($user_pass.$this->padding,0,32);
-		$owner_pass = substr($owner_pass.$this->padding,0,32);
-		// Compute O value
-		$this->Ovalue = $this->_Ovalue($user_pass,$owner_pass);
-		// Compute encyption key
-		$tmp = $this->_md5_16($user_pass.$this->Ovalue.chr($protection)."\xFF\xFF\xFF");
-		$this->encryption_key = substr($tmp,0,5);
-		// Compute U value
-		$this->Uvalue = $this->_Uvalue();
-		// Compute P value
-		$this->Pvalue = -(($protection^255)+1);
-	}
+            if($tmpheight[$row.'-'.$this->page] < $this->GetY()) {
+                $tmpheight[$row.'-'.$this->page] = $this->GetY();
+            }
+            if($this->page > $maxpage)
+                $maxpage = $this->page;
+            unset($data[$col]);
+        }
+        // get the height we were in the last used page
+        $h = $tmpheight[$row.'-'.$maxpage];
+        // set the "pointer" to the left margin
+        $l = $this->lMargin;
+        // set the $currpage to the last page
+        $currpage = $maxpage;
+        unset($data[$row]);
+        $row++ ;
+    }
+    // draw the borders
+    // we start adding a horizontal line on the last page
+    $this->page = $maxpage;
+    $this->Line($l,$h,$fullwidth+$l,$h);
+    // now we start at the top of the document and walk down
+    for($i = $startpage; $i <= $maxpage; $i++) {
+        $this->page = $i;
+        $l = $this->lMargin;
+        $t = ($i == $startpage) ? $startheight : $this->tMargin;
+        $lh = ($i == $maxpage) ? $h : $this->h-$this->bMargin;
+        $this->Line($l,$t,$l,$lh);
+        foreach($this->tablewidths as $width) {
+            $l += $width;
+            $this->Line($l,$t,$l,$lh);
+        }
+    }
+    // set it to the last page, if not it'll cause some problems
+    $this->page = $maxpage; 
+    }
 }
