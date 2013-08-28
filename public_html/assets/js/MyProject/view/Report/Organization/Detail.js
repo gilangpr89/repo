@@ -9,15 +9,27 @@ Ext.define(MyIndo.getNameSpace('view.Report.Organization.Detail'), {
 	
 	initComponent: function() {
 		Ext.apply(this, {
-			title: 'Detail Organization : ' + this.organizationData.ORGANIZATION_NAME,
+			title: 'Detail Organization : ' + this.organizationData.NAME,
 			items: [{
 				border: false,
 				bodyPadding: 5,
 				html: 
 				'<table>' +
 					'<tr>' +
-						'<td> Name</td><td>:</td><td>' + this.trainingData.ORGANIZATION_NAME + '</td>' + 
+						'<td> Name</td><td>:</td><td>' + this.organizationData.NAME + '</td>' + 
 					'</tr>' +
+					'<tr>' +
+					'<td>City Name</td><td>:</td><td>' + this.organizationData.CITY_NAME + '</td>' + 
+				'</tr>' +
+			'<tr>' +
+			'<td>Province Name</td><td>:</td><td>' + this.organizationData.PROVINCE_NAME + '</td>' + 
+		'</tr>' +
+		'<tr>' +
+		'<td>Country Name</td><td>:</td><td>' + this.organizationData.COUNTRY_NAME + '</td>' + 
+	'</tr>' +
+		'<tr>' +
+		'<td>Website</td><td>:</td><td>' + this.organizationData.WEBSITE + '</td>' + 
+	'</tr>' +
 				'</table>'
 			},{
 				xtype: 'gridpanel',
@@ -52,7 +64,7 @@ Ext.define(MyIndo.getNameSpace('view.Report.Organization.Detail'), {
 			buttons: [{
 				text: 'Print',
 				iconCls: 'icon-printer',
-				action: 'do-print-participant'
+				action: 'do-print-report-organization'
 			}]
 		});
 		this.callParent(arguments);

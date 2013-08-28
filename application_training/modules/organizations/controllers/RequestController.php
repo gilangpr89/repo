@@ -3,6 +3,7 @@
 class Organizations_RequestController extends MyIndo_Controller_Action
 {
 	protected $_modelView;
+	protected $_modelTraining;
 	protected $_unique;
 	protected $_required;
 	protected $_sData;
@@ -11,6 +12,7 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 	{
 		$this->_model = new organizations_Model_Organizations();
 		$this->_modelView = new organizations_Model_OrganizationsView();
+		$this->_modelTraining = new trainingparticipants_Model_TrainingParticipants();
 		$this->_unique = 'Organization';
 		$this->_required = array(
 			'CITY_ID',
@@ -133,17 +135,49 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 	public function detailAction()
 	{
 		try {
-// 			if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
-// 				$Id = (int)$this->_enc->base64decrypt($this->_posts['ID']);
-// 				if($this->_modelView->isExist('ID', $Id)) {
-// 					$this->_where[] = $this->_modelView->getAdapter()->quoteInto('ID = ?', $Id);
-// 				}
-// 			}
 			if(isset($this->_posts['NAME']) && !empty($this->_posts['NAME'])) {
 				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
 			}
 			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
 			$this->_data['totalCount'] = $this->_modelView->count($this->_where);
+		} catch(Exception $e) {
+			$this->exception($e);
+		}
+	}
+	
+	public function organizationTrainingsAction()
+	{
+		try {
+			$list = array();
+			if(isset($this->_posts['ORGANIZATION_ID']) && !empty($this->_posts['ORGANIZATION_ID'])) {
+				$id = $this->_enc->base64decrypt($this->_posts['ORGANIZATION_ID']);
+				if($this->_modelTraining->isExist('ORGANIZATION_ID', $id)) {
+	
+					$q = $this->_modelTraining->select()->where('ORGANIZATION_ID = ?', $id);
+					$list = $q->query()->fetchAll();
+					print_r($list);die();
+					if(count($list) > 0) {
+						$trainingIds = array();
+						foreach($list as $k => $v) {
+							if(!in_array($v['TRAINING_ID'], $trainingIds)) {
+								$trainingIds[] = $v['TRAINING_ID'];
+							}
+						}
+	
+						$this->_where[] = $this->_model->getAdapter()->quoteInto('TRAINING_ID IN (?)', $trainingIds);
+	
+						$list = $this->_model->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+						$this->_totalCount = $this->_model->count($this->_where);
+	
+					}
+				} else {
+					$this->error(101, 'Invalid Country.');
+				}
+			} else {
+				$this->error(101, 'Invalid Country.');
+			}
+			$this->_data['items'] = $list;
+			$this->_data['totalCount'] = $this->_totalCount;
 		} catch(Exception $e) {
 			$this->exception($e);
 		}

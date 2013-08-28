@@ -25,14 +25,14 @@ Ext.define(MyIndo.getNameSpace('controller.Report.Organization'), {
 		var parent = record.up().up();
 		var grid = parent.items.get(0);
 		var selected = parent.getSelectionModel().getSelection();
+		console.log(selected[0].data);
 		var store = Ext.create(MyIndo.getNameSpace('store.Report.OrganizationTrainings'));
 		if(selected.length > 0) {
 			store.proxy.extraParams = {
-					ORGANIZATION_ID: selected[0].data.ORGANIZATION_ID
+					ORGANIZATION_ID: selected[0].data.ID
 			};
-			console.log(selected[0].data.TRAINING_ID);
 			Ext.create(MyIndo.getNameSpace('view.Report.Organization.Detail'), {
-				trainingData: selected[0].data.ORGANIZATION_ID,
+				organizationData: selected[0].data,
 				store: store
 			}).show();
 			store.load();
@@ -50,7 +50,7 @@ Ext.define(MyIndo.getNameSpace('controller.Report.Organization'), {
 					me.showLoadingWindow();
 					Ext.Ajax.request({
 						url: MyIndo.siteUrl('organizations/request/print'),
-						params: parent.trainingData,
+						params: parent.organizationData,
 						success: function(r) {
 							var json = Ext.decode(r.responseText);
 							me.closeLoadingWindow();
@@ -62,7 +62,7 @@ Ext.define(MyIndo.getNameSpace('controller.Report.Organization'), {
 						}
 					});
 				} else {
-					Ext.Msg.alert('Application Error', 'Invalid participant.');
+					Ext.Msg.alert('Application Error', 'Invalid Organization.');
 				}
 			}
 		});

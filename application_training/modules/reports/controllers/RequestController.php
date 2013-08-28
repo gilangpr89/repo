@@ -166,6 +166,7 @@ class Reports_RequestController extends MyIndo_Controller_Action
 	{
 		try {
 			$list = array();
+			/* Beda Table View rubah code buat print*/
 			if(isset($this->_posts['ORGANIZATION_COUNTRY_ID']) && !empty($this->_posts['ORGANIZATION_COUNTRY_ID'])) {
 				$id = $this->_enc->base64decrypt($this->_posts['ORGANIZATION_COUNTRY_ID']);
 				if($this->_modelTraining->isExist('ORGANIZATION_COUNTRY_ID', $id)) {
@@ -217,6 +218,7 @@ class Reports_RequestController extends MyIndo_Controller_Action
 	{
 		try {
 			$list = array();
+			/* Beda Table View rubah code buat print*/
 			if(isset($this->_posts['REGION_ID']) && !empty($this->_posts['REGION_ID'])) {
 				$id = $this->_enc->base64decrypt($this->_posts['REGION_ID']);
 				if($this->_modelRegionView->isExist('ID', $id)) {
@@ -246,21 +248,5 @@ class Reports_RequestController extends MyIndo_Controller_Action
 		} catch(Exception $e) {
 			$this->exception($e);
 		}
-	}
-	
-	public function searchAction()
-	{
-        $start_date = $this->_posts['SDATE'];
- 		$end_date = $this->_posts['EDATE'];
-
- 		try {
- 		   $id = $this->_model->getTrainingid($start_date, $end_date);
- 		   $this->_where[] = $this->_modelView->getAdapter()->quoteInto('TRAINING_ID IN(?)', $id);
- 		
- 		$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
- 		$this->_data['totalCount'] = $this->_modelView->count($this->_where);
- 		} catch (Exception $e) {
- 			$this->exception($e);
- 		}
 	}
 }

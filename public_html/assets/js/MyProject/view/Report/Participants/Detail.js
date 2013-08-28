@@ -16,7 +16,7 @@ Ext.define(MyIndo.getNameSpace('view.Report.Participants.Detail'), {
 				html: 
 				'<table>' +
 					'<tr>' +
-						'<td> Name</td><td>:</td><td>' + this.participantsData.TRAINING_NAME + '</td>' + 
+						'<td>Training Name</td><td>:</td><td>' + this.participantsData.TRAINING_NAME + '</td>' + 
 					'</tr>' +
 				'</table>'
 			},{
@@ -27,7 +27,10 @@ Ext.define(MyIndo.getNameSpace('view.Report.Participants.Detail'), {
 				maxHeight: 500,
 				autoScroll: true,
 				store: this.store,
-				columns: [{
+				columns: [{text: 'TRAINING_ID',
+				          width:60,
+				          hidden: true
+			      },{
 					text: 'Training Name',
 					flex: 1,
 					dataIndex: 'TRAINING_NAME'
@@ -52,7 +55,7 @@ Ext.define(MyIndo.getNameSpace('view.Report.Participants.Detail'), {
 			buttons: [{
 				text: 'Print',
 				iconCls: 'icon-printer',
-				action: 'do-print-participant'
+				action: 'do-print-report-participant'
 			}]
 		});
 		this.callParent(arguments);

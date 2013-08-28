@@ -33,12 +33,11 @@ Ext.define(MyIndo.getNameSpace('controller.Report.CapacityProfile.Srcountry'), {
 		var parent = record.up().up();
 		var grid = parent.items.get(0)
 		var selected = grid.getSelectionModel().getSelection();
-		var store = Ext.create(MyIndo.getNameSpace('store.Report.CapacityProfile.SrcountryTrainings'));		
+		var store = Ext.create(MyIndo.getNameSpace('store.Report.CapacityProfile.SrcountryTrainings'));
 		if(selected.length > 0) {
 			store.proxy.extraParams = {
 					ORGANIZATION_COUNTRY_ID: selected[0].data.ID
 			};
-			console.log(selected[0].data.ID);
 			Ext.create(MyIndo.getNameSpace('view.Report.CapacityProfile.Srcountry.Detail'), {
 				countryData: selected[0].data,
 				store: store
@@ -54,7 +53,7 @@ Ext.define(MyIndo.getNameSpace('controller.Report.CapacityProfile.Srcountry'), {
 		var me = this;
 		Ext.Msg.confirm('Print Sr Report', 'Are you sure want to print this data ?', function(btn) {
 			if(btn == 'yes') {
-				if(typeof(parent.participantData.ID) !== 'undefined') {
+				if(typeof(parent.countryData.ID) !== 'undefined') {
 					me.showLoadingWindow();
 					Ext.Ajax.request({
 						url: MyIndo.siteUrl('reports/print/srcountry'),

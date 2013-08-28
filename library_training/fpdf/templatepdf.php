@@ -1,7 +1,7 @@
 <?php 
 require_once('fpdf.php');
 
-class myfpdf extends FPDF {
+class templatepdf extends FPDF {
 	
 	var $tablewidths;
 	var $headerset;

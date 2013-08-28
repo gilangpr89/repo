@@ -41,7 +41,7 @@ class Trainingparticipants_RequestController extends MyIndo_Controller_Action
 		try {
 			$valid = true;
 			foreach($this->_required as $r) {
-				if(!isset($this->_posts[$r])) {
+				if(!isset($this->_posts[$r]) && !empty($this->_posts[$r])) {
 					$valid = false;
 				} else {
 					if(!in_array($r, $this->_ids)) {

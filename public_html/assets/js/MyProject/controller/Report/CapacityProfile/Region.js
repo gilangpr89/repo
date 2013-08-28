@@ -35,12 +35,10 @@ Ext.define(MyIndo.getNameSpace('controller.Report.CapacityProfile.Region'), {
 		var grid = parent.items.get(0)
 		var selected = grid.getSelectionModel().getSelection();
 		var store = Ext.create(MyIndo.getNameSpace('store.Report.CapacityProfile.RegionTrainings'));
-		
 		if(selected.length > 0) {
 			store.proxy.extraParams = {
 				REGION_ID: selected[0].data.ID
 			};
-			console.log(selected[0].data.ID);
 			Ext.create(MyIndo.getNameSpace('view.Report.CapacityProfile.Region.Detail'), {
 				regionData: selected[0].data,
 				store: store
@@ -56,11 +54,11 @@ Ext.define(MyIndo.getNameSpace('controller.Report.CapacityProfile.Region'), {
 		var me = this;
 		Ext.Msg.confirm('Print Region Report', 'Are you sure want to print this data ?', function(btn) {
 			if(btn == 'yes') {
-				if(typeof(parent.participantData.ID) !== 'undefined') {
+				if(typeof(parent.regionData.ID) !== 'undefined') {
 					me.showLoadingWindow();
 					Ext.Ajax.request({
 						url: MyIndo.siteUrl('reports/print/region'),
-						params: parent.participantData,
+						params: parent.regionData,
 						success: function(r) {
 							var json = Ext.decode(r.responseText);
 							me.closeLoadingWindow();

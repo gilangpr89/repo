@@ -28,7 +28,7 @@ Ext.define(MyIndo.getNameSpace('controller.Report.Participant'), {
 		var store = Ext.create(MyIndo.getNameSpace('store.Report.ParticipantTrainings'));
 		if(selected.length > 0) {
 			store.proxy.extraParams = {
-					PARTICIPANTS_ID: selected[0].data.PARTICIPANT_ID
+					PARTICIPANTS_ID: selected[0].data.TRAINING_ID
 			};
 			Ext.create(MyIndo.getNameSpace('view.Report.Participants.Detail'), {
 				participantsData: selected[0].data,
@@ -45,11 +45,12 @@ Ext.define(MyIndo.getNameSpace('controller.Report.Participant'), {
 		var me = this;
 		Ext.Msg.confirm('Print Participant Report', 'Are you sure want to print this data ?', function(btn) {
 			if(btn == 'yes') {
-				if(typeof(parent.trainingData.ID) !== 'undefined') {
+				console.log(parent.participantsData.ID);
+				if(typeof(parent.participantsData.ID) !== 'undefined') {
 					me.showLoadingWindow();
 					Ext.Ajax.request({
-						url: MyIndo.siteUrl('participant/request/print'),
-						params: parent.trainingData,
+						url: MyIndo.siteUrl('participants/request/print'),
+						params: parent.participantsData,
 						success: function(r) {
 							var json = Ext.decode(r.responseText);
 							me.closeLoadingWindow();

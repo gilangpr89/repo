@@ -4,118 +4,55 @@ Ext.define(MyIndo.getNameSpace('model.Report.ParticipantTraining'), {
 		name: 'ID',
 		type: 'string'
 	},{
-		name: 'USER_ID',
-		type: 'string'
-	},{
-		name: 'USERNAME',
-		type: 'string'
-	},{
 		name: 'TRAINING_ID',
 		type: 'string'
 	},{
 		name: 'TRAINING_NAME',
 		type: 'string'
 	},{
-		name: 'AREA_LEVEL_ID',
+		name: 'PARTICIPANT_ID',
 		type: 'string'
 	},{
-		name: 'AREA_LEVEL_NAME',
+		name: 'PARTICIPANT_NAME',
 		type: 'string'
 	},{
-		name: 'BENEFICIARIES_ID',
+		name: 'PARTICIPANT_FNAME',
 		type: 'string'
 	},{
-		name: 'BENEFICIARIES_NAME',
+		name: 'PARTICIPANT_MNANE',
 		type: 'string'
 	},{
-		name: 'FUNDING_SOURCE_ID',
+		name: 'PARTICIPANT_LNAME',
 		type: 'string'
 	},{
-		name: 'FUNDING_SOURCE_NAME',
+		name: 'PARTICIPANT_SNAME',
 		type: 'string'
 	},{
-		name: 'FUNDING_SOURCE_CITY_ID',
+		name: 'PARTICIPANT_GENDER',
 		type: 'string'
 	},{
-		name: 'FUNDING_SOURCE_CITY_NAME',
+		name: 'PARTICIPANT_BDATE',
 		type: 'string'
 	},{
-		name: 'FUNDING_SOURCE_PROVINCE_ID',
+		name: 'PARTICIPANT_MOBILE_NO',
 		type: 'string'
 	},{
-		name: 'FUNDING_SOURCE_PROVINCE_NAME',
+		name: 'PARTICIPANT_PHONE_NO',
 		type: 'string'
 	},{
-		name: 'FUNDING_SOURCE_COUNTRY_ID',
+		name: 'PARTICIPANT_EMAIL1',
 		type: 'string'
 	},{
-		name: 'FUNDING_SOURCE_COUNTRY_NAME',
+		name: 'PARTICIPANT_EMAIL2',
 		type: 'string'
 	},{
-		name: 'FUNDING_SOURCE_PHONE_NO1',
+		name: 'PARTICIPANT_FB',
 		type: 'string'
 	},{
-		name: 'FUNDING_SOURCE_PHONE_NO2',
-		type: 'string'
-	},{
-		name: 'FUNDING_SOURCE_EMAIL1',
-		type: 'string'
-	},{
-		name: 'FUNDING_SOURCE_EMAIL2',
-		type: 'string'
-	},{
-		name: 'FUNDING_SOURCE_WEBSITE',
-		type: 'string'
-	},{
-		name: 'FUNDING_SOURCE_ADDRESS',
-		type: 'string'
-	},{
-		name: 'VENUE_ID',
-		type: 'string'
-	},{
-		name: 'VENUE_NAME',
-		type: 'string'
-	},{
-		name: 'VENUE_CITY_ID',
-		type: 'string'
-	},{
-		name: 'VENUE_CITY_NAME',
-		type: 'string'
-	},{
-		name: 'VENUE_PROVINCE_ID',
-		type: 'string'
-	},{
-		name: 'VENUE_PROVINCE_NAME',
-		type: 'string'
-	},{
-		name: 'VENUE_COUNTRY_ID',
-		type: 'string'
-	},{
-		name: 'VENUE_COUNTRY_NAME',
-		type: 'string'
-	},{
-		name: 'VENUE_PHONE_NO1',
-		type: 'string'
-	},{
-		name: 'VENUE_PHONE_NO2',
-		type: 'string'
-	},{
-		name: 'VENUE_EMAIL1',
-		type: 'string'
-	},{
-		name: 'VENUE_EMAIL2',
-		type: 'string'
-	},{
-		name: 'VENUE_WEBSITE',
-		type: 'string'
-	},{
-		name: 'VENUE_ADDRESS',
+		name: 'PARTICIPANT_TWITTER',
 		type: 'string'
 	},{
 		name: 'ORGANIZATION_ID',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_NAME',
 		type: 'string'
 	},{
 		name: 'ORGANIZATION_CITY_ID',
@@ -136,6 +73,9 @@ Ext.define(MyIndo.getNameSpace('model.Report.ParticipantTraining'), {
 		name: 'ORGANIZATION_COUNTRY_NAME',
 		type: 'string'
 	},{
+		name: 'ORGANIZATION_NAME',
+		type: 'string'
+	},{
 		name: 'ORGANIZATION_PHONE_NO1',
 		type: 'string'
 	},{
@@ -154,11 +94,20 @@ Ext.define(MyIndo.getNameSpace('model.Report.ParticipantTraining'), {
 		name: 'ORGANIZATION_ADDRESS',
 		type: 'string'
 	},{
-		name: 'SDATE',
+		name: 'POSITION_ID',
 		type: 'string'
 	},{
-		name: 'EDATE',
+		name: 'POSITION_NAME',
 		type: 'string'
+	},{
+		name: 'PRE_TEST',
+		type: 'float'
+	},{
+		name: 'POST_TEST',
+		type: 'float'
+	},{
+		name: 'DIFF',
+		type: 'float'
 	},{
 		name: 'CREATED_DATE',
 		type: 'string'

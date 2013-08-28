@@ -26,10 +26,10 @@ Ext.define(MyIndo.getNameSpace('controller.Report'), {
 				
 				// Organization : Print Button :
 			case 'print-report-organization':
-				this.printParticipant(record);
+				this.printOrganization(record);
 				break;
 			case 'do-print-report-organization':
-				this.doPrintParticipant(record);
+				this.doPrintOrganization(record);
 				break;
 				
 				// TrainingEvaluation : Print Button :

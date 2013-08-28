@@ -155,10 +155,6 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 	},
 	
 	onReportTrainingEvaluationClicked: function(menuTitle, menuId, mainContent) {
-		console.log(menuTitle);
-		console.log(menuId);
-		console.log(mainContent);
-		console.log('aaaaaa');
 		var store = Ext.create(MyIndo.getNameSpace('store.Report.TrainingEvaluations'));
 		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Report.TrainingEvaluation.View'));
 	},

@@ -40,7 +40,7 @@ class myfpdf extends FPDF
 		//pindah ke posisi ke tengah untuk membuat judul
 		$this->Cell(80);
 		//judul
-		$this->Cell(30,10,'REPORT PARTICIPANTS',0,0,'C');
+		$this->Cell(30,10,'REPORT',0,0,'C');
 		//pindah baris
 		$this->Ln(20);
 		//buat garis horisontal
@@ -240,6 +240,6 @@ class myfpdf extends FPDF
 	//Arial italic 9
 	$this->SetFont('Arial','I',9);
 	//nomor halaman
-	$this->Cell(0,10,'Halaman '.$this->PageNo().' dari {nb}',0,0,'R');
+	 $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
 	}
 }

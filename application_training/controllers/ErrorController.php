@@ -9,16 +9,16 @@ class ErrorController extends Zend_Controller_Action
 
     public function errorAction()
     {
-        if($this->getRequest()->isXmlHttpRequest()) {
-            $this->_helper->viewRenderer->setNoRender(true);
+//         if($this->getRequest()->isXmlHttpRequest()) {
+//             $this->_helper->viewRenderer->setNoRender(true);
 
-            $json['login'] = true;
-            $json['success'] = false;
-            $json['error_code'] = 404;
-            $json['error_message'] = 'Page not found.';
+//             $json['login'] = true;
+//             $json['success'] = false;
+//             $json['error_code'] = 404;
+//             $json['error_message'] = 'Page not found.';
 
-            echo Zend_Json::encode($json);
-        } else {
+//             echo Zend_Json::encode($json);
+//         } else {
             $errors = $this->_getParam('error_handler');
             
             switch ($errors->type) {
@@ -49,7 +49,7 @@ class ErrorController extends Zend_Controller_Action
             }
             
             $this->view->request   = $errors->request;
-        }
+        //}
     }
 
     public function getLog()

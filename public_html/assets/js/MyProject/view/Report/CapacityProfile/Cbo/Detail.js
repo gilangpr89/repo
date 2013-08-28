@@ -16,7 +16,7 @@ Ext.define(MyIndo.getNameSpace('view.Report.CapacityProfile.Cbo.Detail'), {
 				html: 
 				'<table>' +
 					'<tr>' +
-						'<td>Organization Name</td><td>:</td><td>' + this.organizationData.CITY_NAME + '</td>' + 
+						'<td>Organization City</td><td>:</td><td>' + this.organizationData.CITY_NAME + '</td>' + 
 					'</tr>' +
 					'<tr>' +
 						'<td>Organization Province</td><td>:</td><td>' + this.organizationData.PROVINCE_NAME + '</td>' + 

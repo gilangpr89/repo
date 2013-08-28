@@ -9,7 +9,7 @@ Ext.define(MyIndo.getNameSpace('view.Report.CapacityProfile.Srcountry.Detail'), 
 	
 	initComponent: function() {
 		Ext.apply(this, {
-			title: 'Detail Participant : ' + this.countryData.NAME,
+			title: 'Detail SrCountry : ' + this.countryData.NAME,
 			items: [{
 				border: false,
 				bodyPadding: 5,

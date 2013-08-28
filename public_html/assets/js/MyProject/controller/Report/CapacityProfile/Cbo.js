@@ -27,17 +27,14 @@ Ext.define(MyIndo.getNameSpace('controller.Report.CapacityProfile.Cbo'), {
 	},
 	
 	printCbo: function(record) {
-		console.log('aaa');
 		var parent = record.up().up();
 		var grid = parent.items.get(0)
 		var selected = grid.getSelectionModel().getSelection();
 		var store = Ext.create(MyIndo.getNameSpace('store.Report.CapacityProfile.CboTrainings'));
-		
 		if(selected.length > 0) {
 			store.proxy.extraParams = {
 				ORGANIZATION_ID: selected[0].data.ID
 			};
-			console.log(selected[0].data.ID);
 			Ext.create(MyIndo.getNameSpace('view.Report.CapacityProfile.Cbo.Detail'), {
 				organizationData: selected[0].data,
 				store: store
@@ -53,11 +50,11 @@ Ext.define(MyIndo.getNameSpace('controller.Report.CapacityProfile.Cbo'), {
 		var me = this;
 		Ext.Msg.confirm('Print CBO Report', 'Are you sure want to print this data ?', function(btn) {
 			if(btn == 'yes') {
-				if(typeof(parent.participantData.ID) !== 'undefined') {
+				if(typeof(parent.organizationData.ID) !== 'undefined') {
 					me.showLoadingWindow();
 					Ext.Ajax.request({
 						url: MyIndo.siteUrl('reports/print/cbo'),
-						params: parent.participantData,
+						params: parent.organizationData,
 						success: function(r) {
 							var json = Ext.decode(r.responseText);
 							me.closeLoadingWindow();

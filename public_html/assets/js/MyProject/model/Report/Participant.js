@@ -4,115 +4,43 @@ Ext.define(MyIndo.getNameSpace('model.Report.Participant'), {
 		name: 'ID',
 		type: 'string'
 	},{
-		name: 'TRAINING_ID',
+		name: 'NAME',
 		type: 'string'
 	},{
-		name: 'TRAINING_NAME',
+		name: 'FNAME',
 		type: 'string'
 	},{
-		name: 'PARTICIPANT_NAME',
+		name: 'MNAME',
 		type: 'string'
 	},{
-		name :'PARTICIPANT_ID',
+		name: 'LNAME',
 		type: 'string'
 	},{
-		name: 'PARTICIPANT_NAME',
+		name: 'SNAME',
 		type: 'string'
 	},{
-		name: 'PARTICIPANT_FNAME',
+		name: 'GENDER',
 		type: 'string'
 	},{
-		name: 'PARTICIPANT_MNAME',
+		name: 'BDATE',
 		type: 'string'
 	},{
-		name: 'PARTICIPANT_LNAME',
+		name: 'MOBILE_NO',
 		type: 'string'
 	},{
-		name: 'PARTICIPANT_SNAME',
+		name: 'PHONE_NO',
 		type: 'string'
 	},{
-		name: 'PARTICIPANT_GENDER',
+		name: 'EMAIL1',
 		type: 'string'
 	},{
-		name: 'PARTICIPANT_BDATE',
+		name: 'EMAIL2',
 		type: 'string'
 	},{
-		name: 'PARTICIPANT_MOBILE_NO',
+		name: 'FB',
 		type: 'string'
 	},{
-		name: 'PARTICIPANT_PHONE_NO',
-		type: 'string'
-	},{
-		name: 'PARTICIPANT_EMAIL1',
-		type: 'string'
-	},{
-		name: 'PARTICIPANT_EMAIL2',
-		type: 'string'
-	},{
-		name: 'PARTICIPANT_FB',
-		type: 'string'
-	},{
-		name: 'PARTICIPANT_TWITTER',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_ID',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_CITY_ID',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_CITY_NAME',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_PROVINCE_ID',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_PROVINCE_NAME',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_COUNTRY_ID',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_COUNTRY_NAME',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_NAME',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_PHONE_NO1',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_PHONE_NO2',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_EMAIL1',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_EMAIL2',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_WEBSITE',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_ADDRESS',
-		type: 'string'
-	},{
-		name: 'POSITION_ID',
-		type: 'string'
-	},{
-		name: 'POSITION_NAME',
-		type: 'string'
-	},{
-		name: 'POSITION_ID',
-		type: 'string'
-	},{
-		name: 'PRE_TEST',
-		type: 'string'
-	},{
-		name: 'POST_TEST',
-		type: 'string'
-	},{
-		name: 'DIFF',
+		name: 'TWITTER',
 		type: 'string'
 	},{
 		name: 'CREATED_DATE',
