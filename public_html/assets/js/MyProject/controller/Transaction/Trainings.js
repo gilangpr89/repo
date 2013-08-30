@@ -404,8 +404,8 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 		var selected = grid.getSelectionModel().getSelection();
 		var me = this;
 		var store = Ext.create(MyIndo.getNameSpace('store.Transaction.TrainingModules'));
-		store.proxy.extraParams = {TRAINING_ID: selected[0].data.ID};
 		if(selected.length > 0) {
+			store.proxy.extraParams = {TRAINING_ID: selected[0].data.ID};
 			Ext.create(MyIndo.getNameSpace('view.Transaction.Trainings.Modules'), {
 				trainingId: selected[0].data.ID,
 				store: store

@@ -6,6 +6,7 @@ class MyIndo_Api_Request
 	protected $_enc;
 	protected $_key;
 	protected $_iv;
+	protected $_where;
 	
 	public function __construct()
 	{
@@ -32,6 +33,8 @@ class MyIndo_Api_Request
 		
 		// initialize $_enc model :
 		$this->_enc = new MyIndo_Encryption_Aes($this->_key, $this->_iv);
+		
+		$this->_where = array();
 	}
 	/**
 	  * Function Name 	: getListMenu()
@@ -39,7 +42,7 @@ class MyIndo_Api_Request
 	  * Description 	: Get list menus
 	  * @author 		: Gilang Pratama Putra
 	  */
-	public function getListMenu()
+	public function getListMenu($groups)
 	{
 		try {
 			$menuModel = new MyIndo_Model_Menus();
@@ -48,8 +51,24 @@ class MyIndo_Api_Request
 			
 			foreach($list as $k=>$d) {
 				$list[$k]['PARENT_ID'] = $this->_enc->base64encrypt($d['PARENT_ID']);
+				
+				/* Check for privilege */
+				if(!in_array(1, $groups)) { // ByPass for group id 1 -> Administrator
+					if($list[$k]['TYPE'] == 'MENU' || $list[$k]['TYPE'] == 'SUBMENU') {
+						if(!$this->hasMenuPrivilege($groups, $list[$k]['MENU_ID'])) {
+							unset($list[$k]);
+						}
+					}
+				}
 			}
-			return $this->getMenuRecursive($list);
+			
+			/* Re-Structuring */
+			$menus = array();
+			foreach($list as $v) {
+				$menus[] = $v;
+			}
+			
+			return $this->getMenuRecursive($menus, 0);
 		} catch(Exception $e) {
 			return array();
 		}
@@ -87,6 +106,74 @@ class MyIndo_Api_Request
 		}
 		return $tree;
 	}
+
+	public function getTreeMenu($group_id)
+	{
+		try {
+			$menuModel = new MyIndo_Model_Menus();
+			$this->_where = array();
+			$this->_where[] = $menuModel->getAdapter()->quoteInto('ACTIVE = ?',1);
+			$q = $menuModel->select()->where('ACTIVE = ?', 1)->order(array('MENU_ID ASC', 'INDEX ASC'));
+			$list = $q->query()->fetchAll();
+			return $this->getTreeMenuRecursive($list, 0, $group_id);
+		} catch(Exception $e) {
+			return array();
+		}
+	}
+	
+	protected function getTreeMenuRecursive($data, $parent = 0, $group_id)
+	{
+		$tree = array();
+		if(count($data) > 0) {
+// 			$parentDefault = ($parent == 0) ? $data[0]['PARENT_ID'] : $parent;
+			foreach($data as $index => $menu) {
+				if($menu['PARENT_ID'] == $parent) {
+					$i = count($tree);
+					
+					$tree[$i]['text'] = $menu['MENU_TITLE'];
+					$tree[$i]['data'] = $this->getTreeMenuRecursive($data, $menu['MENU_ID'], $group_id);
+					$tree[$i]['MENU_ID'] = $this->_enc->base64encrypt($menu['MENU_ID']);
+					// $tree[$i]['id'] = strtolower($menu['TYPE']) . '-' . $menu['MENU_ID'];
+					
+					if(count($tree[$i]['data']) == 0/* && $menu['PARENT_ID'] != $parentDefault*/) {
+						unset($tree[$i]['data']);
+						$tree[$i]['leaf'] = true;
+					} else {
+						$tree[$i]['expanded'] = true;
+					}
+					
+					$tree[$i]['checked'] = $this->getStatusPrivilege($menu['MENU_ID'], $group_id);
+				}
+			}
+			return $tree;
+		} else {
+			return array();
+		}
+	}
+	
+	protected function hasMenuPrivilege($groups, $menu_id)
+	{
+		$hasAccess = false;
+		$privilegesModel = new MyIndo_Model_Privileges();
+		foreach($groups as $group) {
+			$where = array();
+			$where[] = $privilegesModel->getAdapter()->quoteInto('GROUP_ID = ?', $group);
+			$where[] = $privilegesModel->getAdapter()->quoteInto('MENU_ID = ?', $this->_enc->base64decrypt($menu_id));
+			if($privilegesModel->count($where) > 0) {
+				$hasAccess = true;
+			}
+		}
+		return $hasAccess;
+	}
+	
+	protected function getStatusPrivilege($menu_id, $group_id)
+	{
+		$privilegesModel = new MyIndo_Model_Privileges();
+		$this->_where = array();
+		$this->_where[] = $privilegesModel->getAdapter()->quoteInto('MENU_ID = ?', $menu_id);
+		$this->_where[] = $privilegesModel->getAdapter()->quoteInto('GROUP_ID = ?', $group_id);
+		return ($privilegesModel->count($this->_where) > 0) ? true : false;
+	}
 	
 	/**
 	  * Function Name 	: getActions()
@@ -95,7 +182,7 @@ class MyIndo_Api_Request
 	  * Description 	: Get Menu Actions
 	  * @author 		: Gilang Pratama Putra
 	  */
-	public function getActions($menuId, $order)
+	public function getActions($menuId, $order, $groups)
 	{
 		$menuId = $this->_enc->base64decrypt($menuId);
 		$menuModel = new MyIndo_Model_Menus();
@@ -105,7 +192,31 @@ class MyIndo_Api_Request
 				);
 		$count = $menuModel->count($where);
 		$data = $menuModel->getList($count, 0, $order, $where);
+		
+		/* Check for privilege */
+		
+		foreach($data as $k=>$v) {
+			if(!in_array(1, $groups)) {
+				$data[$k]['HAS_ACCESS'] = $this->hasMenuPrivilege($groups, $v['MENU_ID']);
+			} else {
+				$data[$k]['HAS_ACCESS'] = true;
+			}
+		}
 		return $data;
+	}
+	
+	public function getUserGroups($userId)
+	{
+		$groupUserModel = new MyIndo_Model_GroupUser();
+		$groups = array();
+		$q = $groupUserModel->select()
+		->from($groupUserModel->getTableName(), array('GROUP_ID'))
+		->where('USER_ID = ?', $userId);
+		$result = $q->query()->fetchAll();
+		foreach($result as $v) {
+			$groups[] = $v['GROUP_ID'];
+		}
+		return $groups;
 	}
 
 	public function getListGroupUsers($groupId, $order)

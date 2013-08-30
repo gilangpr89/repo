@@ -74,7 +74,9 @@ Ext.define('MyIndo.controller.Menu', {
 							tbar[i] = {
 								'text'		: r.data.MENU_TITLE,
 								'iconCls'	: r.data.ICONCLS,
-								'action'	: r.data.ACTION
+								'action'	: r.data.ACTION,
+								'MENU_ID'	: r.data.MENU_ID,
+								'hidden'	: (r.data.HAS_ACCESS) ? false : true
 							};
 						});
 						mainContent.add(Ext.create(xtype, {

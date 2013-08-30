@@ -15,6 +15,11 @@ class MyIndo_Db_Table_Abstract extends Zend_Db_Table_Abstract
 		$this->_iv = md5($enc->get('iv'));
 		$this->_enc = new MyIndo_Encryption_Aes($this->_key, $this->_iv);
 	}
+	
+	public function getTableName()
+	{
+		return $this->_name;
+	}
 
 	public function getPk()
 	{
