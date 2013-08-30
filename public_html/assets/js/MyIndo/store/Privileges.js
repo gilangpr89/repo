@@ -1,12 +1,22 @@
 Ext.define('MyIndo.store.Privileges', {
-	extend: 'MyIndo.data.TreeStore',
+	extend: 'Ext.data.TreeStore',
+	autoLoad: false,
 	proxy: {
 		type: 'ajax',
-		url: MyIndo.siteUrl('privileges/request/read'),
-		actionMethods: MyIndo.config.defaultActionMethods
+		api: {
+			read: MyIndo.baseUrl('privileges/request/read')
+		},
+		actionMethods: {
+			read: 'POST'
+		},
+		reader: {
+			type: 'json',
+			root: 'data',
+			successProperty: 'success'
+		}
 	},
-	sorters: {
-		property: 'leaf',
-		direction: 'ASC'
+	root: {
+		expanded: true,
+		loaded: true
 	}
 });

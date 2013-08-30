@@ -1,11 +1,10 @@
 Ext.define('MyIndo.view.Administrator.Groups.ManagePrivilege', {
-	extend: 'Ext.Window',
+	extend: 'Ext.panel.Panel',
 	alias: 'widget.groupsmanageprivileges',
-	modal: true,
 	closable: true,
-	draggable: true,
 	resizable: false,
-	width: 380,
+	autoScroll: true,
+//	id: 'manage-privilege',
 	title: 'Manage Privilege',
 
 	initComponent: function() {
@@ -14,7 +13,13 @@ Ext.define('MyIndo.view.Administrator.Groups.ManagePrivilege', {
 				xtype: 'treepanel',
 				rootVisible: false,
 				useArrows: true,
-				border: false
+				border: false,
+				store: this.store
+			}],
+			tbar: [{
+				text: 'Save',
+				iconCls: 'icon-disk',
+				action: 'save-privilege'
 			}]
 		});
 		this.callParent(arguments);

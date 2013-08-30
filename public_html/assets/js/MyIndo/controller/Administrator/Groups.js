@@ -20,6 +20,9 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 			},
 			'manageadduserwindow button': {
 				click: this.onManageGroupButtonClicked
+			},
+			'groupsmanageprivileges button': {
+				click: this.onManagePrivilegesButtonClicked
 			}
 		});
 	},
@@ -84,6 +87,15 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 				break;
 			case 'delete':
 				this.manageDelete(record);
+				break;
+		}
+	},
+	
+	onManagePrivilegesButtonClicked: function(record) {
+		var action = record.action;
+		switch(action) {
+			case 'save-privilege':
+				this.doSavePrivilege(record);
 				break;
 		}
 	},
@@ -392,22 +404,66 @@ Ext.define('MyIndo.controller.Administrator.Groups', {
 	privilege: function(record) {
 		var parent = record.up().up();
 		var selected = parent.getSelectionModel().getSelection();
+		var mainContent = Ext.getCmp('main-content');
 		var me = this;
 		if(selected.length > 0) {
-			var store = Ext.create('MyIndo.store.Privileges');
-			store.proxy.extraParams = {
-				GROUP_ID: selected[0].data.GROUP_ID
-			};
-			store.load();
-			var manageWindow = Ext.create('MyIndo.view.Administrator.Groups.ManagePrivilege', {
-				title: 'Manage Privilege: ' + selected[0].data.NAME,
-				store: store,
-				id: 'manage-privilege-' + selected[0].data.GROUP_ID,
-				groupName: selected[0].data.NAME
-			});
-			manageWindow.show();
+			var data = selected[0].data;
+			if(data.NAME != 'Administrator') {
+				var store = Ext.create('MyIndo.store.Privileges');
+				store.proxy.extraParams = {GROUP_ID:data.GROUP_ID};
+				var id = 'manage-privilege-' + data.GROUP_ID;
+				
+				if(!mainContent.items.get(id)) {
+					this.showLoadingWindow();
+					mainContent.add(Ext.create('MyIndo.view.Administrator.Groups.ManagePrivilege', {
+						title: 'Manage Privilege: ' + data.NAME,
+						store: store,
+						id: id,
+						data: data
+					}));
+					store.load({callback: function(){
+						me.closeLoadingWindow();
+					}});
+				}
+				mainContent.setActiveTab(id);
+			} else {
+				Ext.Msg.alert('Application Error', 'Sorry, you cannot change privilege for this group.');
+			}
 		} else {
 			Ext.Msg.alert('Application Error', 'You did not select any Groups.');
 		}
+	},
+	
+	doSavePrivilege: function(record) {
+		var parent = record.up().up();
+		var tree = parent.items.get(0);
+		var checked = tree.getChecked();
+		var checkedId = new Array();
+		var me = this;
+		Ext.Msg.confirm('Manage Privilege', 'Are you sure want to save privilege ?', function(btn) {
+			if(btn == 'yes') {
+				Ext.each(checked, function(v, index) {
+					checkedId[checkedId.length] = (v.raw.MENU_ID);
+				});
+				checkedId = Ext.encode(checkedId);
+				me.showLoadingWindow();
+				Ext.Ajax.request({
+					url: MyIndo.baseUrl('privileges/request/update'),
+					params: {
+						GROUP_ID: parent.data.GROUP_ID,
+						MENUS: checkedId
+					},
+					success: function(response) {
+						var json = Ext.decode(response.responseText);
+						if(me.isLogin(json)) {
+							if(me.isSuccess(json)) {
+								Ext.Msg.alert('Manage Privilege', 'Privilege has been updated.');
+							}
+						}
+						me.closeLoadingWindow();
+					}
+				});
+			}
+		});
 	}
 });

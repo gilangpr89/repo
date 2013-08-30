@@ -25,6 +25,9 @@ Ext.define('MyIndo.model.MenuAction', {
 		name: 'PARENT_ID',
 		type: 'string'
 	},{
+		name: 'HAS_ACCESS',
+		type: 'boolean'
+	},{
 		name: 'CREATED_DATE',
 		type: 'string'
 	},{
