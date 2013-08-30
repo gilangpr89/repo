@@ -16,7 +16,7 @@ Ext.define(MyIndo.getNameSpace('view.Report.Participants.Detail'), {
 				html: 
 				'<table>' +
 					'<tr>' +
-						'<td>Training Name</td><td>:</td><td>' + this.participantsData.TRAINING_NAME + '</td>' + 
+						'<td>Participant Name</td><td>:</td><td>' + this.participantsData.PARTICIPANT_NAME + '</td>' + 
 					'</tr>' +
 				'</table>'
 			},{
@@ -27,23 +27,24 @@ Ext.define(MyIndo.getNameSpace('view.Report.Participants.Detail'), {
 				maxHeight: 500,
 				autoScroll: true,
 				store: this.store,
-				columns: [{text: 'TRAINING_ID',
-				          width:60,
-				          hidden: true
-			      },{
+				columns: [{
 					text: 'Training Name',
 					flex: 1,
 					dataIndex: 'TRAINING_NAME'
 				},{
-					text: 'Start Date',
+					text: 'Gender',
 					width: 150,
 					align: 'center',
-					dataIndex: 'SDATE'
+					dataIndex: 'PARTICIPANT_GENDER'
 				},{
-					text: 'End Date',
+					text: 'Province Name',
 					width: 150,
 					align: 'center',
-					dataIndex: 'EDATE'
+					dataIndex: 'ORGANIZATION_PROVINCE_NAME'
+				},{
+					text: 'Country Name',
+					width:150,
+					dataIndex:'ORGANIZATION_COUNTRY_NAME'
 				}],
 				dockedItems: [{
 					xtype: 'pagingtoolbar',

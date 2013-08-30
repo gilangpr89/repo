@@ -9,16 +9,52 @@ Ext.define(MyIndo.getNameSpace('view.Report.TrainingEvaluation.Detail'), {
 	
 	initComponent: function() {
 		Ext.apply(this, {
-			title: 'Detail Training Evaluation : ' + this.DataEvaluation.ORGANIZATION_NAME,
+			title: 'Detail Training Evaluation : ' + this.dataEvaluation.ORGANIZATION_NAME,
 			items: [{
 				border: false,
 				bodyPadding: 5,
 				html: 
 				'<table>' +
 					'<tr>' +
-						'<td> Name</td><td>:</td><td>' + this.DataEvaluation.PARTICIPANT_NAME + '</td>' + 
+						'<td> Name</td><td>:</td><td>' + this.dataEvaluation.PARTICIPANT_NAME + '</td>' + 
 					'</tr>' +
 				'</table>'
+			},{
+				xtype: 'form',
+				layout: 'form',
+				border: false,
+				bodyPadding: '5 5 5 5',
+				title: 'Training Period',
+				id: 'trainingevaluation-detail-training-period-form',
+				items: [{
+					fieldLabel:'Start Date',
+					xtype: 'datefield',
+					//anchor: '100%',
+					width: 400,
+					name: 'START_DATE',
+					vtype: 'daterange',
+					id: 'trainingevaluation-detail-training-start-date',
+		            endDateField: 'trainingevaluation-detail-training-end-date',
+					format: 'Y-m-d',
+					allowBlank: false
+				},{
+					fieldLabel:'End Date',
+					xtype: 'datefield',
+					//anchor: '100%',
+					width: 400,
+					name: 'END_DATE',
+					vtype: 'daterange',
+					id: 'trainingevaluation-detail-training-end-date',
+			        startDateField: 'trainingevaluation-detail-training-start-date',
+					format: 'Y-m-d',
+					allowBlank: false
+				}],
+				buttons: [{
+					text: 'Filter',
+					iconCls: 'icon-filter',
+					action: 'filter-period',
+					activeStore: this.store
+				}]
 			},{
 				xtype: 'gridpanel',
 				border: false,
@@ -52,7 +88,7 @@ Ext.define(MyIndo.getNameSpace('view.Report.TrainingEvaluation.Detail'), {
 			buttons: [{
 				text: 'Print',
 				iconCls: 'icon-printer',
-				action: 'do-print-trainingevaluation'
+				action: 'do-print-report-trainingevaluation'
 			}]
 		});
 		this.callParent(arguments);

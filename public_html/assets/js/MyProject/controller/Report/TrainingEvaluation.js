@@ -25,13 +25,13 @@ Ext.define(MyIndo.getNameSpace('controller.Report.TrainingEvaluation'), {
 		var parent = record.up().up();
 		var grid = parent.items.get(0);
 		var selected = parent.getSelectionModel().getSelection();
-		var store = Ext.create(MyIndo.getNameSpace('store.Report.TrainingEvaluations'));
+		var store = Ext.create(MyIndo.getNameSpace('store.Report.TrtEvaluations'));
 		if(selected.length > 0) {
 			store.proxy.extraParams = {
-					TRAINING_ID: selected[0].data.TRAINING_ID
+					PARTICIPANT_ID: selected[0].data.PARTICIPANT_ID
 			};
 			Ext.create(MyIndo.getNameSpace('view.Report.TrainingEvaluation.Detail'), {
-				DataEvaluation: selected[0].data.TRAINING_ID,
+				dataEvaluation: selected[0].data,
 				store: store
 			}).show();
 			store.load();
@@ -45,11 +45,11 @@ Ext.define(MyIndo.getNameSpace('controller.Report.TrainingEvaluation'), {
 		var me = this;
 		Ext.Msg.confirm('Print TrainingEvaluation Report', 'Are you sure want to print this data ?', function(btn) {
 			if(btn == 'yes') {
-				if(typeof(parent.trainingData.ID) !== 'undefined') {
+				if(typeof(parent.dataEvaluation.ID) !== 'undefined') {
 					me.showLoadingWindow();
 					Ext.Ajax.request({
 						url: MyIndo.siteUrl('reports/print/training-print'),
-						params: parent.trainingData,
+						params: parent.dataEvaluation,
 						success: function(r) {
 							var json = Ext.decode(r.responseText);
 							me.closeLoadingWindow();
@@ -65,5 +65,20 @@ Ext.define(MyIndo.getNameSpace('controller.Report.TrainingEvaluation'), {
 				}
 			}
 		});
+	},
+	
+	filterPeriod: function(record) {
+		var store = record.activeStore;
+		var form = Ext.getCmp('trainingevaluation-detail-training-period-form');
+		if(form.isValid()) {
+			store.proxy.extraParams = {
+				START_DATE: form.getValues().START_DATE,
+				END_DATE: form.getValues().END_DATE,
+				PARTICIPANT_ID: store.proxy.extraParams.PARTICIPANT_ID
+			};
+			store.load();
+		} else {
+			Ext.Msg.alert('Application Error', 'Please complete form first.');
+		}
 	}
 });

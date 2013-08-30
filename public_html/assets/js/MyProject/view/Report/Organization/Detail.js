@@ -32,6 +32,42 @@ Ext.define(MyIndo.getNameSpace('view.Report.Organization.Detail'), {
 	'</tr>' +
 				'</table>'
 			},{
+				xtype: 'form',
+				layout: 'form',
+				border: false,
+				bodyPadding: '5 5 5 5',
+				title: 'Training Period',
+				id: 'organization-detail-training-period-form',
+				items: [{
+					fieldLabel:'Start Date',
+					xtype: 'datefield',
+					//anchor: '100%',
+					width: 400,
+					name: 'START_DATE',
+					vtype: 'daterange',
+					id: 'organization-detail-training-start-date',
+		            endDateField: 'organization-detail-training-end-date',
+					format: 'Y-m-d',
+					allowBlank: false
+				},{
+					fieldLabel:'End Date',
+					xtype: 'datefield',
+					//anchor: '100%',
+					width: 400,
+					name: 'END_DATE',
+					vtype: 'daterange',
+					id: 'organization-detail-training-end-date',
+			        startDateField: 'organization-detail-training-start-date',
+					format: 'Y-m-d',
+					allowBlank: false
+				}],
+				buttons: [{
+					text: 'Filter',
+					iconCls: 'icon-filter',
+					action: 'filter-period',
+					activeStore: this.store
+				}]
+			},{
 				xtype: 'gridpanel',
 				border: false,
 				title: 'Training Oganization List',

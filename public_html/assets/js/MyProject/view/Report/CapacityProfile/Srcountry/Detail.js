@@ -20,6 +20,42 @@ Ext.define(MyIndo.getNameSpace('view.Report.CapacityProfile.Srcountry.Detail'), 
 					'</tr>' +
 				'</table>'
 			},{
+				xtype: 'form',
+				layout: 'form',
+				border: false,
+				bodyPadding: '5 5 5 5',
+				title: 'Training Period',
+				id: 'srcountry-detail-training-period-form',
+				items: [{
+					fieldLabel:'Start Date',
+					xtype: 'datefield',
+					anchor: '100%',
+					width: 300,
+					name: 'START_DATE',
+					vtype: 'daterange',
+					id: 'srcountry-detail-training-start-date',
+		            endDateField: 'srcountry-detail-training-end-date',
+					format: 'Y-m-d',
+					allowBlank: false
+				},{
+					fieldLabel:'End Date',
+					xtype: 'datefield',
+					anchor: '100%',
+					width: 300,
+					name: 'END_DATE',
+					vtype: 'daterange',
+					id: 'srcountry-detail-training-end-date',
+			        startDateField: 'srcountry-detail-training-start-date',
+					format: 'Y-m-d',
+					allowBlank: false
+				}],
+				buttons: [{
+					text: 'Filter',
+					iconCls: 'icon-filter',
+					action: 'filter-period',
+					activeStore: this.store
+				}]
+			},{
 				xtype: 'gridpanel',
 				border: false,
 				title: 'Training List',
@@ -27,7 +63,11 @@ Ext.define(MyIndo.getNameSpace('view.Report.CapacityProfile.Srcountry.Detail'), 
 				maxHeight: 500,
 				autoScroll: true,
 				store: this.store,
-				columns: [{
+				columns: [{text: 'training id',
+					width: 60,
+					dataIndex: 'TRAINING_ID',
+					hidden: true
+			     },{
 					text: 'Training Name',
 					flex: 1,
 					dataIndex: 'TRAINING_NAME'

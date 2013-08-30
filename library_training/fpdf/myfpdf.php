@@ -40,7 +40,7 @@ class myfpdf extends FPDF
 		//pindah ke posisi ke tengah untuk membuat judul
 		$this->Cell(80);
 		//judul
-		$this->Cell(30,10,'REPORT',0,0,'C');
+		$this->Cell(30,10,'REPORT DATA',0,0,'C');
 		//pindah baris
 		$this->Ln(20);
 		//buat garis horisontal

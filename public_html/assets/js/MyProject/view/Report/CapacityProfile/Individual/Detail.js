@@ -5,7 +5,7 @@ Ext.define(MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.Detail'),
 	closable: true,
 	draggable: true,
 	resizable: false,
-	width: 650,
+	width: 550,
 	
 	initComponent: function() {
 		Ext.apply(this, {
@@ -25,6 +25,42 @@ Ext.define(MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.Detail'),
 						'<td>Last Name</td><td>:</td><td>' + this.participantData.LNAME + '</td>' + 
 					'</tr>' + '<td>Surname</td><td>:</td><td>' + this.participantData.SNAME + '</td>' +
 				'</table>'
+			},{
+				xtype: 'form',
+				layout: 'form',
+				border: false,
+				bodyPadding: '5 5 5 5',
+				title: 'Training Period',
+				id: 'individual-detail-training-period-form',
+				items: [{
+					fieldLabel:'Start Date',
+					xtype: 'datefield',
+					//anchor: '100%',
+					width: 400,
+					name: 'START_DATE',
+					vtype: 'daterange',
+					id: 'individual-detail-training-start-date',
+		            endDateField: 'individual-detail-training-end-date',
+					format: 'Y-m-d',
+					allowBlank: false
+				},{
+					fieldLabel:'End Date',
+					xtype: 'datefield',
+					//anchor: '100%',
+					width: 400,
+					name: 'END_DATE',
+					vtype: 'daterange',
+					id: 'individual-detail-training-end-date',
+			        startDateField: 'individual-detail-training-start-date',
+					format: 'Y-m-d',
+					allowBlank: false
+				}],
+				buttons: [{
+					text: 'Filter',
+					iconCls: 'icon-filter',
+					action: 'filter-period',
+					activeStore: this.store
+				}]
 			},{
 				xtype: 'gridpanel',
 				border: false,

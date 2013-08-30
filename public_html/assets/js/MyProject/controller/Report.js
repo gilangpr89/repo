@@ -15,6 +15,9 @@ Ext.define(MyIndo.getNameSpace('controller.Report'), {
 			case 'filter-cancel':
 				this.filterCancel(record);
 				break;
+			case 'filter-period':
+				this.filterPeriod(record);
+				break;
 			
 				// Participant : Print Button :
 			case 'print-report-participant':
@@ -73,9 +76,13 @@ Ext.define(MyIndo.getNameSpace('controller.Report'), {
 				this.doPrintRegion(record);
 				break;
 				
+//			case 'filter-period':
+//				this.filterPeriod(record);
+//				break;
+				
 			/* End of : Capacity Profile */
-			default:
-				console.log(action);
+//			default:
+//				console.log(action);
 		}
 	},
 	
@@ -101,9 +108,12 @@ Ext.define(MyIndo.getNameSpace('controller.Report'), {
 		var form = record.up().up().items.items[0].getForm();
 		var val = form.getValues();
 		var filters = parent.filters;
+		console.log(filters);
+
 		var params = {};
 		for(var i = 0; i < filters.length; i++) {
 			var tmp = eval('val.' + filters[i]);
+			console.log(tmp);
 			if(tmp.length > 0) {
 				eval('params.' + filters[i] + ' = ' + 'val.' + filters[i] + ';');
 			}

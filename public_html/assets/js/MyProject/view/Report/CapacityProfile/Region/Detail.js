@@ -16,9 +16,45 @@ Ext.define(MyIndo.getNameSpace('view.Report.CapacityProfile.Region.Detail'), {
 				html: 
 				'<table>' +
 					'<tr>' +
-						'<td> Name</td><td>:</td><td>' + this.regionData.NAME + '</td>' + 
+						'<td> Region Name</td><td>:</td><td>' + this.regionData.NAME + '</td>' + 
 					'</tr>' +
 				'</table>'
+			},{
+				xtype: 'form',
+				layout: 'form',
+				border: false,
+				bodyPadding: '5 5 5 5',
+				title: 'Training Period',
+				id: 'region-detail-training-period-form',
+				items: [{
+					fieldLabel:'Start Date',
+					xtype: 'datefield',
+					anchor: '100%',
+					width: 300,
+					name: 'START_DATE',
+					vtype: 'daterange',
+					id: 'region-detail-training-start-date',
+		            endDateField: 'region-detail-training-end-date',
+					format: 'Y-m-d',
+					allowBlank: false
+				},{
+					fieldLabel:'End Date',
+					xtype: 'datefield',
+					anchor: '100%',
+					width: 300,
+					name: 'END_DATE',
+					vtype: 'daterange',
+					id: 'region-detail-training-end-date',
+			        startDateField: 'region-detail-training-start-date',
+					format: 'Y-m-d',
+					allowBlank: false
+				}],
+				buttons: [{
+					text: 'Filter',
+					iconCls: 'icon-filter',
+					action: 'filter-period',
+					activeStore: this.store
+				}]
 			},{
 				xtype: 'gridpanel',
 				border: false,

@@ -55,6 +55,15 @@ Ext.define(MyIndo.getNameSpace('controller.Report.CapacityProfile.Region'), {
 		Ext.Msg.confirm('Print Region Report', 'Are you sure want to print this data ?', function(btn) {
 			if(btn == 'yes') {
 				if(typeof(parent.regionData.ID) !== 'undefined') {
+					
+					if(typeof(Ext.getCmp('region-detail-training-start-date')) !== 'undefined') {
+						parent.regionData.START_DATE = Ext.getCmp('region-detail-training-start-date').value;
+					}
+					
+					if(typeof(Ext.getCmp('region-detail-training-end-date')) !== 'undefined') {
+						parent.regionData.END_DATE = Ext.getCmp('region-detail-training-end-date').value;
+					}
+					
 					me.showLoadingWindow();
 					Ext.Ajax.request({
 						url: MyIndo.siteUrl('reports/print/region'),
@@ -74,5 +83,20 @@ Ext.define(MyIndo.getNameSpace('controller.Report.CapacityProfile.Region'), {
 				}
 			}
 		});
+	},
+	
+	filterPeriod: function(record) {
+		var store = record.activeStore;
+		var form = Ext.getCmp('region-detail-training-period-form');
+		if(form.isValid()) {
+			store.proxy.extraParams = {
+				START_DATE: form.getValues().START_DATE,
+				END_DATE: form.getValues().END_DATE,
+				REGION_ID: store.proxy.extraParams.REGION_ID
+			};
+			store.load();
+		} else {
+			Ext.Msg.alert('Application Error', 'Please complete form first.');
+		}
 	}
 });

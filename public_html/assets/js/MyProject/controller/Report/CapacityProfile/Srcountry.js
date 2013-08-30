@@ -54,6 +54,12 @@ Ext.define(MyIndo.getNameSpace('controller.Report.CapacityProfile.Srcountry'), {
 		Ext.Msg.confirm('Print Sr Report', 'Are you sure want to print this data ?', function(btn) {
 			if(btn == 'yes') {
 				if(typeof(parent.countryData.ID) !== 'undefined') {
+					if(typeof(Ext.getCmp('srcountry-detail-training-start-date')) !== 'undefined') {
+						parent.countryData.START_DATE = Ext.getCmp('srcountry-detail-training-start-date').value;
+					}
+					if(typeof(Ext.getCmp('srcountry-detail-training-end-date')) !== 'undefined') {
+						parent.countryData.END_DATE = Ext.getCmp('srcountry-detail-training-end-date').value;
+					}
 					me.showLoadingWindow();
 					Ext.Ajax.request({
 						url: MyIndo.siteUrl('reports/print/srcountry'),
@@ -73,5 +79,20 @@ Ext.define(MyIndo.getNameSpace('controller.Report.CapacityProfile.Srcountry'), {
 				}
 			}
 		});
+	},
+	
+	filterPeriod: function(record) {
+		var store = record.activeStore;
+		var form = Ext.getCmp('srcountry-detail-training-period-form');
+		if(form.isValid()) {
+		store.proxy.extraParams = {
+				START_DATE: form.getValues().START_DATE,
+				END_DATE: form.getValues().END_DATE,
+				ORGANIZATION_COUNTRY_ID: store.proxy.extraParams.ORGANIZATION_COUNTRY_ID
+		};
+		store.load();
+		} else {
+			Ext.Msg.alert('Application Error', 'Please complete form first.');
+		}
 	}
 });
