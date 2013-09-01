@@ -6,7 +6,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	protected $_unique;
 	protected $_modelView;
 	protected $_modelDetail;
-	protected $_modelTrtrainingView;
+	protected $_modelTrtraining;
 	protected $_modelParticipants;
 	protected $_required;
 	protected $_sData;
@@ -17,7 +17,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 		$this->_helper->viewRenderer->setNoRender(true);
         
 		$this->_model = new participants_Model_Participants();
-		$this->_modelTrtrainingView = new trtrainings_Model_TrTrainingsView();
+		$this->_modelTrtraining = new trtrainings_Model_TrTrainings();
 		$this->_modelDetail = new trainingparticipants_Model_TrainingParticipantsView();
 		$this->_modelParticipants = new participants_Model_Participants();
 		$this->_modelView = new participants_Model_ParticipantsView();
@@ -136,33 +136,28 @@ class Participants_RequestController extends MyIndo_Controller_Action
     public function participantTrainingsAction()
 	{
 		try {
-			$list = array();
+			//$list = array();
 			if(isset($this->_posts['PARTICIPANTS_ID'])) {
 				$id = $this->_enc->base64decrypt($this->_posts['PARTICIPANTS_ID']);
+				//print_r($id);
 				if($this->_modelDetail->isExist('PARTICIPANT_ID', $id)) {
 					$q = $this->_modelDetail->select()->where('PARTICIPANT_ID = ?', $id);
-					$list = $q->query()->fetchAll();
-					if(count($list) > 0) {
+					$listtmp = $q->query()->fetchAll();
+					if(count($listtmp) > 0) {
 						$trainingIds = array();
-						foreach($list as $k => $v) {
+						foreach($listtmp as $k => $v) {
 							if(!in_array($v['TRAINING_ID'], $trainingIds)) {
 								$trainingIds[] = $v['TRAINING_ID'];
 							}
 						}
-						
-						$this->_where[] = $this->_modelTrtrainingView->getAdapter()->quoteInto('TRAINING_ID IN (?)', $trainingIds);
-						$list = $this->_modelTrtrainingView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-						$this->_totalCount = $this->_model->count($this->_where);
-						
 					}
-				} else {
-					$this->error(101, 'Invalid Participant.');
+						
+						$this->_where[] = $this->_modelDetail->getAdapter()->quoteInto('PARTICIPANT_ID = ?', $id);
+						$this->_where[] = $this->_modelDetail->getAdapter()->quoteInto('TRAINING_ID IN (?)', $trainingIds);
 				}
-			} else {
-				$this->error(101, 'Invalid Participant.');
+						$this->_data['items'] = $this->_modelDetail->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+						$this->_data['totalCount'] = $this->_modelDetail->count($this->_where);		
 			}
-			$this->_data['items'] = $list;
-			$this->_data['totalCount'] = $this->_totalCount;
 		} catch(Exception $e) {
 			$this->exception($e);
 		}
@@ -171,9 +166,21 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	public function detailAction()
 	{
 		try {
-			if(isset($this->_posts['TRAINING_NAME'])) {
-			$name = $this->_posts['TRAINING_NAME'];
-			$this->_where[] = $this->_modelDetail->getAdapter()->quoteInto('TRAINING_NAME LIKE ?', '%' . $name . '%');
+			if(isset($this->_posts['START_DATE']) && $this->_posts['END_DATE']) {
+
+				$q = $this->_modelTrtrainingView->select()
+				->setIntegrityCheck(false)
+				->from('TR_TRAININGS_VIEW', array('TRAINING_ID'))
+				->where('SDATE >= ?', $this->_posts['START_DATE'])
+				->where('SDATE <= ?', $this->_posts['END_DATE']);
+				$list = $q->query()->fetchAll();
+				
+				$ids = array();
+				foreach($list as $k=>$v) {
+					$ids[] = $v['TRAINING_ID'];
+				}
+				
+				$this->_where[] = $this->_modelDetail->getAdapter()->quoteInto('TRAINING_ID IN (?)', $ids);
 			}
 			$this->_data['items'] = $this->_modelDetail->getList($this->_limit, $this->_start, $this->_order, $this->_where);
 			$this->_data['totalCount'] = $this->_modelDetail->count($this->_where);
@@ -192,28 +199,26 @@ class Participants_RequestController extends MyIndo_Controller_Action
 		
 		$pdf->SetFont('Times','',12);
 		$pdf->AliasNbPages();
-		//$pdf->AddPage();
+		$pdf->AddPage();
 		
-		if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
-			$id = $this->_enc->base64decrypt($this->_posts['ID']);
+		if(isset($this->_posts['PARTICIPANT_ID']) && !empty($this->_posts['PARTICIPANT_ID'])) {
+			$id = $this->_enc->base64decrypt($this->_posts['PARTICIPANT_ID']);
 		    $q = $this->_modelParticipants->select()->from('MS_PARTICIPANTS',array('*'))->where('ID = ?', $id);
 		    $listParticipant = $q->query()->fetchAll();
 			
-			print_r($expression);
 			$q = $this->_modelDetail->select()
 			->from('TR_TRAINING_PARTICIPANTS_VIEW',array('ID','TRAINING_ID','TRAINING_NAME','ID','ORGANIZATION_ID','ORGANIZATION_CITY_ID',
 					'ORGANIZATION_CITY_NAME','ORGANIZATION_PROVINCE_ID','ORGANIZATION_PROVINCE_NAME','ORGANIZATION_COUNTRY_ID',
 					'ORGANIZATION_COUNTRY_NAME','ORGANIZATION_NAME','ORGANIZATION_PHONE_NO1','ORGANIZATION_PHONE_NO2','ORGANIZATION_EMAIL1','ORGANIZATION_EMAIL2','ORGANIZATION_WEBSITE',
 			        'ORGANIZATION_ADDRESS','POSITION_ID','POSITION_NAME','PRE_TEST','POST_TEST','DIFF','CREATED_DATE','MODIFIED_DATE'))
-// 			->join('TR_TRAINING_PARTICIPANTS_VIEW', 'TR_TRAINING_PARTICIPANTS_VIEW.TRAINING_ID = TR_TRAININGS_VIEW.TRAINING_ID', array('BENEFICIARIES_NAME'))
-			->where('ID = ?', $id);
+ 			//->join('TR_TRAINING_PARTICIPANTS_VIEW', 'TR_TRAINING_PARTICIPANTS_VIEW.TRAINING_ID = TR_TRAININGS_VIEW.TRAINING_ID', array('*'))
+			->where('PARTICIPANT_ID = ?', $id);
 			$q->query()->fetchAll();
 			$list = $q->query()->fetchAll();
 
 			$filename ='ReportParticipant.' . $this->_posts['ID'] . '.' . date('Y-m-d-H-i-s');
 			
-			foreach ($listParticipant as $val) {
-				
+			foreach ($listParticipant as $val) {;
 				$columns = array();
 				$col = array();
 				$col[] = array('text' => 'First Name : '.$val['FNAME'] ,
@@ -227,11 +232,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 				 
 				$columns = array();
 				$col = array();
-				$col[] = array ('text' => 'Middle Name : '.$val['MNAME'] ,
-						'width' => '95',
-						'height'=>'5',
-						'align' => 'L',
-						'linearea'=>'',);
+				$col[] = array ('text' => 'Middle Name : '.$val['MNAME'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
 				$columns[] = $col;
 				$pdf->WriteTable($columns);
 				 
@@ -333,7 +334,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 						'align' => 'L',
 						'linearea'=>'',);
 				$columns[] = $col;
-				$pdf->WriteTable($columns);
+				//$pdf->WriteTable($columns);
 			}
 			
 			foreach ($list as $row) {

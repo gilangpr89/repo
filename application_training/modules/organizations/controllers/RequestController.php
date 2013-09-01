@@ -1,9 +1,12 @@
 <?php
+require_once APPLICATION_PATH.'/../library_training/fpdf/fpdf.php';
+require_once APPLICATION_PATH.'/../library_training/fpdf/myfpdf.php';
 
 class Organizations_RequestController extends MyIndo_Controller_Action
 {
 	protected $_modelView;
 	protected $_modelTraining;
+	protected $_modelParticipant;
 	protected $_unique;
 	protected $_required;
 	protected $_sData;
@@ -12,7 +15,8 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 	{
 		$this->_model = new organizations_Model_Organizations();
 		$this->_modelView = new organizations_Model_OrganizationsView();
-		$this->_modelTraining = new trainingparticipants_Model_TrainingParticipants();
+		$this->_modelTraining = new trtrainings_Model_TrTrainingsView();
+		$this->_modelParticipant = new trainingparticipants_Model_TrainingParticipantsView();
 		$this->_unique = 'Organization';
 		$this->_required = array(
 			'CITY_ID',
@@ -152,34 +156,125 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 			if(isset($this->_posts['ORGANIZATION_ID']) && !empty($this->_posts['ORGANIZATION_ID'])) {
 				$id = $this->_enc->base64decrypt($this->_posts['ORGANIZATION_ID']);
 				if($this->_modelTraining->isExist('ORGANIZATION_ID', $id)) {
-	
-					$q = $this->_modelTraining->select()->where('ORGANIZATION_ID = ?', $id);
+					
+					$where = array();
+					/* Check for period */
+					
+					if(isset($this->_posts['START_DATE']) && isset($this->_posts['END_DATE'])) {
+						$where[] = $this->_model->getAdapter()->quoteInto('SDATE >= ?', $this->_posts['START_DATE']);
+						$where[] = $this->_model->getAdapter()->quoteInto('SDATE <= ?', $this->_posts['END_DATE']);
+					}
+					$where[] = $this->_modelTraining->getAdapter()->quoteInto('ORGANIZATION_ID = ?',$id);
+					$q = $this->_modelTraining->select();
+					foreach($where as $k=>$v) {
+						$q->where($v);
+					}
 					$list = $q->query()->fetchAll();
-					print_r($list);die();
 					if(count($list) > 0) {
 						$trainingIds = array();
 						foreach($list as $k => $v) {
-							if(!in_array($v['TRAINING_ID'], $trainingIds)) {
-								$trainingIds[] = $v['TRAINING_ID'];
+							if(!in_array($v['ID'], $trainingIds)) {
+								$trainingIds[] = $v['ID'];
 							}
 						}
-	
-						$this->_where[] = $this->_model->getAdapter()->quoteInto('TRAINING_ID IN (?)', $trainingIds);
-	
-						$list = $this->_model->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-						$this->_totalCount = $this->_model->count($this->_where);
-	
+
+						$this->_where[] = $this->_modelTraining->getAdapter()->quoteInto('ID IN (?)', $trainingIds);
+						$list = $this->_modelTraining->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+						$this->_totalCount = $this->_modelTraining->count($this->_where);
 					}
 				} else {
-					$this->error(101, 'Invalid Country.');
+					$this->error(101, 'Invalid Organization.');
 				}
 			} else {
-				$this->error(101, 'Invalid Country.');
+				$this->error(101, 'Invalid Organization.');
 			}
 			$this->_data['items'] = $list;
 			$this->_data['totalCount'] = $this->_totalCount;
 		} catch(Exception $e) {
 			$this->exception($e);
+		}
+	}
+	
+	public function printAction()
+	{
+		$pdf = new myfpdf('L','mm','A4');
+		$h = 13;
+		$left = 40;
+		$top = 60;
+		
+		
+		$pdf->SetFont('Times','',14);
+		//$pdf->AliasNbPages();
+		$pdf->AddPage('p', 'a4');
+		$pdf->Ln(2);
+		//  	$pdf->Cell(33,'5','Training Name',1,0,'LTBR',0);
+		
+		
+		$filename ='ReportOrganization.' . date('Y-m-d-H-i-s');
+		if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
+			$id = $this->_enc->base64decrypt($this->_posts['ID']);
+			$q = $this->_modelTraining->select()
+			->from('TR_TRAININGS_VIEW', array('TRAINING_ID'))
+			->where('ORGANIZATION_ID  IN (?)', $id);
+
+			if(isset($this->_posts['START_DATE']) && isset($this->_posts['END_DATE'])) {
+				$q->where('SDATE >= ?', $this->_posts['START_DATE']);
+				$q->where('SDATE <= ?', $this->_posts['END_DATE']);
+			}
+			$q->query()->fetchAll();
+			$list = $q->query()->fetchAll();
+			$x = $this->_modelTraining->select()->from('TR_TRAININGS_VIEW', array('*'))->where('TRAINING_ID IN (?)', $list);
+			$query = $x->query()->fetchAll();
+			 
+			 
+			foreach ($query as $row){
+		
+				$columns = array();
+				$col = array();
+				$col[] = array('text' => ''. $row['TRAINING_NAME'] . '',
+						'width' => '33',
+						'height' => '5',
+						'align' => 'L',
+						'linearea' => 'LTBR',);
+		
+				$col[] = array('text' => ''.$row['FUNDING_SOURCE_NAME'] ,
+						'width' => '35',
+						'height'=>'5',
+						'align' => 'L',
+						'linearea'=>'LTBR',
+				);
+		
+				$col[] = array ('text' => ''.$row['ORGANIZATION_NAME'] ,
+						'width' => '35',
+						'height'=>'5',
+						'align' => 'L',
+						'linearea'=>'LTBR',);
+		
+				$col[] = array ('text' => ''.$row['ORGANIZATION_COUNTRY_NAME'] ,
+						'width' => '20',
+						'height'=>'5',
+						'align' => 'L',
+						'linearea'=>'LTBR',);
+		
+				$col[] = array ('text' => ''.$row['SDATE'] ,
+						'width' => '22',
+						'height'=>'5',
+						'align' => 'L',
+						'linearea'=>'LTBR',);
+		
+				$col[] = array ('text' => ''.$row['EDATE'] ,
+						'width' => '22',
+						'height'=>'5',
+						'align' => 'L',
+						'linearea'=>'LTBR',);
+				$columns[] = $col;
+				$pdf->WriteTable($columns);
+			}
+			//$pdf->Output(PDF_PATH.'/public_html/pdf/participants/'.$filename.'.pdf','F');
+			$pdf->Output('pdf/participants/' . $filename . '.pdf','F');
+		
+			$this->_data['fileName'] = $filename . '.pdf';
+			$this->_data['path'] = 'pdf/participants/';
 		}
 	}
 }

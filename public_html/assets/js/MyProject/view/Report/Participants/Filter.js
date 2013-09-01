@@ -6,9 +6,10 @@ Ext.define(MyIndo.getNameSpace('view.Report.Participants.Filter'), {
 	draggable: true,
 	resizable: false,
 	width: 400,
-	title: 'Filter Organization',
-
-	initComponent: function() {
+	title: 'Filter Participants',
+	
+	initComponent: function() {	
+		
 	    Ext.apply(this, {
 			items: [{
 				xtype: 'form',
@@ -17,10 +18,27 @@ Ext.define(MyIndo.getNameSpace('view.Report.Participants.Filter'), {
 				bodyPadding: '5 5 5 5',
 				url: MyIndo.siteUrl('participants/request/detail'),
 				items: [{
-					xtype: 'textfield',
-					name: 'TRAINING_NAME',
-					fieldLabel: 'Name',
-					emptyText: 'Input name..'
+					fieldLabel:'Start Date',
+					xtype: 'datefield',
+					anchor: '100%',
+					width: 300,
+					name: 'START_DATE',
+					id: 'start-date',
+					vtype: 'daterange',
+		            endDateField: 'end-date',
+					format: 'Y-m-d',
+					allowBlank: false
+				},{
+					fieldLabel:'End Date',
+					xtype: 'datefield',
+					anchor: '100%',
+					width: 300,
+					name: 'END_DATE',
+					id: 'end-date',
+					vtype: 'daterange',
+			        startDateField: 'start-date',
+					format: 'Y-m-d',
+					allowBlank: false
 				}]
 			}],
 			buttons: [{

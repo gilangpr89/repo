@@ -70,5 +70,21 @@ Ext.define(MyIndo.getNameSpace('controller.Report.CapacityProfile.Cbo'), {
 				}
 			}
 		});
+	},
+	
+	filterPeriod: function(record) {
+		var store = record.activeStore;
+		var form = Ext.getCmp('cbo-detail-training-period-form');
+		if(form.isValid()) {
+				store.proxy.extraParams = {
+					START_DATE: form.getValues().START_DATE,
+					END_DATE: form.getValues().END_DATE,
+					ORGANIZATION_ID: store.proxy.extraParams.ORGANIZATION_ID
+					
+				}
+		store.load();
+		} else {
+			Ext.Msg.alert('Application Error', 'Please complete form first.');
+		}
 	}
 });
