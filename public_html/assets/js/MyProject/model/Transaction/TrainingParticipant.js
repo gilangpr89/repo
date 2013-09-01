@@ -1,118 +1,235 @@
 Ext.define(MyIndo.getNameSpace('model.Transaction.TrainingParticipant'), {
-	extend: 'Ext.data.Model',
-	fields: [{
-		name: 'ID',
-		type: 'string'
-	},{
-		name: 'TRAINING_ID',
-		type: 'string'
-	},{
-		name: 'TRAINING_NAME',
-		type: 'string'
-	},{
-		name: 'PARTICIPANT_ID',
-		type: 'string'
-	},{
-		name: 'PARTICIPANT_NAME',
-		type: 'string'
-	},{
-		name: 'PARTICIPANT_FNAME',
-		type: 'string'
-	},{
-		name: 'PARTICIPANT_MNANE',
-		type: 'string'
-	},{
-		name: 'PARTICIPANT_LNAME',
-		type: 'string'
-	},{
-		name: 'PARTICIPANT_SNAME',
-		type: 'string'
-	},{
-		name: 'PARTICIPANT_GENDER',
-		type: 'string'
-	},{
-		name: 'PARTICIPANT_BDATE',
-		type: 'string'
-	},{
-		name: 'PARTICIPANT_MOBILE_NO',
-		type: 'string'
-	},{
-		name: 'PARTICIPANT_PHONE_NO',
-		type: 'string'
-	},{
-		name: 'PARTICIPANT_EMAIL1',
-		type: 'string'
-	},{
-		name: 'PARTICIPANT_EMAIL2',
-		type: 'string'
-	},{
-		name: 'PARTICIPANT_FB',
-		type: 'string'
-	},{
-		name: 'PARTICIPANT_TWITTER',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_ID',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_CITY_ID',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_CITY_NAME',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_PROVINCE_ID',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_PROVINCE_NAME',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_COUNTRY_ID',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_COUNTRY_NAME',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_NAME',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_PHONE_NO1',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_PHONE_NO2',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_EMAIL1',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_EMAIL2',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_WEBSITE',
-		type: 'string'
-	},{
-		name: 'ORGANIZATION_ADDRESS',
-		type: 'string'
-	},{
-		name: 'POSITION_ID',
-		type: 'string'
-	},{
-		name: 'POSITION_NAME',
-		type: 'string'
-	},{
-		name: 'PRE_TEST',
-		type: 'float'
-	},{
-		name: 'POST_TEST',
-		type: 'float'
-	},{
-		name: 'DIFF',
-		type: 'float'
-	},{
-		name: 'CREATED_DATE',
-		type: 'string'
-	},{
-		name: 'MODIFIED_DATE',
-		type: 'string'
-	}]
+    extend: 'Ext.data.Model',
+    fields: [{
+        name: 'ID',
+        type: 'string'
+    }, {
+        name: 'TR_TRAININGS_ID',
+        type: 'string'
+    }, {
+        name: 'TRAINER_ID',
+        type: 'string'
+    }, {
+        name: 'ROLE_ID',
+        type: 'string'
+    }, {
+        name: 'CITY_ID',
+        type: 'string'
+    }, {
+        name: 'PROVINCE_ID',
+        type: 'string'
+    }, {
+        name: 'COUNTRY_ID',
+        type: 'string'
+    }, {
+        name: 'CV_NAME',
+        type: 'string'
+    }, {
+        name: 'CV_PATH',
+        type: 'string'
+    }, {
+        name: 'CV_MIME_TYPE',
+        type: 'string'
+    }, {
+        name: 'CV_SIZE',
+        type: 'string'
+    }, {
+        name: 'CREATED_DATE',
+        type: 'string'
+    }, {
+        name: 'MODIFIED_DATE',
+        type: 'string'
+    }, {
+        name: 'TRAINING_USER_ID',
+        type: 'string'
+    }, {
+        name: 'TRAINING_ID',
+        type: 'string'
+    }, {
+        name: 'TRAINING_AREA_LEVEL_ID',
+        type: 'string'
+    }, {
+        name: 'TRAINING_BENEFICIARIES_ID',
+        type: 'string'
+    }, {
+        name: 'TRAINING_FUNDING_SOURCE_ID',
+        type: 'string'
+    }, {
+        name: 'TRAINING_VENUE_ID',
+        type: 'string'
+    }, {
+        name: 'TRAINING_ORGANIZATION_ID',
+        type: 'string'
+    }, {
+        name: 'TRAINING_SDATE',
+        type: 'string'
+    }, {
+        name: 'TRAINING_EDATE',
+        type: 'string'
+    }, {
+        name: 'USERNAME',
+        type: 'string'
+    }, {
+        name: 'USER_EMAIL',
+        type: 'string'
+    }, {
+        name: 'USER_ACTIVE',
+        type: 'string'
+    }, {
+        name: 'USER_IP_ADDRESS',
+        type: 'string'
+    }, {
+        name: 'USER_LAST_IP_ADDRESS',
+        type: 'string'
+    }, {
+        name: 'USER_LAST_LOGIN',
+        type: 'string'
+    }, {
+        name: 'TRAINING_NAME',
+        type: 'string'
+    }, {
+        name: 'TRAINING_AREA_LEVEL_NAME',
+        type: 'string'
+    }, {
+        name: 'TRAINING_AREA_LEVEL_TYPE',
+        type: 'string'
+    }, {
+        name: 'TRAINING_BENEFICIARIES_NAME',
+        type: 'string'
+    }, {
+        name: 'TRAINING_FUNDING_SOURCE_CITY_ID',
+        type: 'string'
+    }, {
+        name: 'TRAINING_FUNDING_SOURCE_PROVINCE_ID',
+        type: 'string'
+    }, {
+        name: 'TRAINING_FUNDING_SOURCE_COUNTRY_ID',
+        type: 'string'
+    }, {
+        name: 'TRAINING_FUNDING_SOURCE_NAME',
+        type: 'string'
+    }, {
+        name: 'TRAINING_FUNDING_SOURCE_PHONE_NO1',
+        type: 'string'
+    }, {
+        name: 'TRAINING_FUNDING_SOURCE_PHONE_NO2',
+        type: 'string'
+    }, {
+        name: 'TRAINING_FUNDING_SOURCE_EMAIL1',
+        type: 'string'
+    }, {
+        name: 'TRAINING_FUNDING_SOURCE_EMAIL2',
+        type: 'string'
+    }, {
+        name: 'TRAINNG_FUNDING_SOURCE_WEBSITE',
+        type: 'string'
+    }, {
+        name: 'TRAINING_FUNDING_SOURCE_ADDRESS',
+        type: 'string'
+    }, {
+        name: 'TRAINING_VENUE_CITY_ID',
+        type: 'string'
+    }, {
+        name: 'TRAINING_VENUE_PROVINCE_ID',
+        type: 'string'
+    }, {
+        name: 'TRAINING_VENUE_COUNTRY_ID',
+        type: 'string'
+    }, {
+        name: 'TRAINING_VENUE_NAME',
+        type: 'string'
+    }, {
+        name: 'TRAINING_VENUE_PHONE_NO1',
+        type: 'string'
+    }, {
+        name: 'TRAINING_VENUE_PHONE_NO2',
+        type: 'string'
+    }, {
+        name: 'TRAINING_VENUE_EMAIL1',
+        type: 'string'
+    }, {
+        name: 'TRAINING_VENUE_EMAIL2',
+        type: 'string'
+    }, {
+        name: 'TRAINING_VENUE_WEBSITE',
+        type: 'string'
+    }, {
+        name: 'TRAINING_VENUE_ADDRESS',
+        type: 'string'
+    }, {
+        name: 'TRAINING_ORGANIZATION_CITY_ID',
+        type: 'string'
+    }, {
+        name: 'TRAINING_ORGANIZATION_PROVINCE_ID',
+        type: 'string'
+    }, {
+        name: 'TRAINING_ORGANIZATION_COUNTRY_ID',
+        type: 'string'
+    }, {
+        name: 'TRAINING_ORGANIZATION_NAME',
+        type: 'string'
+    }, {
+        name: 'TRAINING_ORGANIZATION_PHONE_NO1',
+        type: 'string'
+    }, {
+        name: 'TRAINING_ORGANIZATION_PHONE_NO2',
+        type: 'string'
+    }, {
+        name: 'TRAINING_ORGANIZATION_EMAIL1',
+        type: 'string'
+    }, {
+        name: 'TRAINING_ORGANIZATION_EMAIL2',
+        type: 'string'
+    }, {
+        name: 'TRAINING_ORGANIZATION_WEBSITE',
+        type: 'string'
+    }, {
+        name: 'TRAINING_ORGANIZATION_ADDRESS',
+        type: 'string'
+    }, {
+        name: 'CITY_NAME',
+        type: 'string'
+    }, {
+        name: 'PROVINCE_NAME',
+        type: 'string'
+    }, {
+        name: 'COUNTRY_NAME',
+        type: 'string'
+    }, {
+        name: 'TRAINER_NAME',
+        type: 'string'
+    }, {
+        name: 'TRAINER_NICKNAME',
+        type: 'string'
+    }, {
+        name: 'TRAINER_GENDER',
+        type: 'string'
+    }, {
+        name: 'TRAINER_ADDRESS',
+        type: 'string'
+    }, {
+        name: 'TRAINER_BDATE',
+        type: 'string'
+    }, {
+        name: 'TRAINER_MOBILE_NO',
+        type: 'string'
+    }, {
+        name: 'TRAINER_PHONE_NO',
+        type: 'string'
+    }, {
+        name: 'TRAINER_EMAIL1',
+        type: 'string'
+    }, {
+        name: 'TRAINER_EMAIL2',
+        type: 'string'
+    }, {
+        name: 'TRAINER_FB',
+        type: 'string'
+    }, {
+        name: 'TRAINER_TWITTER',
+        type: 'string'
+    }, {
+        name: 'ROLE_NAME',
+        type: 'string'
+    }]
 });

@@ -46,11 +46,13 @@ class Trtrainingtrainers_RequestController extends MyIndo_Controller_Action
 			if(isset($this->_posts['TRAINING_ID']) && !empty($this->_posts['TRAINING_ID'])) {
 				$trainingId = (int)$this->_enc->base64decrypt($this->_posts['TRAINING_ID']);
 				if($this->_model->isExist('TRAINING_ID', $trainingId)) {
-					$this->_where[] = $this->_modelView->getAdapter()->quoteInto('TRAINING_ID = ?', $trainingId);
+					$this->_where[] = $this->_modelView->getAdapter()->quoteInto('TR_TRAININGS_ID = ?', $trainingId);
 				} else {
-					$this->_where[] = $this->_modelView->getAdapter()->quoteInto('TRAINING_ID = ?', 0);
+					$this->_where[] = $this->_modelView->getAdapter()->quoteInto('TR_TRAININGS_ID = ?', 0);
 				}
 			}
+			$this->_data['training_id'] = $trainingId;
+			$this->_data['query'] = $this->_where;
 			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
 			$this->_data['totalCount'] = $this->_modelView->count($this->_where);
 		} catch(Exception $e) {
