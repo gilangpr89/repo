@@ -197,7 +197,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 		$left = 40;
 		$top = 80;
 		
-		$pdf->SetFont('Times','',12);
+		$pdf->SetFont('Arial','',12);
 		$pdf->AliasNbPages();
 		$pdf->AddPage();
 		
@@ -207,10 +207,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 		    $listParticipant = $q->query()->fetchAll();
 			
 			$q = $this->_modelDetail->select()
-			->from('TR_TRAINING_PARTICIPANTS_VIEW',array('ID','TRAINING_ID','TRAINING_NAME','ID','ORGANIZATION_ID','ORGANIZATION_CITY_ID',
-					'ORGANIZATION_CITY_NAME','ORGANIZATION_PROVINCE_ID','ORGANIZATION_PROVINCE_NAME','ORGANIZATION_COUNTRY_ID',
-					'ORGANIZATION_COUNTRY_NAME','ORGANIZATION_NAME','ORGANIZATION_PHONE_NO1','ORGANIZATION_PHONE_NO2','ORGANIZATION_EMAIL1','ORGANIZATION_EMAIL2','ORGANIZATION_WEBSITE',
-			        'ORGANIZATION_ADDRESS','POSITION_ID','POSITION_NAME','PRE_TEST','POST_TEST','DIFF','CREATED_DATE','MODIFIED_DATE'))
+			->from('TR_TRAINING_PARTICIPANTS_VIEW',array('*'))
  			//->join('TR_TRAINING_PARTICIPANTS_VIEW', 'TR_TRAINING_PARTICIPANTS_VIEW.TRAINING_ID = TR_TRAININGS_VIEW.TRAINING_ID', array('*'))
 			->where('PARTICIPANT_ID = ?', $id);
 			$q->query()->fetchAll();
@@ -221,12 +218,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 			foreach ($listParticipant as $val) {;
 				$columns = array();
 				$col = array();
-				$col[] = array('text' => 'First Name : '.$val['FNAME'] ,
-						'width' => '95',
-						'height'=>'5',
-						'align' => 'L',
-						'linearea'=>'',
-				);
+				$col[] = array('text' => 'First Name : '.$val['FNAME'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
 				$columns[] = $col;
 				$pdf->WriteTable($columns);
 				 
@@ -238,265 +230,115 @@ class Participants_RequestController extends MyIndo_Controller_Action
 				 
 				$columns = array();
 				$col = array();
-				$col[] = array ('text' => 'Last Name : '.$val['LNAME'] ,
-						'width' => '95',
-						'height'=>'5',
-						'align' => 'L',
-						'linearea'=>'',);
+				$col[] = array ('text' => 'Last Name : '.$val['LNAME'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
 				$columns[] = $col;
 				$pdf->WriteTable($columns);
 				 
 				$columns = array();
 				$col = array();
-				$col[] = array ('text' => 'Surname : '.$val['SNAME'] ,
-						'width' => '95',
-						'height'=>'5',
-						'align' => 'L',
-						'linearea'=>'',);
+				$col[] = array ('text' => 'Surname : '.$val['SNAME'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
 				$columns[] = $col;
 				$pdf->WriteTable($columns);
 				 
 				$columns = array();
 				$col = array();
-				$col[] = array ('text' => 'Gender : '.$val['GENDER'] ,
-						'width' => '95',
-						'height'=>'5',
-						'align' => 'L',
-						'linearea'=>'',);
+				$col[] = array ('text' => 'Gender : '.$val['GENDER'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
 				$columns[] = $col;
 				$pdf->WriteTable($columns);
 				 
 				$columns = array();
 				$col = array();
-				$col[] = array ('text' => 'Brith Date : '.$val['BDATE'] ,
-						'width' => '95',
-						'height'=>'5',
-						'align' => 'L',
-						'linearea'=>'',);
+				$col[] = array ('text' => 'Brith Date : '.$val['BDATE'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
 				$columns[] = $col;
 				$pdf->WriteTable($columns);
 				 
 				$columns = array();
 				$col = array();
-				$col[] = array ('text' => 'Mobile Number : '.$val['MOBILE_NO'] ,
-						'width' => '95',
-						'height'=>'5',
-						'align' => 'L',
-						'linearea'=>'',);
+				$col[] = array ('text' => 'Mobile Number : '.$val['MOBILE_NO'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
 				$columns[] = $col;
 				$pdf->WriteTable($columns);
 				 
 				$columns = array();
 				$col = array();
-				$col[] = array ('text' => 'Phone Number : '.$val['PHONE_NO'] ,
-						'width' => '95',
-						'height'=>'5',
-						'align' => 'L',
-						'linearea'=>'',);
+				$col[] = array ('text' => 'Phone Number : '.$val['PHONE_NO'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
 				$columns[] = $col;
 				$pdf->WriteTable($columns);
 				 
 				$columns = array();
 				$col = array();
-				$col[] = array ('text' => 'First Email : '.$val['EMAIL1'] ,
-						'width' => '95',
-						'height'=>'5',
-						'align' => 'L',
-						'linearea'=>'',);
+				$col[] = array ('text' => 'First Email : '.$val['EMAIL1'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
 				$columns[] = $col;
 				$pdf->WriteTable($columns);
 				 
 				$columns = array();
 				$col = array();
-				$col[] = array ('text' => 'Second Email : '.$val['EMAIL2'] ,
-						'width' => '95',
-						'height'=>'5',
-						'align' => 'L',
-						'linearea'=>'',);
+				$col[] = array ('text' => 'Second Email : '.$val['EMAIL2'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
 				$columns[] = $col;
 				$pdf->WriteTable($columns);
 					
 				$columns = array();
 				$col = array();
-				$col[] = array ('text' => 'Facebook : '.$val['FB'] ,
-						'width' => '95',
-						'height'=>'5',
-						'align' => 'L',
-						'linearea'=>'',);
+				$col[] = array ('text' => 'Facebook : '.$val['FB'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
 				$columns[] = $col;
 				$pdf->WriteTable($columns);
 				 
 				$columns = array();
 				$col = array();
-				$col[] = array ('text' => 'Twitter : '.$val['TWITTER'] ,
-						'width' => '95',
-						'height'=>'5',
-						'align' => 'L',
-						'linearea'=>'',);
+				$col[] = array ('text' => 'Twitter : '.$val['TWITTER'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
 				$columns[] = $col;
-				//$pdf->WriteTable($columns);
+				$pdf->WriteTable($columns);
 			}
+			/* Start Label Table */
+			$pdf->Ln('10');
+			$headerTable = array(
+					array(
+							'col1'	=> 'Training Name',
+// 							'col2'	=> 'Organization City',
+// 							'col3'	=> 'Organization Province',
+// 							'col4'  => 'Organization Country',
+							'col5'  => 'Organization',
+							'col6'  => 'Position',
+							'col7'  => 'Pre Test',
+							'col8'  => 'Post Test',
+							'col9'  => 'Diff',
+					),
+			);
+			$columns = array();
+			if ( $headerTable ) foreach( $headerTable as $split ):
+			$col = array();
+			$col[] = array('text' => $split['col1'] , 'width' => '35','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+// 			$col[] = array('text' => $split['col2'] , 'width' => '35','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+// 			$col[] = array('text' => $split['col3'] , 'width' => '30','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+// 			$col[] = array('text' => $split['col4'] , 'width' => '30','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+ 			$col[] = array('text' => $split['col5'] , 'width' => '35','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+			$col[] = array('text' => $split['col6'] , 'width' => '30','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+			$col[] = array('text' => $split['col7'] , 'width' => '15','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+			$col[] = array('text' => $split['col8'] , 'width' => '15','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+			$col[] = array('text' => $split['col9'] , 'width' => '10','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+			$columns[] = $col;
+			endforeach;
+			$pdf->WriteTable($columns);
 			
 			foreach ($list as $row) {
 				
 		    $columns = array();
 	        $col = array();
-		    $col[] = array('text' => '' .$row['TRAINING_NAME'],
-		    		       'width' => '30',
-		    		       'height'=>'8', 
-	        		       'align' => 'L',
-		    		       'linearea' => '',
-		    		       );		    
-// 		   $columns[] = $col;
-// 	       $pdf->WriteTable($columns);
-		       
-	        $columns = array();
-	        $col = array();
-	        $col[] = array ('text' => ''.$row['ORGANIZATION_CITY_NAME'] ,
-	        		'width' => '30',
-	        		'height'=>'5',
-	        		'align' => 'L',
-	        		'linearea'=>'',);
-// 	        $columns[] = $col;
-// 	        $pdf->WriteTable($columns);
-	        
-//	        $columns = array();
-// 	        $col = array();
-	        $col[] = array ('text' => ''.$row['ORGANIZATION_PROVINCE_NAME'] ,
-	        		'width' => '20',
-	        		'height'=>'5',
-	        		'align' => 'L',
-	        		'linearea'=>'',);
-// 	        $columns[] = $col;
-// 	        $pdf->WriteTable($columns);
-	        
-// 	        $columns = array();
-// 	        $col = array();
-	        $col[] = array ('text' => 'Organization Country : '.$row['ORGANIZATION_COUNTRY_NAME'] ,
-	        		'width' => '95',
-	        		'height'=>'5',
-	        		'align' => 'L',
-	        		'linearea'=>'',);
-// 	        $columns[] = $col;
-// 	        $pdf->WriteTable($columns);
-	        
-// 	        $columns = array();
-// 	        $col = array();
-	        $col[] = array ('text' => 'Organization Name : '.$row['ORGANIZATION_NAME'] ,
-	        		'width' => '95',
-	        		'height'=>'5',
-	        		'align' => 'L',
-	        		'linearea'=>'',);
-// 	        $columns[] = $col;
-// 	        $pdf->WriteTable($columns);
-	        
-// 	        $columns = array();
-// 	        $col = array();
-	        $col[] = array ('text' => 'Organization Phone : '.$row['ORGANIZATION_PHONE_NO1'] ,
-	        		'width' => '95',
-	        		'height'=>'5',
-	        		'align' => 'L',
-	        		'linearea'=>'',);
-// 	        $columns[] = $col;
-// 	        $pdf->WriteTable($columns);
-	        
-// 	        $columns = array();
-// 	        $col = array();
-	        $col[] = array ('text' => 'Organization Second Phone : '.$row['ORGANIZATION_PHONE_NO2'] ,
-	        		'width' => '95',
-	        		'height'=>'5',
-	        		'align' => 'L',
-	        		'linearea'=>'',);
-// 	        $columns[] = $col;
-// 	        $pdf->WriteTable($columns);
-	        
-// 	        $columns = array();
-// 	        $col = array();
-	        $col[] = array ('text' => 'Organization Email : '.$row['ORGANIZATION_EMAIL1'] ,
-	        		'width' => '95',
-	        		'height'=>'5',
-	        		'align' => 'L',
-	        		'linearea'=>'',);
-// 	        $columns[] = $col;
-// 	        $pdf->WriteTable($columns);
-	        
-// 	        $columns = array();
-// 	        $col = array();
-	        $col[] = array ('text' => 'Organization Second Email : '.$row['ORGANIZATION_EMAIL2'] ,
-	        		'width' => '95',
-	        		'height'=>'5',
-	        		'align' => 'L',
-	        		'linearea'=>'',);
-// 	        $columns[] = $col;
-// 	        $pdf->WriteTable($columns);
-	        
-// 	        $columns = array();
-// 	        $col = array();
-	        $col[] = array ('text' => 'Organization Website : '.$row['ORGANIZATION_WEBSITE'] ,
-	        		'width' => '95',
-	        		'height'=>'5',
-	        		'align' => 'L',
-	        		'linearea'=>'',);
-// 	        $columns[] = $col;
-// 	        $pdf->WriteTable($columns);
-	        
-// 	        $columns = array();
-// 	        $col = array();
-	        $col[] = array ('text' => 'Organization Address : '.$row['ORGANIZATION_ADDRESS'] ,
-	        		'width' => '95',
-	        		'height'=>'5',
-	        		'align' => 'L',
-	        		'linearea'=>'',);
-// 	        $columns[] = $col;
-// 	        $pdf->WriteTable($columns);
-	        
-// 	        $columns = array();
-// 	        $col = array();
-	        $col[] = array ('text' => 'Position Name : '.$row['POSITION_NAME'] ,
-	        		'width' => '95',
-	        		'height'=>'5',
-	        		'align' => 'L',
-	        		'linearea'=>'',);
-// 	        $columns[] = $col;
-// 	        $pdf->WriteTable($columns);
-	        
-// 	        $columns = array();
-// 	        $col = array();
-	        $col[] = array ('text' => 'Pre Test : '.$row['PRE_TEST'] ,
-	        		'width' => '95',
-	        		'height'=>'5',
-	        		'align' => 'L',
-	        		'linearea'=>'',);
-// 	        $columns[] = $col;
-// 	        $pdf->WriteTable($columns);
-	        
-// 	        $columns = array();
-// 	        $col = array();
-	        $col[] = array ('text' => 'Post Test : '.$row['POST_TEST'] ,
-	        		'width' => '95',
-	        		'height'=>'5',
-	        		'align' => 'L',
-	        		'linearea'=>'',);
-// 	        $columns[] = $col;
-// 	        $pdf->WriteTable($columns);
-	        
-// 	        $columns = array();
-// 	        $col = array();
-	        $col[] = array ('text' => 'Diff : '.$row['DIFF'] ,
-	        		'width' => '95',
-	        		'height'=>'5',
-	        		'align' => 'L',
-	        		'linearea'=>'',);
-// 	        $columns[] = $col;
-// 	        $pdf->WriteTable($columns);
-	        
-// 	        $columns = array();
-// 	        $col = array();
-	        $col[] = array ('text' => 'Created Date : '.$row['CREATED_DATE'] ,
-	        		'width' => '95',
-	        		'height'=>'5',
-	        		'align' => 'L',
-	        		'linearea'=>'',);
+		    $col[] = array('text' => '' .$row['TRAINING_NAME'],'width' => '35','height'=>'5', 'align' => 'L','linearea' => 'LTBR',);
+// 	        $col[] = array('text' => '' .$row['ORGANIZATION_CITY_NAME'] ,'width' => '25','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+// 	        $col[] = array('text' => '' .$row['ORGANIZATION_PROVINCE_NAME'] ,'width' => '30','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+// 	        $col[] = array('text' => '' .$row['ORGANIZATION_COUNTRY_NAME'] ,'width' => '30','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+	        $col[] = array('text' => '' .$row['ORGANIZATION_NAME'] ,'width' => '35','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+// 	        $col[] = array('text' => ''.$row['ORGANIZATION_PHONE_NO1'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
+// 	        $col[] = array('text' => ''.$row['ORGANIZATION_PHONE_NO2'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
+// 	        $col[] = array('text' => ''.$row['ORGANIZATION_EMAIL1'] ,'width' => '30','height'=>'5','align' => 'L','linearea'=>'',);
+// 	        $col[] = array('text' => ''.$row['ORGANIZATION_EMAIL2'] ,'width' => '35','height'=>'5','align' => 'L','linearea'=>'',);
+// 	        $col[] = array('text' => ''.$row['ORGANIZATION_WEBSITE'] ,'width' => '20','height'=>'5','align' => 'L','linearea'=>'',);
+// 	        $col[] = array('text' => ''.$row['ORGANIZATION_ADDRESS'] ,'width' => '30','height'=>'5','align' => 'L','linearea'=>'',);
+	        $col[] = array('text' => '' .$row['POSITION_NAME'] ,'width' => '30','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+	        $col[] = array('text' => '' .$row['PRE_TEST'] ,'width' => '15','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+	        $col[] = array('text' => '' .$row['POST_TEST'] ,'width' => '15','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+	        $col[] = array('text' => '' .$row['DIFF'] ,'width' => '10','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+	        //$col[] = array('text' => 'Created Date : '.$row['CREATED_DATE'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
 	        $columns[] = $col;
 	        $pdf->WriteTable($columns);
 	        

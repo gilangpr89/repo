@@ -51,6 +51,15 @@ Ext.define(MyIndo.getNameSpace('controller.Report.CapacityProfile.Cbo'), {
 		Ext.Msg.confirm('Print CBO Report', 'Are you sure want to print this data ?', function(btn) {
 			if(btn == 'yes') {
 				if(typeof(parent.organizationData.ID) !== 'undefined') {
+					
+					if(typeof(Ext.getCmp('cbo-detail-training-start-date')) !== 'undefined') {
+						parent.organizationData.START_DATE = Ext.getCmp('cbo-detail-training-start-date').value;
+					}
+					
+					if(typeof(Ext.getCmp('cbo-detail-training-end-date')) !== 'undefined') {
+						parent.organizationData.END_DATE = Ext.getCmp('cbo-detail-training-end-date').value;
+					}
+					
 					me.showLoadingWindow();
 					Ext.Ajax.request({
 						url: MyIndo.siteUrl('reports/print/cbo'),

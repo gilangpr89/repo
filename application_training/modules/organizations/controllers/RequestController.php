@@ -197,80 +197,72 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 	
 	public function printAction()
 	{
-		$pdf = new myfpdf('L','mm','A4');
+		$pdf = new myfpdf();
 		$h = 13;
 		$left = 40;
 		$top = 60;
 		
 		
-		$pdf->SetFont('Times','',14);
-		//$pdf->AliasNbPages();
+		$pdf->SetFont('Arial','',14);
 		$pdf->AddPage('p', 'a4');
 		$pdf->Ln(2);
-		//  	$pdf->Cell(33,'5','Training Name',1,0,'LTBR',0);
-		
 		
 		$filename ='ReportOrganization.' . date('Y-m-d-H-i-s');
 		if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
 			$id = $this->_enc->base64decrypt($this->_posts['ID']);
 			$q = $this->_modelTraining->select()
-			->from('TR_TRAININGS_VIEW', array('TRAINING_ID'))
-			->where('ORGANIZATION_ID  IN (?)', $id);
+			->from('TR_TRAININGS_VIEW', array('ID'))
+			->where('ORGANIZATION_ID = ?', $id);
 
-			if(isset($this->_posts['START_DATE']) && isset($this->_posts['END_DATE'])) {
+			if(isset($this->_posts['START_DATE']) && isset($this->_posts['END_DATE']) && !empty($this->_posts['START_DATE']) && !empty($this->_posts['END_DATE'])) {
 				$q->where('SDATE >= ?', $this->_posts['START_DATE']);
 				$q->where('SDATE <= ?', $this->_posts['END_DATE']);
 			}
 			$q->query()->fetchAll();
 			$list = $q->query()->fetchAll();
-			$x = $this->_modelTraining->select()->from('TR_TRAININGS_VIEW', array('*'))->where('TRAINING_ID IN (?)', $list);
+			$x = $this->_modelTraining->select()->from('TR_TRAININGS_VIEW', array('*'))
+			->where('ID IN (?)', $list);
 			$query = $x->query()->fetchAll();
 			 
-			 
-			foreach ($query as $row){
-		
-				$columns = array();
-				$col = array();
-				$col[] = array('text' => ''. $row['TRAINING_NAME'] . '',
-						'width' => '33',
-						'height' => '5',
-						'align' => 'L',
-						'linearea' => 'LTBR',);
-		
-				$col[] = array('text' => ''.$row['FUNDING_SOURCE_NAME'] ,
-						'width' => '35',
-						'height'=>'5',
-						'align' => 'L',
-						'linearea'=>'LTBR',
-				);
-		
-				$col[] = array ('text' => ''.$row['ORGANIZATION_NAME'] ,
-						'width' => '35',
-						'height'=>'5',
-						'align' => 'L',
-						'linearea'=>'LTBR',);
-		
-				$col[] = array ('text' => ''.$row['ORGANIZATION_COUNTRY_NAME'] ,
-						'width' => '20',
-						'height'=>'5',
-						'align' => 'L',
-						'linearea'=>'LTBR',);
-		
-				$col[] = array ('text' => ''.$row['SDATE'] ,
-						'width' => '22',
-						'height'=>'5',
-						'align' => 'L',
-						'linearea'=>'LTBR',);
-		
-				$col[] = array ('text' => ''.$row['EDATE'] ,
-						'width' => '22',
-						'height'=>'5',
-						'align' => 'L',
-						'linearea'=>'LTBR',);
-				$columns[] = $col;
-				$pdf->WriteTable($columns);
-			}
-			//$pdf->Output(PDF_PATH.'/public_html/pdf/participants/'.$filename.'.pdf','F');
+		    $headerTable = array(
+					array(
+							'col1'	=> 'Training Name',
+							'col2'	=> 'Organization',
+							'col3'	=> 'Country',
+							'col4'  => 'Province',
+							'col5'  => 'City',
+							'col6'  => 'Start Date',
+							'col7'  => 'End Date',
+					),
+			);
+			$columns = array();
+			if ( $headerTable ) foreach( $headerTable as $split ):
+			$col = array();
+			$col[] = array('text' => $split['col1'] , 'width' => '35','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+			$col[] = array('text' => $split['col2'] , 'width' => '35','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+			$col[] = array('text' => $split['col3'] , 'width' => '30','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+			$col[] = array('text' => $split['col4'] , 'width' => '25','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+			$col[] = array('text' => $split['col5'] , 'width' => '25','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+			$col[] = array('text' => $split['col6'] , 'width' => '22','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+			$col[] = array('text' => $split['col7'] , 'width' => '22','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+			$columns[] = $col;
+			endforeach;
+			$pdf->WriteTable($columns);
+
+					foreach ($query as $row) {
+						
+						$columns = array();
+						$col = array();
+						$col[] = array('text' => ''.$row['TRAINING_NAME'],'width' => '35','height' => '5','align' => 'L','linearea' => 'LTBR',);
+						$col[] = array('text' => ''.$row['ORGANIZATION_NAME'] ,'width' => '35','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+						$col[] = array('text' => ''.$row['ORGANIZATION_COUNTRY_NAME'] ,'width' => '30','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+						$col[] = array('text' => ''.$row['ORGANIZATION_PROVINCE_NAME'] ,'width' => '25','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+						$col[] = array('text' => ''.$row['ORGANIZATION_CITY_NAME'] ,'width' => '25','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+						$col[] = array('text' => ''.$row['SDATE'] ,'width' => '22','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+						$col[] = array('text' => ''.$row['EDATE'] ,'width' => '22','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+						$columns[] = $col;
+						$pdf->WriteTable($columns);		
+					}
 			$pdf->Output('pdf/participants/' . $filename . '.pdf','F');
 		
 			$this->_data['fileName'] = $filename . '.pdf';

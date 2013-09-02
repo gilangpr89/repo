@@ -46,6 +46,14 @@ Ext.define(MyIndo.getNameSpace('controller.Report.TrainingEvaluation'), {
 		Ext.Msg.confirm('Print TrainingEvaluation Report', 'Are you sure want to print this data ?', function(btn) {
 			if(btn == 'yes') {
 				if(typeof(parent.dataEvaluation.ID) !== 'undefined') {
+					
+					if(typeof(Ext.getCmp('trainingevaluation-detail-training-start-date')) !== 'undefined') {
+						parent.dataEvaluation.START_DATE = Ext.getCmp('trainingevaluation-detail-training-start-date').value;
+					}
+					
+					if(typeof(Ext.getCmp('trainingevaluation-detail-training-end-date')) !== 'undefined') {
+						parent.dataEvaluation.END_DATE = Ext.getCmp('trainingevaluation-detail-training-end-date').value;
+					}
 					me.showLoadingWindow();
 					Ext.Ajax.request({
 						url: MyIndo.siteUrl('reports/print/training-print'),

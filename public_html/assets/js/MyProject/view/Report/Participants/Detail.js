@@ -5,7 +5,7 @@ Ext.define(MyIndo.getNameSpace('view.Report.Participants.Detail'), {
 	closable: true,
 	draggable: true,
 	resizable: false,
-	width: 650,
+	width: 550,
 	
 	initComponent: function() {
 		Ext.apply(this, {

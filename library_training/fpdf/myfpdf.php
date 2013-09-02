@@ -9,7 +9,7 @@ class myfpdf extends FPDF
 	var $right = 10;
 	var $top = 10;
 	var $bottom = 10;
-	var $fillColor = '255,255,255';
+	  var $fillColor = '255,255,255';
 	var $fontName	= 'Arial';
 	var $align		= '';
 	var $font_style	= '';
@@ -20,8 +20,8 @@ class myfpdf extends FPDF
 	var $drawcolor	= '0,0,0';
 	var $linearea	= 'LTBR';
 	var $height		= 5 ;
-	 
-	// Create Table
+	var $angle = 0;
+
 	function Header()
 	{
 		
@@ -33,22 +33,56 @@ class myfpdf extends FPDF
 		$scaleX			=	53;
 		$scaleY			=	17;
 		
-		//Logo
 		$this->Image(LOGOREPORT_PATH. '/library_training/fpdf/hivos.png',$positionX,$positionY,$scaleX,$scaleY);
-		//Arial bold 15
-		$this->SetFont('Arial','B',15);
-		//pindah ke posisi ke tengah untuk membuat judul
+		$this->SetFont('Arial','B',14);
 		$this->Cell(80);
-		//judul
+		$this->SetTextColor(255,192,203);
 		$this->Cell(30,10,'REPORT DATA',0,0,'C');
-		//pindah baris
 		$this->Ln(20);
-		//buat garis horisontal
 		$this->Line(10,25,200,25);
+		//$this->RotatedText(35,190,'Preview Only!',45);
 		
 	}
 	
-   
+	function Rotate($angle,$x=-1,$y=-1)
+	{
+		if($x==-1)
+			$x=$this->x;
+		if($y==-1)
+			$y=$this->y;
+		if($this->angle!=0)
+			$this->_out('Q');
+		$this->angle=$angle;
+		if($angle!=0)
+		{
+			$angle*=M_PI/180;
+			$c=cos($angle);
+			$s=sin($angle);
+			$cx=$x*$this->k;
+			$cy=($this->h-$y)*$this->k;
+			$this->_out(sprintf('q %.5F %.5F %.5F %.5F %.2F %.2F cm 1 0 0 1 %.2F %.2F cm',$c,$s,-$s,$c,$cx,$cy,-$cx,-$cy));
+		}
+	}
+	
+	function _endpage()
+	{
+		if($this->angle!=0)
+		{
+			$this->angle=0;
+			$this->_out('Q');
+		}
+		parent::_endpage();
+	}
+
+	
+	function RotatedText($x, $y, $txt, $angle)
+	{
+		//Text rotated around its origin
+		$this->Rotate($angle,$x,$y);
+		$this->Text($x,$y,$txt);
+		$this->Rotate(0);
+	}
+	
    function WriteTable($tcolums)
    {
    		
@@ -229,17 +263,11 @@ class myfpdf extends FPDF
       }
       return $nl;
    }
-	
-	//Page footer
 	function Footer()
 	{
-	//atur posisi 1.5 cm dari bawah
 	$this->SetY(-15);
-	//buat garis horizontal
 	$this->Line(10,$this->GetY(),200,$this->GetY());
-	//Arial italic 9
-	$this->SetFont('Arial','I',9);
-	//nomor halaman
-	 $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
+    $this->SetFont('Arial','I',8);
+    $this->Cell(0,10,'Page '.$this->PageNo(),0,0,'C');
 	}
 }
