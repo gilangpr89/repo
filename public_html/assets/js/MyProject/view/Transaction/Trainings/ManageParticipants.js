@@ -53,7 +53,7 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.ManageParticipants'),
 				},{
 					text: 'Email',
 					width: 120,
-					dataIndex: 'PARTICIPANT_EMAIL',
+					dataIndex: 'PARTICIPANT_EMAIL1',
 					hidden: true
 				},{
 					text: 'Pre-Test',

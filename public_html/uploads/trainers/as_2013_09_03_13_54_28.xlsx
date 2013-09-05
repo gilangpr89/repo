@@ -1,0 +1,5 @@
+INSERT INTO `itmg2`.`TREE_STORES` (`TREE_STORE_ID`, `NAME`, `TEXT`, `MODEL`, `STORE`) VALUES (NULL, 'Shareholdings', 'Investor Status', 'Shareholding', 'Shareholdings');
+
+INSERT INTO `itmg2`.`CONTENTS` (`CONTENT_ID`, `XTYPE`, `ID`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES (NULL, 'gridpanel', 'shareholdings-investor-status', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO `itmg2`.`CONTENT_TBARS` (`CONTENT_TBAR_ID`, `CONTENT_ID`, `XTYPE`, `ID`, `TEXT`, `ICONCLS`, `INDEX`, `CREATED_DATE`, `MODIFIED_DATE`) VALUES (NULL, '16', 'button', 'shareholdings-delete-investor-status', 'Delete', 'icon-stop', '10', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

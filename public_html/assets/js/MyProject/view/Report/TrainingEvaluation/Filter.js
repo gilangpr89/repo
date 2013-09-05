@@ -18,9 +18,32 @@ Ext.define(MyIndo.getNameSpace('view.Report.TrainingEvaluation.Filter'), {
 				url: MyIndo.siteUrl(''),
 				items: [{
 					xtype: 'textfield',
+					//required: true,
 					name: 'TRAINING_NAME',
+					id: 'training-name',
+					allowBlank: false,
 					fieldLabel: 'Name',
-					emptyText: 'Input name..'
+					emptyText: 'Input Name..'
+				},{
+					fieldLabel:'Start Date',
+					xtype: 'datefield',
+					anchor: '100%',
+					width: 300,
+					name: 'START_DATE',
+					id: 'start-date-trainingevaluation',
+					vtype: 'daterange',
+		            endDateField: 'end-date-trainingevaluation',
+					format: 'Y-m-d'
+				},{
+					fieldLabel:'End Date',
+					xtype: 'datefield',
+					anchor: '100%',
+					width: 300,
+					name: 'END_DATE',
+					id: 'end-date-trainingevaluation',
+					vtype: 'daterange',
+			        startDateField: 'start-date-trainingevaluation',
+					format: 'Y-m-d'
 				}]
 			}],
 			buttons: [{

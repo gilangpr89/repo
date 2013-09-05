@@ -43,7 +43,6 @@ Ext.define(MyIndo.getNameSpace('view.Report.Participants.View'), {
 				flex:100,
 				align: 'center',
 				dataIndex: 'ORGANIZATION_COUNTRY_NAME',
-				hidden: true
 			},{
 				text: 'Organization',
 				width: 60,

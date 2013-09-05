@@ -45,7 +45,6 @@ Ext.define(MyIndo.getNameSpace('controller.Report.Participant'), {
 		var me = this;
 		Ext.Msg.confirm('Print Participant Report', 'Are you sure want to print this data ?', function(btn) {
 			if(btn == 'yes') {
-				console.log(parent.participantsData.PARTICIPANT_ID);
 				if(typeof(parent.participantsData.PARTICIPANT_ID) !== 'undefined') {
 					me.showLoadingWindow();
 					Ext.Ajax.request({

@@ -72,7 +72,7 @@ Ext.define(MyIndo.getNameSpace('view.Master.Participants.Add'), {
 					name: 'BDATE',
 					emptyText: 'Input Birthdate..',
 					fieldLabel: 'Birthdate',
-					allowBlank:false,
+					//allowBlank:false,
 					format: 'Y/m/d'
 				},{
 					name: 'MOBILE_NO',

@@ -75,6 +75,10 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.ManageTrainers'), {
 				text: 'Remove Trainer',
 				iconCls: 'icon-cross',
 				action: 'delete'
+			},{
+				text: 'Upload',
+				iconCls: 'icon-inbox-upload',
+				action: 'training-upload-trainer'
 			}],
 			dockedItems: [{
 				xtype: 'pagingtoolbar',

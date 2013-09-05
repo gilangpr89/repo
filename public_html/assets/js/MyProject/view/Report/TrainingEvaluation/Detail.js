@@ -9,52 +9,16 @@ Ext.define(MyIndo.getNameSpace('view.Report.TrainingEvaluation.Detail'), {
 	
 	initComponent: function() {
 		Ext.apply(this, {
-			title: 'Detail Training Evaluation : ' + this.dataEvaluation.ORGANIZATION_NAME,
+			title: 'Detail Training Evaluation : ' + this.dataEvaluation.TRAINING_NAME,
 			items: [{
 				border: false,
 				bodyPadding: 5,
 				html: 
 				'<table>' +
 					'<tr>' +
-						'<td> Name</td><td>:</td><td>' + this.dataEvaluation.PARTICIPANT_NAME + '</td>' + 
+						'<td> Name</td><td>:</td><td>' + this.dataEvaluation.TRAINING_NAME + '</td>' + 
 					'</tr>' +
 				'</table>'
-			},{
-				xtype: 'form',
-				layout: 'form',
-				border: false,
-				bodyPadding: '5 5 5 5',
-				title: 'Training Period',
-				id: 'trainingevaluation-detail-training-period-form',
-				items: [{
-					fieldLabel:'Start Date',
-					xtype: 'datefield',
-					//anchor: '100%',
-					width: 400,
-					name: 'START_DATE',
-					vtype: 'daterange',
-					id: 'trainingevaluation-detail-training-start-date',
-		            endDateField: 'trainingevaluation-detail-training-end-date',
-					format: 'Y-m-d',
-					allowBlank: false
-				},{
-					fieldLabel:'End Date',
-					xtype: 'datefield',
-					//anchor: '100%',
-					width: 400,
-					name: 'END_DATE',
-					vtype: 'daterange',
-					id: 'trainingevaluation-detail-training-end-date',
-			        startDateField: 'trainingevaluation-detail-training-start-date',
-					format: 'Y-m-d',
-					allowBlank: false
-				}],
-				buttons: [{
-					text: 'Filter',
-					iconCls: 'icon-filter',
-					action: 'filter-period',
-					activeStore: this.store
-				}]
 			},{
 				xtype: 'gridpanel',
 				border: false,
@@ -64,19 +28,19 @@ Ext.define(MyIndo.getNameSpace('view.Report.TrainingEvaluation.Detail'), {
 				autoScroll: true,
 				store: this.store,
 				columns: [{
-					text: 'Training Name',
+					text: 'Participant Name',
 					flex: 1,
-					dataIndex: 'TRAINING_NAME'
+					dataIndex: 'PARTICIPANT_NAME'
 				},{
-					text: 'Start Date',
+					text: 'Pre Test',
 					width: 150,
 					align: 'center',
-					dataIndex: 'SDATE'
+					dataIndex: 'PRE_TEST'
 				},{
-					text: 'End Date',
+					text: 'Post Test',
 					width: 150,
 					align: 'center',
-					dataIndex: 'EDATE'
+					dataIndex: 'POST_TEST'
 				}],
 				dockedItems: [{
 					xtype: 'pagingtoolbar',

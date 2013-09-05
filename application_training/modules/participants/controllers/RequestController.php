@@ -7,6 +7,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	protected $_modelView;
 	protected $_modelDetail;
 	protected $_modelTrtraining;
+	protected $_modelTrainingView;
 	protected $_modelParticipants;
 	protected $_required;
 	protected $_sData;
@@ -18,6 +19,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
         
 		$this->_model = new participants_Model_Participants();
 		$this->_modelTrtraining = new trtrainings_Model_TrTrainings();
+		$this->_modelTrainingView = new trtrainings_Model_TrTrainingsView();
 		$this->_modelDetail = new trainingparticipants_Model_TrainingParticipantsView();
 		$this->_modelParticipants = new participants_Model_Participants();
 		$this->_modelView = new participants_Model_ParticipantsView();
@@ -168,7 +170,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 		try {
 			if(isset($this->_posts['START_DATE']) && $this->_posts['END_DATE']) {
 
-				$q = $this->_modelTrtrainingView->select()
+				$q = $this->_modelTrainingView->select()
 				->setIntegrityCheck(false)
 				->from('TR_TRAININGS_VIEW', array('TRAINING_ID'))
 				->where('SDATE >= ?', $this->_posts['START_DATE'])
@@ -206,19 +208,18 @@ class Participants_RequestController extends MyIndo_Controller_Action
 		    $q = $this->_modelParticipants->select()->from('MS_PARTICIPANTS',array('*'))->where('ID = ?', $id);
 		    $listParticipant = $q->query()->fetchAll();
 			
-			$q = $this->_modelDetail->select()
-			->from('TR_TRAINING_PARTICIPANTS_VIEW',array('*'))
- 			//->join('TR_TRAINING_PARTICIPANTS_VIEW', 'TR_TRAINING_PARTICIPANTS_VIEW.TRAINING_ID = TR_TRAININGS_VIEW.TRAINING_ID', array('*'))
-			->where('PARTICIPANT_ID = ?', $id);
+			$q = $this->_modelDetail->select()->from('TR_TRAINING_PARTICIPANTS_VIEW',array('*'))->where('PARTICIPANT_ID = ?', $id);
 			$q->query()->fetchAll();
 			$list = $q->query()->fetchAll();
 
 			$filename ='ReportParticipant.' . $this->_posts['ID'] . '.' . date('Y-m-d-H-i-s');
+
+			$pdf->Cell(10,10,'Report Participant',0,1,'');
 			
 			foreach ($listParticipant as $val) {;
 				$columns = array();
 				$col = array();
-				$col[] = array('text' => 'First Name : '.$val['FNAME'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
+				$col[] = array('text' => 'First Name : '.$val['FNAME'] ,'width' => '95','height'=>'5','align' => 'L', 'font_name' => 'Times', 'font_size' => '12', 'font_style' => '', 'linearea'=>'',);
 				$columns[] = $col;
 				$pdf->WriteTable($columns);
 				 
@@ -288,12 +289,13 @@ class Participants_RequestController extends MyIndo_Controller_Action
 				$columns[] = $col;
 				$pdf->WriteTable($columns);
 			}
+			
 			/* Start Label Table */
 			$pdf->Ln('10');
 			$headerTable = array(
 					array(
 							'col1'	=> 'Training Name',
-// 							'col2'	=> 'Organization City',
+// 							'col2'	=> 'Beneficiaries Name',
 // 							'col3'	=> 'Organization Province',
 // 							'col4'  => 'Organization Country',
 							'col5'  => 'Organization',
@@ -306,14 +308,14 @@ class Participants_RequestController extends MyIndo_Controller_Action
 			$columns = array();
 			if ( $headerTable ) foreach( $headerTable as $split ):
 			$col = array();
-			$col[] = array('text' => $split['col1'] , 'width' => '35','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+			$col[] = array('text' => $split['col1'] , 'width' => '55','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
 // 			$col[] = array('text' => $split['col2'] , 'width' => '35','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
 // 			$col[] = array('text' => $split['col3'] , 'width' => '30','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
 // 			$col[] = array('text' => $split['col4'] , 'width' => '30','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
- 			$col[] = array('text' => $split['col5'] , 'width' => '35','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+ 			$col[] = array('text' => $split['col5'] , 'width' => '45','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
 			$col[] = array('text' => $split['col6'] , 'width' => '30','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
-			$col[] = array('text' => $split['col7'] , 'width' => '15','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
-			$col[] = array('text' => $split['col8'] , 'width' => '15','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+			$col[] = array('text' => $split['col7'] , 'width' => '20','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+			$col[] = array('text' => $split['col8'] , 'width' => '20','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
 			$col[] = array('text' => $split['col9'] , 'width' => '10','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
 			$columns[] = $col;
 			endforeach;
@@ -323,11 +325,11 @@ class Participants_RequestController extends MyIndo_Controller_Action
 				
 		    $columns = array();
 	        $col = array();
-		    $col[] = array('text' => '' .$row['TRAINING_NAME'],'width' => '35','height'=>'5', 'align' => 'L','linearea' => 'LTBR',);
-// 	        $col[] = array('text' => '' .$row['ORGANIZATION_CITY_NAME'] ,'width' => '25','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+		    $col[] = array('text' => '' .$row['TRAINING_NAME'],'width' => '55','height'=>'5', 'align' => 'L','linearea' => 'LTBR',);
+// 	        $col[] = array('text' => '' .$row['BENEFICIARIES_NAME'] ,'width' => '25','height'=>'5','align' => 'L','linearea'=>'LTBR',);
 // 	        $col[] = array('text' => '' .$row['ORGANIZATION_PROVINCE_NAME'] ,'width' => '30','height'=>'5','align' => 'L','linearea'=>'LTBR',);
 // 	        $col[] = array('text' => '' .$row['ORGANIZATION_COUNTRY_NAME'] ,'width' => '30','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-	        $col[] = array('text' => '' .$row['ORGANIZATION_NAME'] ,'width' => '35','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+	        $col[] = array('text' => '' .$row['ORGANIZATION_NAME'] ,'width' => '45','height'=>'5','align' => 'L','linearea'=>'LTBR',);
 // 	        $col[] = array('text' => ''.$row['ORGANIZATION_PHONE_NO1'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
 // 	        $col[] = array('text' => ''.$row['ORGANIZATION_PHONE_NO2'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
 // 	        $col[] = array('text' => ''.$row['ORGANIZATION_EMAIL1'] ,'width' => '30','height'=>'5','align' => 'L','linearea'=>'',);
@@ -335,13 +337,12 @@ class Participants_RequestController extends MyIndo_Controller_Action
 // 	        $col[] = array('text' => ''.$row['ORGANIZATION_WEBSITE'] ,'width' => '20','height'=>'5','align' => 'L','linearea'=>'',);
 // 	        $col[] = array('text' => ''.$row['ORGANIZATION_ADDRESS'] ,'width' => '30','height'=>'5','align' => 'L','linearea'=>'',);
 	        $col[] = array('text' => '' .$row['POSITION_NAME'] ,'width' => '30','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-	        $col[] = array('text' => '' .$row['PRE_TEST'] ,'width' => '15','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-	        $col[] = array('text' => '' .$row['POST_TEST'] ,'width' => '15','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+	        $col[] = array('text' => '' .$row['PRE_TEST'] ,'width' => '20','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+	        $col[] = array('text' => '' .$row['POST_TEST'] ,'width' => '20','height'=>'5','align' => 'L','linearea'=>'LTBR',);
 	        $col[] = array('text' => '' .$row['DIFF'] ,'width' => '10','height'=>'5','align' => 'L','linearea'=>'LTBR',);
 	        //$col[] = array('text' => 'Created Date : '.$row['CREATED_DATE'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
 	        $columns[] = $col;
 	        $pdf->WriteTable($columns);
-	        
 			}
 			$pdf->Output('pdf/participants/' . $filename . '.pdf','F');
 			

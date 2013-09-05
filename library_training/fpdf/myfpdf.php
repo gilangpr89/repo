@@ -9,7 +9,7 @@ class myfpdf extends FPDF
 	var $right = 10;
 	var $top = 10;
 	var $bottom = 10;
-	  var $fillColor = '255,255,255';
+	var $fillColor = '255,255,255';
 	var $fontName	= 'Arial';
 	var $align		= '';
 	var $font_style	= '';

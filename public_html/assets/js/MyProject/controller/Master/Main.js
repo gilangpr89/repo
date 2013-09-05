@@ -187,7 +187,8 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
 							if(me.isLogin(json)) {
 								if(me.isSuccess(json)) {
 									store.load();
-									Ext.Msg.alert('Delete', 'User successfully deleted.');
+									Ext.Msg.alert('Delete', 'Data successfully deleted.');
+									
 								}
 							}
 						}

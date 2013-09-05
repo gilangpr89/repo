@@ -148,7 +148,11 @@ Ext.define('MyIndo.app.Controller', {
 	},
 
 	fail: function(data) {
-		Ext.Msg.alert('Application Error', '<strong>Error Code: ' + data.error_code + '</strong><br/><strong>Error Message</strong>: ' + data.error_message);
+		if(data.error_code == '23000') {
+			Ext.Msg.alert('Application Error', '<strong>Error Code: ' + data.error_code + '</strong><br/><strong>Error Message</strong>: Data is being used. ');
+		} else {
+			Ext.Msg.alert('Application Error', '<strong>Error Code: ' + data.error_code + '</strong><br/><strong>Error Message</strong>: ' + data.error_message);
+		}
 	},
 	
 	/* Menu */

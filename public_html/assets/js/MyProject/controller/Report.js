@@ -90,7 +90,6 @@ Ext.define(MyIndo.getNameSpace('controller.Report'), {
 	filter: function(record) {
 		var panel = Ext.getCmp('main-content');
 		var activePanel = panel.getActiveTab();
-		console.log(activePanel);
 		var store = activePanel.getStore();
 		var extraParams = store.proxy.extraParams;
 		var parent = record.up().up();
@@ -107,13 +106,11 @@ Ext.define(MyIndo.getNameSpace('controller.Report'), {
 		var store = parent.getStore();
 		var form = record.up().up().items.items[0].getForm();
 		var val = form.getValues();
+		if(form.isValid()) {
 		var filters = parent.filters;
-		console.log(filters);
-
 		var params = {};
 		for(var i = 0; i < filters.length; i++) {
 			var tmp = eval('val.' + filters[i]);
-			console.log(tmp);
 			if(tmp.length > 0) {
 				eval('params.' + filters[i] + ' = ' + 'val.' + filters[i] + ';');
 			}
@@ -134,6 +131,9 @@ Ext.define(MyIndo.getNameSpace('controller.Report'), {
 				}
 			}
 		});
+		} else {
+			Ext.Msg.alert('Application Error', 'Please complete form first.');
+		}
 	},
 
 	filterCancel: function(record) {

@@ -72,8 +72,8 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.UpdateParticipants'),
 					pageSize: 25,
 					store: storeOrganizations,
 					allowBlank: false,
-					emptyText: 'Select organization..',
-					editable: false
+					emptyText: 'Select organization..'
+					//editable: false
 				},{
 					xtype: 'combobox',
 					fieldLabel: 'Position',

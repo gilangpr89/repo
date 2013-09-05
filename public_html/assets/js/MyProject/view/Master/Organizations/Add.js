@@ -39,7 +39,6 @@ Ext.define(MyIndo.getNameSpace('view.Master.Organizations.Add'), {
 					fieldLabel: 'Secondary Phone'
 				},{
 					name: 'EMAIL1',
-					allowBlank: false,
 					fieldLabel: 'Primary Email',
 					emptyText: 'Input primary email..',
 					vtype: 'email'

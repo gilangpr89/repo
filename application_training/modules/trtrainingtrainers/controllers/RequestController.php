@@ -14,6 +14,9 @@ class Trtrainingtrainers_RequestController extends MyIndo_Controller_Action
 	protected $_modelCity;
 	protected $_modelProvince;
 	protected $_modelCountry;
+	protected $_upload_path;
+	protected $_allowed_file_extension;
+	protected $_max_file_size;
 
 	public function init()
 	{
@@ -38,6 +41,9 @@ class Trtrainingtrainers_RequestController extends MyIndo_Controller_Action
 		$this->_modelProvince = new provinces_Model_Provinces();
 		$this->_modelCountry = new countries_Model_Country();
 		$this->_modelTrTrainings = new trtrainings_Model_TrTrainings();
+		$this->_upload_path = APPLICATION_PATH . '/../public_html/uploads/trainers/';
+		$this->_allowed_file_extension = array('ppt','pptx','doc','docx','xls','xlsx','pdf');
+		$this->_max_file_size = 10 * 1024 * 1024;
 	}
 
 	public function readAction()
@@ -239,6 +245,59 @@ class Trtrainingtrainers_RequestController extends MyIndo_Controller_Action
 				$this->error(901);
 			}
 		} catch(Exception $e) {
+			$this->exception($e);
+		}
+	}
+	
+	public function uploadAction()
+	{	
+		$upload = new Zend_File_Transfer_Adapter_Http();
+		$upload->setDestination($this->_upload_path);
+		$this->_success = true;
+		$this->_error_code = 0;
+		$this->_error_message = '';
+
+		try {
+			$fileInfo = $upload->getFileInfo();
+			$fileName = $fileInfo['FILE']['name'];
+
+			/* Check for file extension */
+			$split = explode('.', $fileName);
+			$fileExtension = $split[count($split)-1];
+			if(in_array($fileExtension, $this->_allowed_file_extension)) {
+				if($fileInfo['FILE']['size'] <= $this->_max_file_size) {
+					$trainingId = $this->_enc->base64decrypt($this->_posts['TRAINING_ID']);
+					/* Check for exist training */
+					$q = $this->_model->select()->where('ID = ?', $trainingId);
+					if($q->query()->rowCount() > 0) {
+						try {
+							$rename = $this->_posts['FILE_NAME'] . '_' . date('Y_m_d_H_i_s') . '.' . $fileExtension;
+							$upload->addFilter('Rename', $this->_upload_path . $rename);
+							$upload->receive();
+							// echo $this->_upload_path . $this->_posts['FILE_NAME'] . '_' . date('Y_m_d_H_i_s') . '.' . $fileExtension;
+							// //$upload->addFilter('Rename', APPLICATION_PATH.'/../public/images/avatars/'.$userId.'.jpg');
+							$this->_model->update(array(
+									'CV_NAME'	=> $this->_posts['FILE_NAME'],
+									'CV_PATH' => 'uploads/trainers/' . $rename,
+									'CV_MIME_TYPE' => $fileInfo['FILE']['type'],
+									'CV_SIZE' => $fileInfo['FILE']['size']
+							), $this->_model->getAdapter()->quoteInto('ID = ?', $trainingId));
+						} catch(Exception $e) {
+							$this->exception($e);
+						}
+	
+					} else {
+						$this->error(101, 'Invalid training.');
+					}
+				} else {
+					$this->error(1022, 'File exceeded maximum file size (10MB)');
+				}
+			} else {
+				$this->error(1021, 'Not allowed file extension \'' . $fileExtension . '\'.');
+			}
+	
+			$this->json();die;
+		} catch(Zend_File_Transfer_Exception $e) {
 			$this->exception($e);
 		}
 	}

@@ -1,7 +1,7 @@
 Ext.define('MyIndo.view.Layout.NorthPanel', {
 	extend: 'Ext.panel.Panel',
 	alias: 'widget.northpanel',
-	title: 'MyProject',
+	title: 'Training M&E Database',
 	border: false,
 	tbar: [{
 		text: 'Change Password',
