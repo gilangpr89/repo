@@ -1,6 +1,6 @@
 Ext.define(MyIndo.getNameSpace('store.Report.Organizations'), {
 	extend: 'MyIndo.data.Store',
-	model: MyIndo.getNameSpace('model.Report.Organization'),
+	// model: MyIndo.getNameSpace('model.Report.Organization'),
 	proxy: {
 		type: 'ajax',
 		api: {

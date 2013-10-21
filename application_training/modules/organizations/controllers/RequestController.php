@@ -153,11 +153,77 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 	public function detailAction()
 	{
 		try {
-// 			if(isset($this->_posts['NAME']) && !empty($this->_posts['NAME'])) {
-// 				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
-// 			}
-		    $this->_data['items'] = $this->_modelTraining->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-			$this->_data['totalCount'] = $this->_modelTraining->count($this->_where);
+
+			/* ===================================================================================== */
+
+			/* Get Country */
+			$model = new countries_Model_Country();
+			$countries = array();
+
+			$q = $model->select()
+			->from($model->getTableName(), array('NAME'))
+			->distinct(true);
+
+			$res = $q->query()->fetchAll();
+
+			foreach($res as $k=>$d) {
+				$countries[] = $d['NAME'];
+			}
+			/* End of : Get Country */
+
+			/* ===================================================================================== */
+
+			$q = $this->_modelTraining->select()
+			->from($this->_modelTraining->getTableName(), array('TRAINING_NAME','VENUE_COUNTRY_NAME'));
+
+			$res = $q->query()->fetchAll();
+
+			$names = array();
+			$trainings = array();
+
+			foreach($res as $k=>$d) {
+
+				if(!in_array($d['TRAINING_NAME'], $trainings)) {
+					$trainings[] = $d['TRAINING_NAME'];
+				}
+
+				foreach($countries as $_k => $_d) {
+					if(!isset($names[$d['TRAINING_NAME']]['TOTAL_' . str_replace(' ', '_', strtoupper($_d))])) {
+						$names[$d['TRAINING_NAME']]['TOTAL_' . str_replace(' ', '_', strtoupper($_d))] = 0;
+					}
+				}
+
+				if(!isset($names[$d['TRAINING_NAME']]['TOTAL'])) {
+					$names[$d['TRAINING_NAME']]['TOTAL'] = 1;
+				} else {
+					$names[$d['TRAINING_NAME']]['TOTAL']++;
+				}
+
+				$names[$d['TRAINING_NAME']]['TOTAL_' . str_replace(' ', '_', strtoupper($d['VENUE_COUNTRY_NAME']))]++;
+				
+			}
+			// $fields[] = 'TOTAL';
+
+			$data = array();
+			$i = 0;
+			foreach($names as $k=>$d) {
+				if($i >= $this->_start && $i < $this->_limit) {
+					$data[$i]['TRAINING_NAME'] = $k;
+					foreach($d as $_k => $_d) {
+						$data[$i][$_k] = $_d;
+					}
+				}
+				$i++;
+			}
+			$this->_data['items'] = $data;
+			$this->_data['totalCount'] = count($names);
+			
+			// $this->_data['fields'] = $fields;
+			// print_r($fields);
+			// print_r($names);
+			// print_r($trainings);
+		 	// $this->_data['items'] = $this->_modelTraining->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+			// $this->_data['totalCount'] = $this->_modelTraining->count($this->_where);
 		} catch(Exception $e) {
 			$this->exception($e);
 		}
@@ -450,6 +516,24 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 		
 			$this->_data['fileName'] = $filename . '.pdf';
 			$this->_data['path'] = 'pdf/participants/';
+		}
+	}
+
+	public function getCountryAction() {
+		try {
+
+			$model = new countries_Model_Country();
+
+			$q = $model->select()
+			->from($model->getTableName(), array('NAME'))
+			->distinct(true);
+
+			$res = $q->query()->fetchAll();
+
+			$this->_data['names'] = $res;
+
+		} catch(Exception $e) {
+			$this->exception($e);
 		}
 	}
 }

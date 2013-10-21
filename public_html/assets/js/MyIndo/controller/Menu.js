@@ -54,7 +54,7 @@ Ext.define('MyIndo.controller.Menu', {
 		Ext.create('MyIndo.view.Loading').show();
 	},
 	
-	createPanel: function(menuTitle, menuId, mainContent, store, xtype) {
+	createPanel: function(menuTitle, menuId, mainContent, store, xtype, params) {
 		if(!mainContent.items.get(menuId)) {
 			var menuStore = Ext.create('MyIndo.store.MenuActions');
 			var me = this;
@@ -84,7 +84,8 @@ Ext.define('MyIndo.controller.Menu', {
 							id: menuId,
 							closable: true,
 							store: store,
-							tbar: tbar
+							tbar: tbar,
+							params: params
 						}));
 						mainContent.setActiveTab(menuId);
 					} else {
