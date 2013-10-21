@@ -226,10 +226,10 @@ class Participants_RequestController extends MyIndo_Controller_Action
 		$pdf->AliasNbPages();
 		$pdf->AddPage();
 
-// 		if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
-// 			$id = $this->_enc->base64decrypt($this->_posts['ID']);
-// 		    $q = $this->_modelParticipants->select()->from('MS_PARTICIPANTS',array('*'))->where('ID = ?', $id);
-// 		    $listParticipant = $q->query()->fetchAll();
+		if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
+			$id = $this->_enc->base64decrypt($this->_posts['ID']);
+		    $q = $this->_modelParticipants->select()->from('MS_PARTICIPANTS',array('*'))->where('ID = ?', $id);
+		    $listParticipant = $q->query()->fetchAll();
 			
 			$q = $this->_modelDetail->select()->from('TR_TRAINING_PARTICIPANTS_VIEW',array('*'));
 			$query = $q->query()->fetchAll();
@@ -266,40 +266,41 @@ class Participants_RequestController extends MyIndo_Controller_Action
 			
 			/* End Header Table */
 			
-			$q->query()->fetchAll();
-			$list = $q->query()->fetchAll();
-			$x = $this->_modelTrainingView->select()->from('TR_TRAININGS_VIEW', array('TRAINING_NAME','VENUE_COUNTRY_NAME'));
-			$query = $x->query()->fetchAll();
+// 			$q->query()->fetchAll();
+// 			$list = $q->query()->fetchAll();
+// 			$x = $this->_modelTrainingView->select()->from('TR_TRAININGS_VIEW', array('TRAINING_NAME','VENUE_COUNTRY_NAME'));
+// 			$query = $x->query()->fetchAll();
 				
-			$c = array();
-			foreach ($query as $key=>$value) {
-				if(!isset($c[$value['TRAINING_NAME']][$value['VENUE_COUNTRY_NAME']])) {
-					$c[$value['TRAINING_NAME']][$value['VENUE_COUNTRY_NAME']] = 1;
-				} else {
-					$c[$value['TRAINING_NAME']][$value['VENUE_COUNTRY_NAME']]++;
-				}
-			}
+// 			$c = array();
+// 			foreach ($query as $key=>$value) {
+// 				if(!isset($c[$value['TRAINING_NAME']][$value['VENUE_COUNTRY_NAME']])) {
+// 					$c[$value['TRAINING_NAME']][$value['VENUE_COUNTRY_NAME']] = 1;
+// 				} else {
+// 					$c[$value['TRAINING_NAME']][$value['VENUE_COUNTRY_NAME']]++;
+// 				}
+// 			}
 			
 // 			print_r($c);
 
-			$columns = array();
-			$temp='';
-			foreach ($c as $key=>$value) {
+// 			$columns = array();
+// 			$temp='';
+// 			foreach ($c as $key=>$value) {
 			
-				$col = array();
-				$col[] = array('text' => ''.$key ,'width' => '45','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-				foreach ($value as $k=>$v) {
-						$temp = $temp.$v;
-				}
-				$col[] = array('text' => $temp ,'width' => '45','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-				$columns[] = $col;
-				$temp = '';
+// 				$col = array();
+// 				$col[] = array('text' => ''.$key ,'width' => '45','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+// 				foreach ($value as $k=>$v) {
+// 						$temp = $temp.$v;
+// 				}
+// 				$col[] = array('text' => $temp ,'width' => '45','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+// 				$columns[] = $col;
+// 				$temp = '';
 
-			}
+// 			}
 			$pdf->WriteTable($columns);
 			$pdf->Output('pdf/participants/' . $filename . '.pdf','F');
 			
 			$this->_data['fileName'] = $filename . '.pdf';
 			$this->_data['path'] = 'pdf/participants/';
+		}
 	}
 }
