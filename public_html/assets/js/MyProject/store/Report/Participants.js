@@ -10,7 +10,7 @@ Ext.define(MyIndo.getNameSpace('store.Report.Participants'), {
 		reader: MyIndo.config.defaultReader
 	},
 	sorters: {
-		property: 'PARTICIPANT_NAME',
+		property: 'NAME',
 		direction: 'ASC'
 	},
 	remoteSort: true

@@ -21,14 +21,14 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.UploadTrainers'), {
 					name: 'TRAINING_ID'
 				},{
 					xtype: 'textfield',
-					fieldLabel: 'Module Name',
-					emptyText: 'Doc name..',
+					fieldLabel: 'File Name',
+					emptyText: 'File name..',
 					name: 'FILE_NAME',
 					allowBlank: false
 				},{
 					xtype: 'filefield',
 		            emptyText: 'Select file..',
-		            fieldLabel: 'Module',
+		            fieldLabel: 'File',
 		            name: 'FILE',
 		            id: 'upload-trainer-file-box',
 		            allowBlank: false
@@ -37,9 +37,6 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.UploadTrainers'), {
 			buttons: [{
 				text: 'Upload Trainer',
 				action: 'do-upload-trainer'
-			},{
-				text: 'Cancel',
-				action: 'cancel-upload-trainer'
 			}]
 		});
 		this.callParent(arguments);

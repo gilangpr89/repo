@@ -25,7 +25,6 @@ Ext.define(MyIndo.getNameSpace('controller.Report.TrainingEvaluation'), {
 		var parent = record.up().up();
 		var grid = parent.items.get(0);
 		var selected = parent.getSelectionModel().getSelection();
-		console.log(selected[0].data);
 		var store = Ext.create(MyIndo.getNameSpace('store.Report.TrtEvaluations'));
 		if(selected.length > 0) {
 			store.proxy.extraParams = {

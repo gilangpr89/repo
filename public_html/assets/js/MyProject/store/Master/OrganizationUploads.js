@@ -1,16 +1,16 @@
-Ext.define(MyIndo.getNameSpace('store.Report.Organizations'), {
+Ext.define(MyIndo.getNameSpace('store.Master.OrganizationUploads'), {
 	extend: 'MyIndo.data.Store',
-	model: MyIndo.getNameSpace('model.Report.Organization'),
+	model: MyIndo.getNameSpace('model.Master.OrganizationUpload'),
 	proxy: {
 		type: 'ajax',
 		api: {
-			read: MyIndo.siteUrl('organizations/request/detail')
+			read: MyIndo.siteUrl('organizations/request/file')
 		},
 		actionMethods: MyIndo.config.defaultActionMethods,
 		reader: MyIndo.config.defaultReader
 	},
 	sorters: {
-		property: 'TRAINING_NAME',
+		property: 'FILE_NAME',
 		direction: 'ASC'
 	},
 	remoteSort: true

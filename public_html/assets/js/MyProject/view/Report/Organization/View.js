@@ -3,44 +3,24 @@ Ext.define(MyIndo.getNameSpace('view.Report.Organization.View'), {
 	alias: 'widget.reportorganizationview',
 	border: false,
 	columns: [{
-		text: 'Organization',
+		text: 'Training Name',
 		flex: 1,
-		dataIndex: 'NAME'
+		dataIndex: 'TRAINING_NAME'
 	},{
-		text: 'Phone',
+		text: 'Organization Name',
 		align: 'center',
-		width: 100,
-		dataIndex: 'PHONE_NO1'
-	},{
-		text: 'Email',
-		align: 'center',
-		width: 130,
-		dataIndex: 'EMAIL1'
-	},{
-		text: 'City',
-		align: 'center',
-		width: 100,
-		dataIndex: 'CITY_NAME'
-	},{
-		text: 'Province',
-		align: 'center',
-		width: 100,
-		dataIndex: 'PROVINCE_NAME'
+		flex: 1,
+		dataIndex: 'ORGANIZATION_NAME'
 	},{
 		text: 'Country',
 		align: 'center',
 		width: 100,
-		dataIndex: 'COUNTRY_NAME'
+		dataIndex: 'VENUE_COUNTRY_NAME'
 	},{
-		text: 'Created Date',
+		text: 'Total',
 		align: 'center',
 		width: 150,
-		dataIndex: 'CREATED_DATE'
-	},{
-		text: 'Modified Date',
-		align: 'center',
-		width: 150,
-		dataIndex: 'MODIFIED_DATE'
+		dataIndex: 'TOTAL'
 	}],
 
 	initComponent: function() {

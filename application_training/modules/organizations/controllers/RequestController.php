@@ -6,13 +6,27 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 {
 	protected $_modelView;
 	protected $_modelTraining;
+	protected $_msTraining;
+	protected $_msCountry;
 	protected $_modelParticipant;
 	protected $_unique;
 	protected $_required;
 	protected $_sData;
+	protected $_modelUpload;
+	protected $_modelUploadView;
+	protected $_upload_path;
+	protected $_allowed_file_extension;
+	protected $_max_file_size;
 
 	public function init()
 	{
+		$this->_upload_path = APPLICATION_PATH . '/../public_html/uploads/';
+		$this->_allowed_file_extension = array('ppt','pptx','doc','docx','xls','xlsx','pdf');
+		$this->_max_file_size = 10 * 1024 * 1024;
+		$this->_modelUpload = new organizations_Model_OrganizationsUpload();
+		$this->_modelUploadView = new organizations_Model_OrganizationsUploadView();
+		$this->_msTraining = new trainings_Model_Trainings();
+		$this->_msCountry = new countries_Model_Country();
 		$this->_model = new organizations_Model_Organizations();
 		$this->_modelView = new organizations_Model_OrganizationsView();
 		$this->_modelTraining = new trtrainings_Model_TrTrainingsView();
@@ -139,11 +153,11 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 	public function detailAction()
 	{
 		try {
-			if(isset($this->_posts['NAME']) && !empty($this->_posts['NAME'])) {
-				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
-			}
-			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-			$this->_data['totalCount'] = $this->_modelView->count($this->_where);
+// 			if(isset($this->_posts['NAME']) && !empty($this->_posts['NAME'])) {
+// 				$this->_where[] = $this->_modelView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
+// 			}
+		    $this->_data['items'] = $this->_modelTraining->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+			$this->_data['totalCount'] = $this->_modelTraining->count($this->_where);
 		} catch(Exception $e) {
 			$this->exception($e);
 		}
@@ -195,6 +209,113 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 		}
 	}
 	
+	public function uploadAction()
+	{
+		$upload = new Zend_File_Transfer_Adapter_Http();
+		$upload->setDestination($this->_upload_path);
+		$this->_success = true;
+		$this->_error_code = 0;
+		$this->_error_message = '';
+		
+		try {
+			$fileInfo = $upload->getFileInfo();
+			$fileName = $fileInfo['FILE']['name'];
+		
+			/* Check for file extension */
+			$split = explode('.', $fileName);
+			$fileExtension = $split[count($split)-1];
+			if(in_array($fileExtension, $this->_allowed_file_extension)) {
+				if($fileInfo['FILE']['size'] <= $this->_max_file_size) {
+					$organizationId = $this->_enc->base64decrypt($this->_posts['ORGANIZATION_ID']);
+					$trainingId = $this->_enc->base64decrypt($this->_posts['TRAINING_ID']);
+					$file = $this->_posts['FILE_NAME'];
+		
+					/* Check for exist training */
+					$q = $this->_modelUpload->select()
+					          ->where('FILE_NAME = ?', $file);
+					if($q->query()->rowCount() < 1) {
+						try {
+							$rename = $this->_posts['FILE_NAME'] . '_' . date('Y_m_d_H_i_s') . '.' . $fileExtension;
+							$upload->addFilter('Rename', $this->_upload_path . $rename);
+							$upload->receive();
+							// echo $this->_upload_path . $this->_posts['FILE_NAME'] . '_' . date('Y_m_d_H_i_s') . '.' . $fileExtension;
+							// //$upload->addFilter('Rename', APPLICATION_PATH.'/../public/images/avatars/'.$userId.'.jpg');
+							$this->_modelUpload->insert(array(
+									'ORGANIZATION_ID' => $organizationId,
+									'FILE_NAME'	=> $this->_posts['FILE_NAME'],
+									'TRAINING_ID' => $trainingId,
+									'FILE_SIZE' => $fileInfo['FILE']['size'],
+									'FILE_MIME_TYPE' => $fileInfo['FILE']['type'],
+									'FILE_PATH' => 'uploads/' . $rename,
+									'CREATED_DATE' => $this->_date
+							));
+						} catch(Exception $e) {
+							$this->exception($e);
+						}
+		
+					} else {
+						$this->error(101, 'Doc Name Already Exist.');
+					}
+				} else {
+					$this->error(1022, 'File exceeded maximum file size (10MB)');
+				}
+			} else {
+				$this->error(1021, 'Not allowed file extension \'' . $fileExtension . '\'.');
+			}
+		
+			$this->json();die;
+		} catch(Zend_File_Transfer_Exception $e) {
+			$this->exception($e);
+		}
+	}
+	
+	public function fileAction()
+	{
+		try {
+			if(isset($this->_posts['ORGANIZATION_ID']) && !empty($this->_posts['ORGANIZATION_ID'])) {
+				$organizationId = $this->_enc->base64decrypt($this->_posts['ORGANIZATION_ID']);
+				$this->_where[] = $this->_modelUpload->getAdapter()->quoteInto('ORGANIZATION_ID = ?', $organizationId);
+			
+// 			$organizationId = $this->_enc->base64decrypt($this->_posts['ORGANIZATION_ID']);
+// 			print_r($organizationId);
+			$this->_data['items'] = $this->_modelUploadView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+			$this->_data['totalCount'] = $this->_modelUploadView->count($this->_where);
+			}
+		} catch(Exception $e) {
+			$this->exception($e);
+		}
+	}
+	
+	public function deleteAction()
+	{
+			if(!isset($this->posts['ORGANIZATION_ID'])) {
+				$id = $this->_enc->base64decrypt($this->_posts['ID']);
+				$oId = $this->_enc->base64decrypt($this->_posts['ORGANIZATION_ID']);
+				$name = $this->_posts['FILE_NAME'];
+
+			$q = $this->_modelUpload->select()
+						->where('ID = ?', $id)
+						->where('FILE_NAME = ?', $name);
+			if($q->query()->rowCount() > 0) {
+				$detail = $q->query()->fetch();
+				try {
+					/* Delete File */
+					if(file_exists(APPLICATION_PATH . '/../public_html/' . $detail['FILE_PATH'])) {
+						unlink(APPLICATION_PATH . '/../public_html/' . $detail['FILE_PATH']);
+					}
+					$query = $this->_modelUpload->delete($this->_modelUpload->getAdapter()->quoteInto('FILE_NAME = ?', $name));
+				} catch(Exception $e) {
+					$this->exception($e);
+				}
+			} else {
+				$this->error(101, 'Invalid Doc.');
+			}
+		} else {
+			$this->error(901);
+		}
+	}	
+	
+	
 	public function printAction()
 	{
 		$pdf = new myfpdf();
@@ -214,55 +335,117 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 			->from('TR_TRAININGS_VIEW', array('ID'))
 			->where('ORGANIZATION_ID = ?', $id);
 
-			if(isset($this->_posts['START_DATE']) && isset($this->_posts['END_DATE']) && !empty($this->_posts['START_DATE']) && !empty($this->_posts['END_DATE'])) {
-				$q->where('SDATE >= ?', $this->_posts['START_DATE']);
-				$q->where('SDATE <= ?', $this->_posts['END_DATE']);
-			}
+// 			if(isset($this->_posts['START_DATE']) && isset($this->_posts['END_DATE']) && !empty($this->_posts['START_DATE']) && !empty($this->_posts['END_DATE'])) {
+// 				$q->where('SDATE >= ?', $this->_posts['START_DATE']);
+// 				$q->where('SDATE <= ?', $this->_posts['END_DATE']);
+// 			}
+
 			$q->query()->fetchAll();
 			$list = $q->query()->fetchAll();
 			$x = $this->_modelTraining->select()->from('TR_TRAININGS_VIEW', array('*'))
 			->where('ID IN (?)', $list);
 			$query = $x->query()->fetchAll();
-			 
-		    $headerTable = array(
-					array(
-							'col1'	=> 'Training Name',
-							'col2'	=> 'Organization',
-							'col3'	=> 'Country',
-							'col4'  => 'Province',
-							'col5'  => 'City',
-							'col6'  => 'Start Date',
-							'col7'  => 'End Date',
-					),
-			);
+			
+			$c = array();
+			foreach ($query as $key=>$value) {
+				if(!isset($c[$value['TRAINING_NAME']][$value['VENUE_COUNTRY_NAME']])) {
+					$c[$value['TRAINING_NAME']][$value['VENUE_COUNTRY_NAME']] = 1;
+				} else {
+					$c[$value['TRAINING_NAME']][$value['VENUE_COUNTRY_NAME']]++;
+				}
+			}
+			
+			$negara = $this->_msCountry->select()->from('MS_COUNTRY', array('NAME'));
+			$daftar = $negara->query()->fetchAll();
+			foreach ($daftar as $kunci=>$nilai) {
+				$var[] = $nilai['NAME'];
+			}
+
+			/*Start Header Table */
+			$push = $var;
+			array_unshift($push, 'Training Name');
+			
+			$HeaderTable = array_unique($push);
+			$headerTable = array($HeaderTable);
+			
 			$columns = array();
 			if ( $headerTable ) foreach( $headerTable as $split ):
+			$array = array_values($split);
 			$col = array();
-			$col[] = array('text' => $split['col1'] , 'width' => '35','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
-			$col[] = array('text' => $split['col2'] , 'width' => '35','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
-			$col[] = array('text' => $split['col3'] , 'width' => '30','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
-			$col[] = array('text' => $split['col4'] , 'width' => '25','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
-			$col[] = array('text' => $split['col5'] , 'width' => '25','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
-			$col[] = array('text' => $split['col6'] , 'width' => '22','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
-			$col[] = array('text' => $split['col7'] , 'width' => '22','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+			for ($i = 0; $i < count($array); ++$i) {
+			$col[] = array('text' => $array[$i] , 'width' => '23','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+			}
+			$columns[] = $col;
+			$pdf->WriteTable($columns);
+			endforeach;
+			
+			/* End Header Table */
+			foreach ($var as $compare=>$buat) {
+
+				$tes [] = $buat;
+			}
+// 			for ($i = 0; $i <= count($tes); ++$i) {
+// 				print_r($tes[$i]);
+// 			}
+			$columns = array();
+
+			if ( $c ) foreach( $c as $key=>$split ):
+			$col = array();
+			$col[] = array('text' => $key ,'width' => '23','height' => '5','align' => 'L','linearea' => 'LTBR',);
+				foreach ($split as $keys=>$value) {
+					if($keys == $tes) {
+						$col[] = array('text' => $value ,'width' => '23','height' => '5','align' => 'L','linearea' => 'LTBR',);
+					} else {
+						$value = 0;
+						$col[] = array('text' => $value ,'width' => '23','height' => '5','align' => 'L','linearea' => 'LTBR',);
+					}
+					}
 			$columns[] = $col;
 			endforeach;
 			$pdf->WriteTable($columns);
 
-					foreach ($query as $row) {
-						
-						$columns = array();
-						$col = array();
-						$col[] = array('text' => ''.$row['TRAINING_NAME'],'width' => '35','height' => '5','align' => 'L','linearea' => 'LTBR',);
-						$col[] = array('text' => ''.$row['ORGANIZATION_NAME'] ,'width' => '35','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-						$col[] = array('text' => ''.$row['ORGANIZATION_COUNTRY_NAME'] ,'width' => '30','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-						$col[] = array('text' => ''.$row['ORGANIZATION_PROVINCE_NAME'] ,'width' => '25','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-						$col[] = array('text' => ''.$row['ORGANIZATION_CITY_NAME'] ,'width' => '25','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-						$col[] = array('text' => ''.$row['SDATE'] ,'width' => '22','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-						$col[] = array('text' => ''.$row['EDATE'] ,'width' => '22','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-						$columns[] = $col;
-						$pdf->WriteTable($columns);		
+			$country = array_unique($k);
+			$result =  array_map(null,$v,$k);
+			$Country = array($country);
+
+
+	        /* Start Store Count Result */			
+			$trName2 = array_unique($v);
+			foreach ($result as $x=>$y) {
+				foreach ($trName2 as $key=>$row) {
+					if ($y[0] == $row) {
+						$string[] = '' . $y[0] .'-' . $y[1] . '';
+						$stringX[] = $y[1];
+							
 					}
+				}
+			}
+
+
+			$count = array_count_values($string);
+			$unique = array_unique($string);
+			$reindex = array_values($unique);
+			foreach ($reindex as $explode) {
+				$Explode = explode("-", $explode);
+				$newExplode[] = $Explode[0];
+				$newCount[] = $Explode[1];
+			}
+
+			$res = array_map(null,$newExplode,$newCount,$count);
+			foreach ($res as $k=>$v){
+// 				print_r($k);
+				for ($i = 0; $i <= $k; ++$i) {
+// 					print_r(($v[$i]));
+				}
+// 				$columns = array();
+// 				$col = array();
+// 				$col[] = array('text' => $v[0] ,'width' => '35','height' => '5','align' => 'L','linearea' => 'LTBR',);
+// 				$col[] = array('text' => $v[1] ,'width' => '35','height' => '5','align' => 'L','linearea' => 'LTBR',);
+// 				$col[] = array('text' => $v[2] ,'width' => '35','height' => '5','align' => 'L','linearea' => 'LTBR',);
+// 				$columns[] = $col;
+// 				$pdf->WriteTable($columns);
+			}
+			
 			$pdf->Output('pdf/participants/' . $filename . '.pdf','F');
 		
 			$this->_data['fileName'] = $filename . '.pdf';

@@ -70,7 +70,9 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 			'traininguploadtrainers button':{
 				click: this.doUploadTrainer
 			},
-
+			'managetrtrainingtrainerswindow button[action=training-download-trainer]':{
+				click: this.doDownloadTrainer
+			},
 			'trtrainingsaddwindow button': {
 				click: this.onButtonClicked
 			},
@@ -99,10 +101,8 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 		if(selected.length > 0) {
 			var store = Ext.create(MyIndo.getNameSpace('store.Transaction.TrainingParticipants'));
 			store.proxy.extraParams.TRAINING_ID = selected[0].data.ID;
-			//store.proxy.extraParams.TRAINING_ID = selected[0].data.TRAINING_ID;
 			var manageParticipantsWindow = Ext.create(MyIndo.getNameSpace('view.Transaction.Trainings.ManageParticipants'), {
 				store: store,
-				//trTrainingId: selected[0].data.TRAINING_ID
 				trTrainingId: selected[0].data.ID
 			});
 			store.load();
@@ -114,12 +114,10 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 
 	onManageAddParticipant: function(record) {
 		var parent = record.up().up();
-		var trTrainingId = parent.trTrainingId;
-		console.log('aaaa');
 		var addWindow = Ext.create(MyIndo.getNameSpace('view.Transaction.Trainings.AddParticipants'));
 		var form = addWindow.items.items[0].getForm();
 		form.setValues({
-			TRAINING_ID: trTrainingId
+			TRAINING_ID: parent.trTrainingId
 		});
 		addWindow.show();
 	},
@@ -127,7 +125,6 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 	onAddSaveParticipant: function(record) {
 		var parent = record.up().up();
 		var form = parent.items.items[0].getForm();
-		console.log('bbb');
 		var me = this;
 		if(form.isValid()) {
 			Ext.Msg.confirm('Save Participant', 'Are you sure want to save this data ?', function(btn) {
@@ -167,7 +164,6 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 	onManageUpdateParticipant: function(record) {
 		var parent = record.up().up();
 		var grid = parent.items.items[0];
-		console.log('ccc');
 		var selected = grid.getSelectionModel().getSelection();
 		var me = this;
 		if(selected.length > 0) {
@@ -184,7 +180,6 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 	onManageSaveUpdateParticipant: function(record) {
 		var parent = record.up().up();
 		var form = parent.items.items[0].getForm();
-		console.log('ddd');
 		var me = this;
 		if(form.isValid()) {
 			Ext.Msg.confirm('Update Participant', 'Are you sure want to update this participant ?', function(btn) {
@@ -433,7 +428,6 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 		var parent = record.up().up();
 		var form = parent.items.items[0].getForm();
 		var me = this;
-		console.log(record);
 		var allowedFileExtension = ['ppt', 'pptx', 'doc','docx','xls','xlsx','pdf'];
 		var allowed = false;
 		if(form.isValid()) {
@@ -473,6 +467,29 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 			Ext.Msg.alert('Application Error', 'Please complete form first.');
 		}
 	},
+	
+	/* End of : Uplaod Module */
+
+	/* Download Trainer */
+	doDownloadTrainer: function(record) {
+		try {
+			var parent = record.up().up();
+			var grid = parent.items.get(0);
+			var selected = grid.getSelectionModel().getSelection();
+			if(selected.length > 0) {
+				if (selected[0].data.CV_PATH.length > 0) {
+					document.location = MyIndo.baseUrl(selected[0].data.CV_PATH);
+				} else {
+					Ext.Msg.alert('Message', 'Empty Cv.');
+				}
+			} else {
+				Ext.Msg.alert('Application Error', 'You did not select any trainer.');
+			}
+		} catch(e) {
+			Ext.Msg.alert('Application Error', e);
+		}
+	},
+	/* End of : Download Traner */
 	/* END Query */
 	
 	/* Upload Modules */
@@ -528,7 +545,6 @@ Ext.define(MyIndo.getNameSpace('controller.Transaction.Trainings'), {
 
 	doUploadModule: function(record) {
 		var parent = record.up().up();
-		console.log(parent);
 		var form = parent.items.items[0].getForm();
 		var me = this;
 		var allowedFileExtension = ['ppt', 'pptx', 'doc','docx','xls','xlsx','pdf'];

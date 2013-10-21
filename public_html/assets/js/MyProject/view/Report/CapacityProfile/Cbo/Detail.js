@@ -16,52 +16,50 @@ Ext.define(MyIndo.getNameSpace('view.Report.CapacityProfile.Cbo.Detail'), {
 				html: 
 				'<table>' +
 					'<tr>' +
-						'<td>Organization City</td><td>:</td><td>' + this.organizationData.CITY_NAME + '</td>' + 
-					'</tr>' +
-					'<tr>' +
-						'<td>Organization Province</td><td>:</td><td>' + this.organizationData.PROVINCE_NAME + '</td>' + 
+						'<td>Organization Name</td><td>:</td><td>' + this.organizationData.NAME + '</td>' + 
 					'</tr>' +
 					'<tr>' +
 						'<td>Organization Country</td><td>:</td><td>' + this.organizationData.COUNTRY_NAME + '</td>' + 
-					'</tr>' + '<td>Organization Phone</td><td>:</td><td>' + this.organizationData.PHONE_NO1 + '</td>' +
 				'</table>'
-			},{
-				xtype: 'form',
-				layout: 'form',
-				border: false,
-				bodyPadding: '5 5 5 5',
-				title: 'Training Period',
-				id: 'cbo-detail-training-period-form',
-				items: [{
-					fieldLabel:'Start Date',
-					xtype: 'datefield',
-					anchor: '100%',
-					width: 300,
-					name: 'START_DATE',
-					vtype: 'daterange',
-					id: 'cbo-detail-training-start-date',
-		            endDateField: 'cbo-detail-training-end-date',
-					format: 'Y-m-d',
-					allowBlank: false
-				},{
-					fieldLabel:'End Date',
-					xtype: 'datefield',
-					anchor: '100%',
-					width: 300,
-					name: 'END_DATE',
-					vtype: 'daterange',
-					id: 'cbo-detail-training-end-date',
-			        startDateField: 'cbo-detail-training-start-date',
-					format: 'Y-m-d',
-					allowBlank: false
-				}],
-				buttons: [{
-					text: 'Filter',
-					iconCls: 'icon-filter',
-					action: 'filter-period',
-					activeStore: this.store
-				}]
-			},{
+			},
+//			},{
+//				xtype: 'form',
+//				layout: 'form',
+//				border: false,
+//				bodyPadding: '5 5 5 5',
+//				title: 'Training Period',
+//				id: 'cbo-detail-training-period-form',
+//				items: [{
+//					fieldLabel:'Start Date',
+//					xtype: 'datefield',
+//					anchor: '100%',
+//					width: 300,
+//					name: 'START_DATE',
+//					vtype: 'daterange',
+//					id: 'cbo-detail-training-start-date',
+//		            endDateField: 'cbo-detail-training-end-date',
+//					format: 'Y-m-d',
+//					allowBlank: false
+//				},{
+//					fieldLabel:'End Date',
+//					xtype: 'datefield',
+//					anchor: '100%',
+//					width: 300,
+//					name: 'END_DATE',
+//					vtype: 'daterange',
+//					id: 'cbo-detail-training-end-date',
+//			        startDateField: 'cbo-detail-training-start-date',
+//					format: 'Y-m-d',
+//					allowBlank: false
+//				}],
+//				buttons: [{
+//					text: 'Filter',
+//					iconCls: 'icon-filter',
+//					action: 'filter-period',
+//					activeStore: this.store
+//				}]
+//			},{
+				{
 				xtype: 'gridpanel',
 				border: false,
 				title: 'Training List',
@@ -74,15 +72,10 @@ Ext.define(MyIndo.getNameSpace('view.Report.CapacityProfile.Cbo.Detail'), {
 					flex: 1,
 					dataIndex: 'TRAINING_NAME'
 				},{
-					text: 'Start Date',
+					text: 'Document Name',
 					width: 150,
 					align: 'center',
-					dataIndex: 'SDATE'
-				},{
-					text: 'End Date',
-					width: 150,
-					align: 'center',
-					dataIndex: 'EDATE'
+					dataIndex: 'FILE_NAME'
 				}],
 				dockedItems: [{
 					xtype: 'pagingtoolbar',

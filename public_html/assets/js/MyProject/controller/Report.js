@@ -106,7 +106,6 @@ Ext.define(MyIndo.getNameSpace('controller.Report'), {
 		var store = parent.getStore();
 		var form = record.up().up().items.items[0].getForm();
 		var val = form.getValues();
-		if(form.isValid()) {
 		var filters = parent.filters;
 		var params = {};
 		for(var i = 0; i < filters.length; i++) {
@@ -131,9 +130,6 @@ Ext.define(MyIndo.getNameSpace('controller.Report'), {
 				}
 			}
 		});
-		} else {
-			Ext.Msg.alert('Application Error', 'Please complete form first.');
-		}
 	},
 
 	filterCancel: function(record) {

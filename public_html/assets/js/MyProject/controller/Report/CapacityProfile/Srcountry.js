@@ -17,15 +17,6 @@ Ext.define(MyIndo.getNameSpace('controller.Report.CapacityProfile.Srcountry'), {
 			'capacityprofilesrcountryfilterwindow button':{
 				click:this.onButtonClicked
 			}
-//			'individusearchwindow button': {
-//				click: this.onButtonClicked
-//			},
-//			'individuview button[action=report-individual]': {
-//				click: this.reportParticipants
-//			},
-//			'individuview button[action=update]': {
-//				click: this.onManageReportindividual
-//			}
 		});
 	},
 	

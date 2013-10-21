@@ -72,8 +72,8 @@ Ext.define(MyIndo.getNameSpace('view.Master.Participants.Add'), {
 					name: 'BDATE',
 					emptyText: 'Input Birthdate..',
 					fieldLabel: 'Birthdate',
-					//allowBlank:false,
-					format: 'Y/m/d'
+					format: 'Y/m/d',
+					allowBlank: true
 				},{
 					name: 'MOBILE_NO',
 					fieldLabel: 'Mobile No',
@@ -86,8 +86,8 @@ Ext.define(MyIndo.getNameSpace('view.Master.Participants.Add'), {
 					name: 'EMAIL1',
 					fieldLabel: 'Primary Email',
 					emptyText: 'Input primary Email..',
-					allowBlank: false,
-					vtype: 'email'
+					vtype: 'email',
+					allowBlank: true
 				},{
 					name: 'EMAIL2',
 					fieldLabel: 'Secondary Email',

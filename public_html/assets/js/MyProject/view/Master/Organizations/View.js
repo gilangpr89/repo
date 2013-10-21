@@ -48,7 +48,9 @@ Ext.define(MyIndo.getNameSpace('view.Master.Organizations.View'), {
 			actions: {
 				add: MyIndo.getNameSpace('view.Master.Organizations.Add'),
 				update: MyIndo.getNameSpace('view.Master.Organizations.Update'),
-				filter: MyIndo.getNameSpace('view.Master.Organizations.Filter')
+				filter: MyIndo.getNameSpace('view.Master.Organizations.Filter'),
+				upload: MyIndo.getNameSpace('view.Master.Organizations.Upload'),
+				detail: MyIndo.getNameSpace('view.Master.Organizations.Detail')
 			},
 			filters: ['NAME','CITY_ID','PROVINCE_ID','COUNTRY_ID'],
 			url: {

@@ -9,59 +9,58 @@ Ext.define(MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.Detail'),
 	
 	initComponent: function() {
 		Ext.apply(this, {
-			title: 'Detail Participant : ' + this.participantData.NAME,
+			title: 'Detail :' + this.participantData.NAME,
 			items: [{
 				border: false,
 				bodyPadding: 5,
 				html: 
 				'<table>' +
 					'<tr>' +
-						'<td>First Name</td><td>:</td><td>' + this.participantData.FNAME + '</td>' + 
+						'<td>Organization Name</td><td>:</td><td>' + this.participantData.NAME + '</td>' + 
 					'</tr>' +
 					'<tr>' +
-						'<td>Middle Name</td><td>:</td><td>' + this.participantData.MNAME + '</td>' + 
+						'<td>Country Name</td><td>:</td><td>' + this.participantData.COUNTRY_NAME + '</td>' + 
 					'</tr>' +
-					'<tr>' +
-						'<td>Last Name</td><td>:</td><td>' + this.participantData.LNAME + '</td>' + 
-					'</tr>' + '<td>Surname</td><td>:</td><td>' + this.participantData.SNAME + '</td>' +
 				'</table>'
-			},{
-				xtype: 'form',
-				layout: 'form',
-				border: false,
-				bodyPadding: '5 5 5 5',
-				title: 'Training Period',
-				id: 'individual-detail-training-period-form',
-				items: [{
-					fieldLabel:'Start Date',
-					xtype: 'datefield',
-					//anchor: '100%',
-					width: 400,
-					name: 'START_DATE',
-					vtype: 'daterange',
-					id: 'individual-detail-training-start-date',
-		            endDateField: 'individual-detail-training-end-date',
-					format: 'Y-m-d',
-					allowBlank: false
-				},{
-					fieldLabel:'End Date',
-					xtype: 'datefield',
-					//anchor: '100%',
-					width: 400,
-					name: 'END_DATE',
-					vtype: 'daterange',
-					id: 'individual-detail-training-end-date',
-			        startDateField: 'individual-detail-training-start-date',
-					format: 'Y-m-d',
-					allowBlank: false
-				}],
-				buttons: [{
-					text: 'Filter',
-					iconCls: 'icon-filter',
-					action: 'filter-period',
-					activeStore: this.store
-				}]
-			},{
+			},
+//			{
+//				xtype: 'form',
+//				layout: 'form',
+//				border: false,
+//				bodyPadding: '5 5 5 5',
+//				title: 'Training Period',
+//				id: 'individual-detail-training-period-form',
+//				items: [{
+//					fieldLabel:'Start Date',
+//					xtype: 'datefield',
+//					//anchor: '100%',
+//					width: 400,
+//					name: 'START_DATE',
+//					vtype: 'daterange',
+//					id: 'individual-detail-training-start-date',
+//		            endDateField: 'individual-detail-training-end-date',
+//					format: 'Y-m-d',
+//					allowBlank: false
+//				},{
+//					fieldLabel:'End Date',
+//					xtype: 'datefield',
+//					//anchor: '100%',
+//					width: 400,
+//					name: 'END_DATE',
+//					vtype: 'daterange',
+//					id: 'individual-detail-training-end-date',
+//			        startDateField: 'individual-detail-training-start-date',
+//					format: 'Y-m-d',
+//					allowBlank: false
+//				}],
+//				buttons: [{
+//					text: 'Filter',
+//					iconCls: 'icon-filter',
+//					action: 'filter-period',
+//					activeStore: this.store
+//				}]
+//			},
+			{
 				xtype: 'gridpanel',
 				border: false,
 				title: 'Training List',
@@ -74,15 +73,10 @@ Ext.define(MyIndo.getNameSpace('view.Report.CapacityProfile.Individual.Detail'),
 					flex: 1,
 					dataIndex: 'TRAINING_NAME'
 				},{
-					text: 'Start Date',
+					text: 'Participant Name',
 					width: 150,
 					align: 'center',
-					dataIndex: 'SDATE'
-				},{
-					text: 'End Date',
-					width: 150,
-					align: 'center',
-					dataIndex: 'EDATE'
+					dataIndex: 'PARTICIPANT_NAME'
 				}],
 				dockedItems: [{
 					xtype: 'pagingtoolbar',

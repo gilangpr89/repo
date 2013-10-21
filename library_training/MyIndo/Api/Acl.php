@@ -66,7 +66,7 @@ class MyIndo_Api_Acl extends Zend_Controller_Plugin_Abstract
 			$usersData = $this->_objAuth->getIdentity();
 			if($usersData->EXPIRED > strtotime('now')) {
 				
-				$usersData->EXPIRED = strtotime('+60 minutes');
+				$usersData->EXPIRED = strtotime('+10 minutes');
 				
 				$json['login'] 		= true;
 				$json['hasAccess'] 	= true;

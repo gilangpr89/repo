@@ -16,9 +16,6 @@ Ext.define(MyIndo.getNameSpace('view.Report.Organization.Detail'), {
 				html: 
 				'<table>' +
 					'<tr>' +
-						'<td> Name</td><td>:</td><td>' + this.organizationData.NAME + '</td>' + 
-					'</tr>' +
-					'<tr>' +
 					'<td>City Name</td><td>:</td><td>' + this.organizationData.CITY_NAME + '</td>' + 
 				'</tr>' +
 			'<tr>' +
@@ -27,47 +24,46 @@ Ext.define(MyIndo.getNameSpace('view.Report.Organization.Detail'), {
 		'<tr>' +
 		'<td>Country Name</td><td>:</td><td>' + this.organizationData.COUNTRY_NAME + '</td>' + 
 	'</tr>' +
-		'<tr>' +
-		'<td>Website</td><td>:</td><td>' + this.organizationData.WEBSITE + '</td>' + 
-	'</tr>' +
 				'</table>'
-			},{
-				xtype: 'form',
-				layout: 'form',
-				border: false,
-				bodyPadding: '5 5 5 5',
-				title: 'Training Period',
-				id: 'organization-detail-training-period-form',
-				items: [{
-					fieldLabel:'Start Date',
-					xtype: 'datefield',
-					//anchor: '100%',
-					width: 400,
-					name: 'START_DATE',
-					vtype: 'daterange',
-					id: 'organization-detail-training-start-date',
-		            endDateField: 'organization-detail-training-end-date',
-					format: 'Y-m-d',
-					allowBlank: false
-				},{
-					fieldLabel:'End Date',
-					xtype: 'datefield',
-					//anchor: '100%',
-					width: 400,
-					name: 'END_DATE',
-					vtype: 'daterange',
-					id: 'organization-detail-training-end-date',
-			        startDateField: 'organization-detail-training-start-date',
-					format: 'Y-m-d',
-					allowBlank: false
-				}],
-				buttons: [{
-					text: 'Filter',
-					iconCls: 'icon-filter',
-					action: 'filter-period',
-					activeStore: this.store
-				}]
-			},{
+			},
+//			{
+//				xtype: 'form',
+//				layout: 'form',
+//				border: false,
+//				bodyPadding: '5 5 5 5',
+//				title: 'Training Period',
+//				id: 'organization-detail-training-period-form',
+//				items: [{
+//					fieldLabel:'Start Date',
+//					xtype: 'datefield',
+//					//anchor: '100%',
+//					width: 400,
+//					name: 'START_DATE',
+//					vtype: 'daterange',
+//					id: 'organization-detail-training-start-date',
+//		            endDateField: 'organization-detail-training-end-date',
+//					format: 'Y-m-d',
+//					allowBlank: false
+//				},{
+//					fieldLabel:'End Date',
+//					xtype: 'datefield',
+//					//anchor: '100%',
+//					width: 400,
+//					name: 'END_DATE',
+//					vtype: 'daterange',
+//					id: 'organization-detail-training-end-date',
+//			        startDateField: 'organization-detail-training-start-date',
+//					format: 'Y-m-d',
+//					allowBlank: false
+//				}],
+//				buttons: [{
+//					text: 'Filter',
+//					iconCls: 'icon-filter',
+//					action: 'filter-period',
+//					activeStore: this.store
+//				}]
+//			},
+			{
 				xtype: 'gridpanel',
 				border: false,
 				title: 'Training Oganization List',
@@ -80,15 +76,10 @@ Ext.define(MyIndo.getNameSpace('view.Report.Organization.Detail'), {
 					flex: 1,
 					dataIndex: 'TRAINING_NAME'
 				},{
-					text: 'Start Date',
+					text: 'Country Name',
 					width: 150,
 					align: 'center',
-					dataIndex: 'SDATE'
-				},{
-					text: 'End Date',
-					width: 150,
-					align: 'center',
-					dataIndex: 'EDATE'
+					dataIndex: 'VENUE_COUNTRY_NAME'
 				}],
 				dockedItems: [{
 					xtype: 'pagingtoolbar',

@@ -61,6 +61,17 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.ManageTrainers'), {
 					width: 80,
 					align: 'center',
 					dataIndex: 'COUNTRY_NAME'
+				},{
+					text: 'Filename',
+					width: 60,
+					align: 'center',
+					dataIndex: 'CV_NAME'
+				},{
+					text: 'filepath',
+					width: 50,
+					align: 'center',
+					dataIndex: 'CV_PATH',
+					hidden: true
 				}]
 			}],
 			tbar: [{
@@ -79,6 +90,10 @@ Ext.define(MyIndo.getNameSpace('view.Transaction.Trainings.ManageTrainers'), {
 				text: 'Upload',
 				iconCls: 'icon-inbox-upload',
 				action: 'training-upload-trainer'
+			},{
+				text: 'Download',
+				iconCls: 'icon-inbox-download',
+				action: 'training-download-trainer'
 			}],
 			dockedItems: [{
 				xtype: 'pagingtoolbar',

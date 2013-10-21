@@ -1,6 +1,6 @@
 Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
 	extend: 'MyIndo.app.Controller',
-
+	
 	onButtonClicked: function(record) {
 		switch(record.action) {
 			/* Add */
@@ -41,13 +41,18 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
 				this.filterCancel(record);
 				break;
 				
-//			/* Print */
-//			case 'report':
-//				this.report(record);
-//				break;
-//			case 'report-cancle':
-//				this.reportCancle(record);
-//				break;
+				/* Trainers Upload */
+			case 'upload':
+				this.upload(record);
+				break;
+			case 'do-upload':
+				this.doUpload(record);
+				break;
+				
+				/* Doc Detail */
+			case 'detail':
+				this.detailOrganization(record);
+				break;
 		}
 	},
 
@@ -253,24 +258,95 @@ Ext.define(MyIndo.getNameSpace('controller.Master.Main'), {
 	},
 	/* End of : Filter */
 	
-	/* Print */
+	/* Upload Doc Trainers */
+	upload: function(record) {
+		var parent = record.up().up();
+		var actions = parent.actions;
+		var panel = Ext.getCmp('main-content');
+		var grid = panel.getActiveTab();
+		var store = grid.getStore();
+		var selected = grid.getSelectionModel().getSelection();
+		if(selected.length > 0) {
+			var data = selected[0].data;
+			var uploadWindow = Ext.create(actions.upload);
+			var form = uploadWindow.items.items[0].getForm();
+			form.setValues({
+				ORGANIZATION_ID: selected[0].data.ID
+			});
+			uploadWindow.show();
+		} else {
+			Ext.Msg.alert('Application Error', 'You did not select any Organizations.');
+		}
+	},
 	
-//	print: function(record) {
-//		var panel = Ext.getCmp('main-content');
-//		var activePanel = panel.getActiveTab();
-//		var store = activePanel.getStore();
-//		var extraParams = store.proxy.extraParams;
-//		var parent = record.up().up();
-//		var actions = parent.actions;
-//		var addWindow = Ext.create(actions.add);
-//		addWindow.show();
-//		
-//	},
-//	
-//	printCancel: function(record) {
-//		record.up().up().close();
-//	}
+	doUpload: function(record) {
+		var parent = record.up().up();
+		var form = parent.items.items[0].getForm();
+		var me = this;
+		var allowedFileExtension = ['ppt', 'pptx', 'doc','docx','xls','xlsx','pdf'];
+		var allowed = false;
+		if(form.isValid()) {
+			Ext.Msg.confirm('Upload Doc', 'Are you sure want to upload this doc ?', function(btn) {
+				if(btn == 'yes') {
+					var fileNameExploded = Ext.getCmp('upload-organization-file-box').value.split('.');
+					var fileExtension = fileNameExploded[fileNameExploded.length-1];
+					for(var i = 0; i < allowedFileExtension.length; i++) {
+						if(allowedFileExtension[i] == fileExtension) {
+							allowed = true;
+						}
+					}
+					if(allowed) {
+						form.submit({
+							url: MyIndo.baseUrl('organizations/request/upload'),
+							waitMsg: 'Uploading file, please wait..',
+							success: function(form, record) {
+								var json = Ext.decode(record.response.responseText);
+								if(me.isLogin(json)) {
+									var mainContent = Ext.getCmp('main-content');
+									var store = mainContent.getActiveTab().getStore();
+									store.load();
+//									parent.close();
+//									Ext.getCmp('manage-trainer-grid').getStore().load();
+									Ext.Msg.alert('Upload Doc', 'File successfully uploaded.');
+									parent.close();
+								}
+							},
+							failure: function(form, record) {
+								var json = Ext.decode(record.response.responseText);
+								if(me.isLogin(json)) {
+									Ext.Msg.alert('Application Error', '<strong>Error : </strong>[' + json.error_code + '] ' + json.error_message);
+								}
+							}
+						});
+					} else {
+						Ext.Msg.alert('Application Error', 'Not allowed file extension \'' + fileExtension + '\'');
+					}
+				}
+			});
+		} else {
+			Ext.Msg.alert('Application Error', 'Please complete form first.');
+		}
+	},
 	
-	/* End Print */
+	/* End of : Uplaod Module */
 	
+	/* Detail Document Oranization By Training */
+	detailOrganization: function(record) {
+		var parent = record.up().up();
+		var grid = parent.items.get(0);
+		var selected = parent.getSelectionModel().getSelection();
+		var store = Ext.create(MyIndo.getNameSpace('store.Master.OrganizationUploads'));
+		if(selected.length > 0) {
+			store.proxy.extraParams = {
+					ORGANIZATION_ID: selected[0].data.ID
+			};
+			Ext.create(MyIndo.getNameSpace('view.Master.Organizations.Detail'), {
+				fileData: selected[0].data,
+				store: store
+			}).show();
+			store.load();
+		} else {
+			Ext.Msg.alert('Application Error', 'You did not select any organization.');
+		}
+	},
 });

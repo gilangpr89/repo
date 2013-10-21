@@ -8,6 +8,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	protected $_modelDetail;
 	protected $_modelTrtraining;
 	protected $_modelTrainingView;
+	protected $_msCountry;
 	protected $_modelParticipants;
 	protected $_required;
 	protected $_sData;
@@ -19,8 +20,10 @@ class Participants_RequestController extends MyIndo_Controller_Action
         
 		$this->_model = new participants_Model_Participants();
 		$this->_modelTrtraining = new trtrainings_Model_TrTrainings();
-		$this->_modelTrainingView = new trtrainings_Model_TrTrainingsView();
+		$this->_msCountry = new countries_Model_Country();
+ 		$this->_modelTrainingView = new trtrainings_Model_TrTrainingsView();
 		$this->_modelDetail = new trainingparticipants_Model_TrainingParticipantsView();
+		$this->_modelTrainingView = new trtrainings_Model_TrTrainingsView();
 		$this->_modelParticipants = new participants_Model_Participants();
 		$this->_modelView = new participants_Model_ParticipantsView();
 		$this->_unique = 'Participant';
@@ -141,7 +144,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 			//$list = array();
 			if(isset($this->_posts['PARTICIPANTS_ID'])) {
 				$id = $this->_enc->base64decrypt($this->_posts['PARTICIPANTS_ID']);
-				//print_r($id);
+//				print_r($id);
 				if($this->_modelDetail->isExist('PARTICIPANT_ID', $id)) {
 					$q = $this->_modelDetail->select()->where('PARTICIPANT_ID = ?', $id);
 					$listtmp = $q->query()->fetchAll();
@@ -168,27 +171,47 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	public function detailAction()
 	{
 		try {
-			if(isset($this->_posts['START_DATE']) && $this->_posts['END_DATE']) {
-
-				$q = $this->_modelTrainingView->select()
-				->setIntegrityCheck(false)
-				->from('TR_TRAININGS_VIEW', array('TRAINING_ID'))
-				->where('SDATE >= ?', $this->_posts['START_DATE'])
-				->where('SDATE <= ?', $this->_posts['END_DATE']);
-				$list = $q->query()->fetchAll();
-				
-				$ids = array();
-				foreach($list as $k=>$v) {
-					$ids[] = $v['TRAINING_ID'];
-				}
-				
-				$this->_where[] = $this->_modelDetail->getAdapter()->quoteInto('TRAINING_ID IN (?)', $ids);
+			if(isset($this->_posts['query']) && !empty($this->_posts['query'])) {
+				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['query'] . '%');
 			}
-			$this->_data['items'] = $this->_modelDetail->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-			$this->_data['totalCount'] = $this->_modelDetail->count($this->_where);
+			if(isset($this->_posts['NAME']) && !empty($this->_posts['NAME'])) {
+				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
+			}
+			if(isset($this->_posts['SNAME']) && !empty($this->_posts['SNAME'])) {
+				$this->_where[] = $this->_model->getAdapter()->quoteInto('SNAME LIKE ?', '%' . $this->_posts['SNAME'] . '%');
+			}
+			if(isset($this->_posts['MOBILE_NO']) && !empty($this->_posts['MOBILE_NO'])) {
+				$this->_where[] = $this->_model->getAdapter()->quoteInto('MOBILE_NO LIKE ?', '%' . $this->_posts['MOBILE_NO'] . '%');
+			}
+			if(isset($this->_posts['EMAIL1']) && !empty($this->_posts['EMAIL1'])) {
+				$this->_where[] = $this->_model->getAdapter()->quoteInto('EMAIL1 LIKE ?', '%' . $this->_posts['EMAIL1'] . '%');
+			}
+			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+			$this->_data['totalCount'] = $this->_modelView->count($this->_where);
 		} catch(Exception $e) {
 			$this->exception($e);
 		}
+// 		try {
+// 			if(isset($this->_posts['START_DATE']) && $this->_posts['END_DATE'] && !empty($this->_posts['START_DATE']) && !empty($this->_posts['END_DATE'])) {
+// 				$q = $this->_modelTrainingView->select()
+// 				->setIntegrityCheck(false)
+// 				->from('TR_TRAININGS_VIEW', array('TRAINING_ID'))
+// 				->where('SDATE >= ?', $this->_posts['START_DATE'])
+// 				->where('SDATE <= ?', $this->_posts['END_DATE']);
+// 				$list = $q->query()->fetchAll();
+				
+// 				$ids = array();
+// 				foreach($list as $k=>$v) {
+// 					$ids[] = $v['TRAINING_ID'];
+// 				}
+				
+// 				$this->_where[] = $this->_modelDetail->getAdapter()->quoteInto('TRAINING_ID IN (?)', $ids);
+// 			}
+// 			$this->_data['items'] = $this->_modelTrainingView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+// 			$this->_data['totalCount'] = $this->_modelTrainingView->count($this->_where);
+// 		} catch(Exception $e) {
+// 			$this->exception($e);
+// 		}
 	}
 	
 	public function printAction()
@@ -202,152 +225,81 @@ class Participants_RequestController extends MyIndo_Controller_Action
 		$pdf->SetFont('Arial','',12);
 		$pdf->AliasNbPages();
 		$pdf->AddPage();
-		
-		if(isset($this->_posts['PARTICIPANT_ID']) && !empty($this->_posts['PARTICIPANT_ID'])) {
-			$id = $this->_enc->base64decrypt($this->_posts['PARTICIPANT_ID']);
-		    $q = $this->_modelParticipants->select()->from('MS_PARTICIPANTS',array('*'))->where('ID = ?', $id);
-		    $listParticipant = $q->query()->fetchAll();
+
+// 		if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
+// 			$id = $this->_enc->base64decrypt($this->_posts['ID']);
+// 		    $q = $this->_modelParticipants->select()->from('MS_PARTICIPANTS',array('*'))->where('ID = ?', $id);
+// 		    $listParticipant = $q->query()->fetchAll();
 			
-			$q = $this->_modelDetail->select()->from('TR_TRAINING_PARTICIPANTS_VIEW',array('*'))->where('PARTICIPANT_ID = ?', $id);
-			$q->query()->fetchAll();
-			$list = $q->query()->fetchAll();
+			$q = $this->_modelDetail->select()->from('TR_TRAINING_PARTICIPANTS_VIEW',array('*'));
+			$query = $q->query()->fetchAll();
 
 			$filename ='ReportParticipant.' . $this->_posts['ID'] . '.' . date('Y-m-d-H-i-s');
 
 			$pdf->Cell(10,10,'Report Participant',0,1,'');
 			
-			foreach ($listParticipant as $val) {;
-				$columns = array();
-				$col = array();
-				$col[] = array('text' => 'First Name : '.$val['FNAME'] ,'width' => '95','height'=>'5','align' => 'L', 'font_name' => 'Times', 'font_size' => '12', 'font_style' => '', 'linearea'=>'',);
-				$columns[] = $col;
-				$pdf->WriteTable($columns);
-				 
-				$columns = array();
-				$col = array();
-				$col[] = array ('text' => 'Middle Name : '.$val['MNAME'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
-				$columns[] = $col;
-				$pdf->WriteTable($columns);
-				 
-				$columns = array();
-				$col = array();
-				$col[] = array ('text' => 'Last Name : '.$val['LNAME'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
-				$columns[] = $col;
-				$pdf->WriteTable($columns);
-				 
-				$columns = array();
-				$col = array();
-				$col[] = array ('text' => 'Surname : '.$val['SNAME'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
-				$columns[] = $col;
-				$pdf->WriteTable($columns);
-				 
-				$columns = array();
-				$col = array();
-				$col[] = array ('text' => 'Gender : '.$val['GENDER'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
-				$columns[] = $col;
-				$pdf->WriteTable($columns);
-				 
-				$columns = array();
-				$col = array();
-				$col[] = array ('text' => 'Brith Date : '.$val['BDATE'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
-				$columns[] = $col;
-				$pdf->WriteTable($columns);
-				 
-				$columns = array();
-				$col = array();
-				$col[] = array ('text' => 'Mobile Number : '.$val['MOBILE_NO'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
-				$columns[] = $col;
-				$pdf->WriteTable($columns);
-				 
-				$columns = array();
-				$col = array();
-				$col[] = array ('text' => 'Phone Number : '.$val['PHONE_NO'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
-				$columns[] = $col;
-				$pdf->WriteTable($columns);
-				 
-				$columns = array();
-				$col = array();
-				$col[] = array ('text' => 'First Email : '.$val['EMAIL1'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
-				$columns[] = $col;
-				$pdf->WriteTable($columns);
-				 
-				$columns = array();
-				$col = array();
-				$col[] = array ('text' => 'Second Email : '.$val['EMAIL2'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
-				$columns[] = $col;
-				$pdf->WriteTable($columns);
-					
-				$columns = array();
-				$col = array();
-				$col[] = array ('text' => 'Facebook : '.$val['FB'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
-				$columns[] = $col;
-				$pdf->WriteTable($columns);
-				 
-				$columns = array();
-				$col = array();
-				$col[] = array ('text' => 'Twitter : '.$val['TWITTER'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
-				$columns[] = $col;
-				$pdf->WriteTable($columns);
-			}
-			
-			/* Start Label Table */
+			/* Start Dynamic Label Table */
 			$pdf->Ln('10');
-			$headerTable = array(
-					array(
-							'col1'	=> 'Training Name',
-// 							'col2'	=> 'Beneficiaries Name',
-// 							'col3'	=> 'Organization Province',
-// 							'col4'  => 'Organization Country',
-							'col5'  => 'Organization',
-							'col6'  => 'Position',
-							'col7'  => 'Pre Test',
-							'col8'  => 'Post Test',
-							'col9'  => 'Diff',
-					),
-			);
+			$negara = $this->_msCountry->select()->from('MS_COUNTRY', array('NAME'));
+			$daftar = $negara->query()->fetchAll();
+			foreach ($daftar as $kunci=>$nilai) {
+				$var[] = $nilai['NAME'];
+			}
+
+			/*Start Header Table */
+			$push = $var;
+			array_unshift($push, 'Training Name');
+			
+			$HeaderTable = array_unique($push);
+			$headerTable = array($HeaderTable);
+			
 			$columns = array();
 			if ( $headerTable ) foreach( $headerTable as $split ):
+			$array = array_values($split);
 			$col = array();
-			$col[] = array('text' => $split['col1'] , 'width' => '55','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
-// 			$col[] = array('text' => $split['col2'] , 'width' => '35','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
-// 			$col[] = array('text' => $split['col3'] , 'width' => '30','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
-// 			$col[] = array('text' => $split['col4'] , 'width' => '30','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
- 			$col[] = array('text' => $split['col5'] , 'width' => '45','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
-			$col[] = array('text' => $split['col6'] , 'width' => '30','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
-			$col[] = array('text' => $split['col7'] , 'width' => '20','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
-			$col[] = array('text' => $split['col8'] , 'width' => '20','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
-			$col[] = array('text' => $split['col9'] , 'width' => '10','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
-			$columns[] = $col;
-			endforeach;
-			$pdf->WriteTable($columns);
-			
-			foreach ($list as $row) {
-				
-		    $columns = array();
-	        $col = array();
-		    $col[] = array('text' => '' .$row['TRAINING_NAME'],'width' => '55','height'=>'5', 'align' => 'L','linearea' => 'LTBR',);
-// 	        $col[] = array('text' => '' .$row['BENEFICIARIES_NAME'] ,'width' => '25','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-// 	        $col[] = array('text' => '' .$row['ORGANIZATION_PROVINCE_NAME'] ,'width' => '30','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-// 	        $col[] = array('text' => '' .$row['ORGANIZATION_COUNTRY_NAME'] ,'width' => '30','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-	        $col[] = array('text' => '' .$row['ORGANIZATION_NAME'] ,'width' => '45','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-// 	        $col[] = array('text' => ''.$row['ORGANIZATION_PHONE_NO1'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
-// 	        $col[] = array('text' => ''.$row['ORGANIZATION_PHONE_NO2'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
-// 	        $col[] = array('text' => ''.$row['ORGANIZATION_EMAIL1'] ,'width' => '30','height'=>'5','align' => 'L','linearea'=>'',);
-// 	        $col[] = array('text' => ''.$row['ORGANIZATION_EMAIL2'] ,'width' => '35','height'=>'5','align' => 'L','linearea'=>'',);
-// 	        $col[] = array('text' => ''.$row['ORGANIZATION_WEBSITE'] ,'width' => '20','height'=>'5','align' => 'L','linearea'=>'',);
-// 	        $col[] = array('text' => ''.$row['ORGANIZATION_ADDRESS'] ,'width' => '30','height'=>'5','align' => 'L','linearea'=>'',);
-	        $col[] = array('text' => '' .$row['POSITION_NAME'] ,'width' => '30','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-	        $col[] = array('text' => '' .$row['PRE_TEST'] ,'width' => '20','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-	        $col[] = array('text' => '' .$row['POST_TEST'] ,'width' => '20','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-	        $col[] = array('text' => '' .$row['DIFF'] ,'width' => '10','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-	        //$col[] = array('text' => 'Created Date : '.$row['CREATED_DATE'] ,'width' => '95','height'=>'5','align' => 'L','linearea'=>'',);
-	        $columns[] = $col;
-	        $pdf->WriteTable($columns);
+			for ($i = 0; $i < count($array); ++$i) {
+			$col[] = array('text' => $array[$i] , 'width' => '45','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
 			}
+			$columns[] = $col;
+			$pdf->WriteTable($columns);
+			endforeach;
+			
+			/* End Header Table */
+			
+			$q->query()->fetchAll();
+			$list = $q->query()->fetchAll();
+			$x = $this->_modelTrainingView->select()->from('TR_TRAININGS_VIEW', array('TRAINING_NAME','VENUE_COUNTRY_NAME'));
+			$query = $x->query()->fetchAll();
+				
+			$c = array();
+			foreach ($query as $key=>$value) {
+				if(!isset($c[$value['TRAINING_NAME']][$value['VENUE_COUNTRY_NAME']])) {
+					$c[$value['TRAINING_NAME']][$value['VENUE_COUNTRY_NAME']] = 1;
+				} else {
+					$c[$value['TRAINING_NAME']][$value['VENUE_COUNTRY_NAME']]++;
+				}
+			}
+			
+// 			print_r($c);
+
+			$columns = array();
+			$temp='';
+			foreach ($c as $key=>$value) {
+			
+				$col = array();
+				$col[] = array('text' => ''.$key ,'width' => '45','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+				foreach ($value as $k=>$v) {
+						$temp = $temp.$v;
+				}
+				$col[] = array('text' => $temp ,'width' => '45','height'=>'5','align' => 'L','linearea'=>'LTBR',);
+				$columns[] = $col;
+				$temp = '';
+
+			}
+			$pdf->WriteTable($columns);
 			$pdf->Output('pdf/participants/' . $filename . '.pdf','F');
 			
 			$this->_data['fileName'] = $filename . '.pdf';
 			$this->_data['path'] = 'pdf/participants/';
-		}
 	}
 }

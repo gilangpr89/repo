@@ -9,14 +9,14 @@ Ext.define(MyIndo.getNameSpace('view.Report.Participants.Detail'), {
 	
 	initComponent: function() {
 		Ext.apply(this, {
-			title: 'Detail Participant : ' + this.participantsData.PARTICIPANT_NAME,
+			title: 'Detail Participant : ' + this.participantsData.NAME,
 			items: [{
 				border: false,
 				bodyPadding: 5,
 				html: 
 				'<table>' +
 					'<tr>' +
-						'<td>Participant Name</td><td>:</td><td>' + this.participantsData.PARTICIPANT_NAME + '</td>' + 
+						'<td>Participant Name</td><td>:</td><td>' + this.participantsData.NAME + '</td>' + 
 					'</tr>' +
 				'</table>'
 			},{
@@ -31,17 +31,19 @@ Ext.define(MyIndo.getNameSpace('view.Report.Participants.Detail'), {
 					text: 'Training Name',
 					flex: 1,
 					dataIndex: 'TRAINING_NAME'
-				},{
-					text: 'Gender',
-					width: 150,
-					align: 'center',
-					dataIndex: 'PARTICIPANT_GENDER'
-				},{
-					text: 'Province Name',
-					width: 150,
-					align: 'center',
-					dataIndex: 'ORGANIZATION_PROVINCE_NAME'
-				},{
+				},
+//				{
+//					text: 'Gender',
+//					width: 150,
+//					align: 'center',
+//					dataIndex: 'PARTICIPANT_GENDER'
+//				},{
+//					text: 'Province Name',
+//					width: 150,
+//					align: 'center',
+//					dataIndex: 'ORGANIZATION_PROVINCE_NAME'
+//				},
+				{
 					text: 'Country Name',
 					width:150,
 					dataIndex:'ORGANIZATION_COUNTRY_NAME'

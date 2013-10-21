@@ -36,7 +36,7 @@ Ext.define(MyIndo.getNameSpace('controller.Report.Organization'), {
 			}).show();
 			store.load();
 		} else {
-			Ext.Msg.alert('Application Error', 'You did not select any participant.');
+			Ext.Msg.alert('Application Error', 'You did not select any Organization.');
 		}
 	},
 	

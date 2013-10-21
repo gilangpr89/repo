@@ -12,16 +12,17 @@ class Reports_RequestController extends MyIndo_Controller_Action
 	protected $_modelOrganizationsView;
 	protected $_modelCountryView;
 	protected $_modelRegionView;
+	protected $_modelOrganizationUpload;
 
 	public function init()
 	{
 		$this->_model = new trtrainings_Model_TrTrainingsView();
 		$this->_modelTraining = new trainingparticipants_Model_TrainingParticipants();
 		$this->_modelView = new trainingparticipants_Model_TrainingParticipantsView();
-		
 		$this->_modelParticipants = new participants_Model_Participants();
 		$this->_modelParticipantsView = new participants_Model_ParticipantsView();
 		$this->_modelOrganizationsView = new organizations_Model_OrganizationsView();
+		$this->_modelOrganizationUpload = new organizations_Model_OrganizationsUploadView();
 		$this->_modelCountryView = new countries_Model_Country();
 		$this->_modelRegionView = new arealevels_Model_AreaLevelsView();
 		
@@ -97,28 +98,29 @@ class Reports_RequestController extends MyIndo_Controller_Action
 			$list = array();
 			if(isset($this->_posts['ORGANIZATION_ID']) && !empty($this->_posts['ORGANIZATION_ID'])) {
 				$id = $this->_enc->base64decrypt($this->_posts['ORGANIZATION_ID']);
-				if($this->_model->isExist('ORGANIZATION_ID', $id)) {
-					if(isset($this->_posts['START_DATE']) && isset($this->_posts['END_DATE']) && !empty($this->_posts['START_DATE']) && !empty($this->_posts['END_DATE'])) {
-						$this->_where[] = $this->_model->getAdapter()->quoteInto('SDATE >= ?', $this->_posts['START_DATE']);
-						$this->_where[] = $this->_model->getAdapter()->quoteInto('SDATE <= ?', $this->_posts['END_DATE']);
-					}
-					$q = $this->_model->select()->where('ORGANIZATION_ID = ?', $id);
-					$list = $q->query()->fetchAll();
-					if(count($list) > 0) {
-						$trainingIds = array();
-						foreach($list as $k => $v) {
-							if(!in_array($v['ID'], $trainingIds)) {
-								$trainingIds[] = $v['ID'];
-							}
-						}
-					}
-						$this->_where[] = $this->_model->getAdapter()->quoteInto('ID IN (?)', $trainingIds);
+// 				if($this->_model->isExist('ORGANIZATION_ID', $id)) {
+// 					if(isset($this->_posts['START_DATE']) && isset($this->_posts['END_DATE']) && !empty($this->_posts['START_DATE']) && !empty($this->_posts['END_DATE'])) {
+// 						$this->_where[] = $this->_model->getAdapter()->quoteInto('SDATE >= ?', $this->_posts['START_DATE']);
+// 						$this->_where[] = $this->_model->getAdapter()->quoteInto('SDATE <= ?', $this->_posts['END_DATE']);
+// 					}
+// 					$q = $this->_model->select()->where('ORGANIZATION_ID = ?', $id);
+// 					$list = $q->query()->fetchAll();
+// 					if(count($list) > 0) {
+// 						$trainingIds = array();
+// 						foreach($list as $k => $v) {
+// 							if(!in_array($v['ID'], $trainingIds)) {
+// 								$trainingIds[] = $v['ID'];
+// 							}
+// 						}
+// 					}
+						//$this->_where[] = $this->_modelOrganizationUpload->getAdapter()->quoteInto('ID IN (?)', $trainingIds);
+					      $this->_where[] = $this->_modelOrganizationUpload->getAdapter()->quoteInto('ORGANIZATION_ID IN (?)', $id);
 	
-						$list = $this->_model->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-						$this->_totalCount = $this->_model->count($this->_where);
-				} else {
-					$this->error(101, 'Invalid Cbo.');
-				}
+						$list = $this->_modelOrganizationUpload->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+						$this->_totalCount = $this->_modelOrganizationUpload->count($this->_where);
+// 				} else {
+// 					$this->error(101, 'Invalid Cbo.');
+// 				}
 			} else {
 				$this->error(101, 'Invalid Cbo.');
 			}
@@ -135,10 +137,10 @@ class Reports_RequestController extends MyIndo_Controller_Action
 	     try {
 	     	if(isset($this->_posts['NAME'])) {
 	     		$name = $this->_posts['NAME'];
-	     		$this->_where[] = $this->_modelParticipantsView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $name . '%');
+	     		$this->_where[] = $this->_modelOrganizationsView->getAdapter()->quoteInto('NAME LIKE ?', '%' . $name . '%');
 	     	}
-			$this->_data['items'] = $this->_modelParticipantsView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-			$this->_data['totalCount'] = $this->_modelParticipantsView->count($this->_where);
+			$this->_data['items'] = $this->_modelOrganizationsView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+			$this->_data['totalCount'] = $this->_modelOrganizationsView->count($this->_where);
 		} catch(Exception $e) {
 			$this->exception($e);
 		}
@@ -151,30 +153,30 @@ class Reports_RequestController extends MyIndo_Controller_Action
 			$list = array();
 			if(isset($this->_posts['PARTICIPANT_ID'])) {
 				$id = $this->_enc->base64decrypt($this->_posts['PARTICIPANT_ID']);
-				if($this->_modelTraining->isExist('PARTICIPANT_ID', $id)) {
-					$q = $this->_modelTraining->select()->where('PARTICIPANT_ID = ?', $id);
-					$list = $q->query()->fetchAll();
-					if(count($list) > 0) {
-						$trainingIds = array();
-						foreach($list as $k => $v) {
-							if(!in_array($v['TRAINING_ID'], $trainingIds)) {
-								$trainingIds[] = $v['TRAINING_ID'];
-							}
-						}
+// 				if($this->_modelTraining->isExist('PARTICIPANT_ID', $id)) {
+// 					$q = $this->_modelTraining->select()->where('PARTICIPANT_ID = ?', $id);
+// 					$list = $q->query()->fetchAll();
+// 					if(count($list) > 0) {
+// 						$trainingIds = array();
+// 						foreach($list as $k => $v) {
+// 							if(!in_array($v['TRAINING_ID'], $trainingIds)) {
+// 								$trainingIds[] = $v['TRAINING_ID'];
+// 							}
+// 						}
 						
-						if(isset($this->_posts['START_DATE']) && isset($this->_posts['END_DATE'])) {
-							$this->_where[] = $this->_model->getAdapter()->quoteInto('SDATE >= ?', $this->_posts['START_DATE']);
-							$this->_where[] = $this->_model->getAdapter()->quoteInto('SDATE <= ?', $this->_posts['END_DATE']);
-						}
-						$this->_where[] = $this->_model->getAdapter()->quoteInto('TRAINING_ID IN (?)', $trainingIds);
+// 						if(isset($this->_posts['START_DATE']) && isset($this->_posts['END_DATE'])) {
+// 							$this->_where[] = $this->_model->getAdapter()->quoteInto('SDATE >= ?', $this->_posts['START_DATE']);
+// 							$this->_where[] = $this->_model->getAdapter()->quoteInto('SDATE <= ?', $this->_posts['END_DATE']);
+// 						}
+						$this->_where[] = $this->_modelView->getAdapter()->quoteInto('ORGANIZATION_ID IN (?)', $id);
 
-						$list = $this->_model->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-						$this->_totalCount = $this->_model->count($this->_where);
+						$list = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+						$this->_totalCount = $this->_modelView->count($this->_where);
 						
-					}
-				} else {
-					$this->error(101, 'Invalid Participant.');
-				}
+					//}
+// 				} else {
+// 					$this->error(101, 'Invalid Participant.');
+// 				}
 			} else {
 				$this->error(101, 'Invalid Participant.');
 			}

@@ -87,5 +87,8 @@ Ext.define(MyIndo.getNameSpace('model.Transaction.TrainingTrainer'), {
 	},{
 		name: 'COUNTRY_NAME',
 		type: 'string'
+	},{
+		name: 'CV_NAME',
+		type: 'string'
 	}]
 });

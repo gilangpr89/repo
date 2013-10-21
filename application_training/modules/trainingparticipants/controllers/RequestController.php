@@ -3,6 +3,7 @@
 class Trainingparticipants_RequestController extends MyIndo_Controller_Action
 {
 	protected $_modelView;
+	protected $_model;
 	protected $_unique;
 	protected $_required;
 	protected $_sData;
@@ -116,16 +117,12 @@ class Trainingparticipants_RequestController extends MyIndo_Controller_Action
 		try {
 			if(isset($this->_posts['TRAINING_ID']) && !empty($this->_posts['TRAINING_ID'])) {
 				$trainingId = (int)$this->_enc->base64decrypt($this->_posts['TRAINING_ID']);
-				//print_r($trainingId);
 				if($this->_model->isExist('TRAINING_ID', $trainingId)) {
 					$this->_where[] = $this->_modelView->getAdapter()->quoteInto('TRAINING_ID = ?', $trainingId);
 				} else {
 					$this->_where[] = $this->_modelView->getAdapter()->quoteInto('TRAINING_ID = ?', 0);
 				}
 			}
-			//print_r($this->_where);echo "DANIAL";
-// 			$list = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-// 			print_r($list);
 			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
 			$this->_data['totalCount'] = $this->_modelView->count($this->_where);
 		} catch(Exception $e) {

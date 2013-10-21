@@ -18,15 +18,6 @@ Ext.define(MyIndo.getNameSpace('controller.Report.CapacityProfile.Individual'), 
 			'capacityprofileindividualfilterwindow button':{
 				click:this.onButtonClicked
 			}
-//			'individusearchwindow button': {
-//				click: this.onButtonClicked
-//			},
-//			'individuview button[action=report-individual]': {
-//				click: this.reportParticipants
-//			},
-//			'individuview button[action=update]': {
-//				click: this.onManageReportindividual
-//			}
 		});
 	},
 	
@@ -70,7 +61,7 @@ Ext.define(MyIndo.getNameSpace('controller.Report.CapacityProfile.Individual'), 
 						}
 					});
 				} else {
-					Ext.Msg.alert('Application Error', 'Invalid participant.');
+					Ext.Msg.alert('Application Error', 'Invalid Organization.');
 				}
 			}
 		});
