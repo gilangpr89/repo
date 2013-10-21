@@ -176,6 +176,9 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 						});
 					}
 
+
+					/* asdasdasdasd */
+
 					var model = Ext.define('ModelOrganization', {
 						extend: 'Ext.data.Model',
 						fields: fields
