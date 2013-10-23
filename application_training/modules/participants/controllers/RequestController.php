@@ -193,12 +193,18 @@ class Participants_RequestController extends MyIndo_Controller_Action
 			/* ===================================================================================== */
 
 			$q = $this->_modelTrainingView->select()
-			->from($this->_modelTrainingView->getTableName(), array('TRAINING_NAME','VENUE_COUNTRY_NAME'));
-
+			->from($this->_modelTrainingView->getTableName(), array('ID','TRAINING_NAME','VENUE_COUNTRY_NAME'));
+			
 			$res = $q->query()->fetchAll();
+
+			$q = $this->_modelDetail->select()
+			->from($this->_modelDetail->getTableName(), array('TRAINING_ID','TRAINING_NAME'));
+
+			$resDetail = $q->query()->fetchAll();
 
 			$names = array();
 			$trainings = array();
+			$ids = array();
 
 			foreach($res as $k=>$d) {
 
@@ -212,16 +218,20 @@ class Participants_RequestController extends MyIndo_Controller_Action
 					}
 				}
 
-				if(!isset($names[$d['TRAINING_NAME']]['TOTAL'])) {
-					$names[$d['TRAINING_NAME']]['TOTAL'] = 1;
-				} else {
-					$names[$d['TRAINING_NAME']]['TOTAL']++;
+				if(!isset($ids[$d['ID']]['COUNTRY'])) {
+					$ids[$d['ID']]['COUNTRY'] = strtoupper($d['VENUE_COUNTRY_NAME']);
 				}
 
-				$names[$d['TRAINING_NAME']]['TOTAL_' . str_replace(' ', '_', strtoupper($d['VENUE_COUNTRY_NAME']))]++;
+				if(!isset($names[$d['TRAINING_NAME']]['TOTAL'])) {
+					$names[$d['TRAINING_NAME']]['TOTAL'] = 0;
+				}
 				
 			}
-			// $fields[] = 'TOTAL';
+
+			foreach($resDetail as $k=>$d) {
+				$names[$d['TRAINING_NAME']]['TOTAL_' . $ids[$d['TRAINING_ID']]['COUNTRY']]++;
+				$names[$d['TRAINING_NAME']]['TOTAL']++;
+			}
 
 			$data = array();
 			$i = 0;
@@ -236,13 +246,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 			}
 			$this->_data['items'] = $data;
 			$this->_data['totalCount'] = count($names);
-			
-			// $this->_data['fields'] = $fields;
-			// print_r($fields);
-			// print_r($names);
-			// print_r($trainings);
-		 	// $this->_data['items'] = $this->_modelTraining->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-			// $this->_data['totalCount'] = $this->_modelTraining->count($this->_where);
+
 		} catch(Exception $e) {
 			$this->exception($e);
 		}

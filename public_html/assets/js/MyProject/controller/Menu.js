@@ -164,15 +164,11 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 					}];
 
 					for(var i = 0; i < params.length; i++) {
-						 console.log(params[i].NAME.replace(' ','_').toUpperCase());
 						fields.push({
 							name: 'TOTAL_' + params[i].NAME.replace(' ', '_').toUpperCase(),
 							type: 'int'
 						});
 					}
-
-
-					/* asdasdasdasd */
 
 					var model = Ext.define('ModelParticipant', {
 						extend: 'Ext.data.Model',
@@ -211,15 +207,11 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 					}];
 
 					for(var i = 0; i < params.length; i++) {
-						// console.log(params[i].NAME.replace(' ','_').toUpperCase());
 						fields.push({
 							name: 'TOTAL_' + params[i].NAME.replace(' ', '_').toUpperCase(),
 							type: 'int'
 						});
 					}
-
-
-					/* asdasdasdasd */
 
 					var model = Ext.define('ModelOrganization', {
 						extend: 'Ext.data.Model',

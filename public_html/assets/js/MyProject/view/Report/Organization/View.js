@@ -12,7 +12,6 @@ Ext.define(MyIndo.getNameSpace('view.Report.Organization.View'), {
 
 		if(typeof(this.params) !== 'undefined' && Array.isArray(this.params)) {
 			var names = this.params;
-			console.log(names);
 			for(var i = 0; i < names.length; i++) {
 				columns.push({
 					text: names[i].NAME,
