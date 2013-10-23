@@ -23,7 +23,7 @@ class Participants_RequestController extends MyIndo_Controller_Action
 		$this->_msCountry = new countries_Model_Country();
  		$this->_modelTrainingView = new trtrainings_Model_TrTrainingsView();
 		$this->_modelDetail = new trainingparticipants_Model_TrainingParticipantsView();
-		$this->_modelTrainingView = new trtrainings_Model_TrTrainingsView();
+// 		$this->_modelTrainingView = new trtrainings_Model_TrTrainingsView();
 		$this->_modelParticipants = new participants_Model_Participants();
 		$this->_modelView = new participants_Model_ParticipantsView();
 		$this->_unique = 'Participant';
@@ -170,48 +170,82 @@ class Participants_RequestController extends MyIndo_Controller_Action
 	
 	public function detailAction()
 	{
-		try {
-			if(isset($this->_posts['query']) && !empty($this->_posts['query'])) {
-				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['query'] . '%');
+		
+	    try {
+
+			/* ===================================================================================== */
+
+			/* Get Country */
+			$model = new countries_Model_Country();
+			$countries = array();
+
+			$q = $model->select()
+			->from($model->getTableName(), array('NAME'))
+			->distinct(true);
+
+			$res = $q->query()->fetchAll();
+
+			foreach($res as $k=>$d) {
+				$countries[] = $d['NAME'];
 			}
-			if(isset($this->_posts['NAME']) && !empty($this->_posts['NAME'])) {
-				$this->_where[] = $this->_model->getAdapter()->quoteInto('NAME LIKE ?', '%' . $this->_posts['NAME'] . '%');
+			/* End of : Get Country */
+
+			/* ===================================================================================== */
+
+			$q = $this->_modelTrainingView->select()
+			->from($this->_modelTrainingView->getTableName(), array('TRAINING_NAME','VENUE_COUNTRY_NAME'));
+
+			$res = $q->query()->fetchAll();
+
+			$names = array();
+			$trainings = array();
+
+			foreach($res as $k=>$d) {
+
+				if(!in_array($d['TRAINING_NAME'], $trainings)) {
+					$trainings[] = $d['TRAINING_NAME'];
+				}
+
+				foreach($countries as $_k => $_d) {
+					if(!isset($names[$d['TRAINING_NAME']]['TOTAL_' . str_replace(' ', '_', strtoupper($_d))])) {
+						$names[$d['TRAINING_NAME']]['TOTAL_' . str_replace(' ', '_', strtoupper($_d))] = 0;
+					}
+				}
+
+				if(!isset($names[$d['TRAINING_NAME']]['TOTAL'])) {
+					$names[$d['TRAINING_NAME']]['TOTAL'] = 1;
+				} else {
+					$names[$d['TRAINING_NAME']]['TOTAL']++;
+				}
+
+				$names[$d['TRAINING_NAME']]['TOTAL_' . str_replace(' ', '_', strtoupper($d['VENUE_COUNTRY_NAME']))]++;
+				
 			}
-			if(isset($this->_posts['SNAME']) && !empty($this->_posts['SNAME'])) {
-				$this->_where[] = $this->_model->getAdapter()->quoteInto('SNAME LIKE ?', '%' . $this->_posts['SNAME'] . '%');
+			// $fields[] = 'TOTAL';
+
+			$data = array();
+			$i = 0;
+			foreach($names as $k=>$d) {
+				if($i >= $this->_start && $i < $this->_limit) {
+					$data[$i]['TRAINING_NAME'] = $k;
+					foreach($d as $_k => $_d) {
+						$data[$i][$_k] = $_d;
+					}
+				}
+				$i++;
 			}
-			if(isset($this->_posts['MOBILE_NO']) && !empty($this->_posts['MOBILE_NO'])) {
-				$this->_where[] = $this->_model->getAdapter()->quoteInto('MOBILE_NO LIKE ?', '%' . $this->_posts['MOBILE_NO'] . '%');
-			}
-			if(isset($this->_posts['EMAIL1']) && !empty($this->_posts['EMAIL1'])) {
-				$this->_where[] = $this->_model->getAdapter()->quoteInto('EMAIL1 LIKE ?', '%' . $this->_posts['EMAIL1'] . '%');
-			}
-			$this->_data['items'] = $this->_modelView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-			$this->_data['totalCount'] = $this->_modelView->count($this->_where);
+			$this->_data['items'] = $data;
+			$this->_data['totalCount'] = count($names);
+			
+			// $this->_data['fields'] = $fields;
+			// print_r($fields);
+			// print_r($names);
+			// print_r($trainings);
+		 	// $this->_data['items'] = $this->_modelTraining->getList($this->_limit, $this->_start, $this->_order, $this->_where);
+			// $this->_data['totalCount'] = $this->_modelTraining->count($this->_where);
 		} catch(Exception $e) {
 			$this->exception($e);
 		}
-// 		try {
-// 			if(isset($this->_posts['START_DATE']) && $this->_posts['END_DATE'] && !empty($this->_posts['START_DATE']) && !empty($this->_posts['END_DATE'])) {
-// 				$q = $this->_modelTrainingView->select()
-// 				->setIntegrityCheck(false)
-// 				->from('TR_TRAININGS_VIEW', array('TRAINING_ID'))
-// 				->where('SDATE >= ?', $this->_posts['START_DATE'])
-// 				->where('SDATE <= ?', $this->_posts['END_DATE']);
-// 				$list = $q->query()->fetchAll();
-				
-// 				$ids = array();
-// 				foreach($list as $k=>$v) {
-// 					$ids[] = $v['TRAINING_ID'];
-// 				}
-				
-// 				$this->_where[] = $this->_modelDetail->getAdapter()->quoteInto('TRAINING_ID IN (?)', $ids);
-// 			}
-// 			$this->_data['items'] = $this->_modelTrainingView->getList($this->_limit, $this->_start, $this->_order, $this->_where);
-// 			$this->_data['totalCount'] = $this->_modelTrainingView->count($this->_where);
-// 		} catch(Exception $e) {
-// 			$this->exception($e);
-// 		}
 	}
 	
 	public function printAction()
@@ -226,81 +260,174 @@ class Participants_RequestController extends MyIndo_Controller_Action
 		$pdf->AliasNbPages();
 		$pdf->AddPage();
 
-		if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
-			$id = $this->_enc->base64decrypt($this->_posts['ID']);
-		    $q = $this->_modelParticipants->select()->from('MS_PARTICIPANTS',array('*'))->where('ID = ?', $id);
-		    $listParticipant = $q->query()->fetchAll();
-			
-			$q = $this->_modelDetail->select()->from('TR_TRAINING_PARTICIPANTS_VIEW',array('*'));
-			$query = $q->query()->fetchAll();
-
-			$filename ='ReportParticipant.' . $this->_posts['ID'] . '.' . date('Y-m-d-H-i-s');
-
+			$filename ='ReportParticipant.' . date('Y-m-d-H-i-s');
 			$pdf->Cell(10,10,'Report Participant',0,1,'');
 			
-			/* Start Dynamic Label Table */
-			$pdf->Ln('10');
-			$negara = $this->_msCountry->select()->from('MS_COUNTRY', array('NAME'));
-			$daftar = $negara->query()->fetchAll();
-			foreach ($daftar as $kunci=>$nilai) {
-				$var[] = $nilai['NAME'];
-			}
-
-			/*Start Header Table */
-			$push = $var;
-			array_unshift($push, 'Training Name');
+			/* ===================================================================================== */
 			
+			/* Get Country */
+			$model = new countries_Model_Country();
+			$countries = array();
+			
+			$q = $model->select()
+			->from($model->getTableName(), array('NAME'))
+			->distinct(true);
+			
+			$res = $q->query()->fetchAll();
+			
+			foreach($res as $k=>$d) {
+				$countries[] = $d['NAME'];
+			}
+			
+			/* End of : Get Country */
+
+			$push = $countries;
+			array_unshift($push, 'Training Name');
+			array_push($push, 'Total');
 			$HeaderTable = array_unique($push);
 			$headerTable = array($HeaderTable);
-			
+				
 			$columns = array();
 			if ( $headerTable ) foreach( $headerTable as $split ):
 			$array = array_values($split);
 			$col = array();
 			for ($i = 0; $i < count($array); ++$i) {
-			$col[] = array('text' => $array[$i] , 'width' => '45','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+				$col[] = array('text' => $array[$i] , 'width' => '23','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
 			}
 			$columns[] = $col;
 			$pdf->WriteTable($columns);
 			endforeach;
 			
-			/* End Header Table */
+			/* ===================================================================================== */
 			
-// 			$q->query()->fetchAll();
-// 			$list = $q->query()->fetchAll();
-// 			$x = $this->_modelTrainingView->select()->from('TR_TRAININGS_VIEW', array('TRAINING_NAME','VENUE_COUNTRY_NAME'));
-// 			$query = $x->query()->fetchAll();
-				
+			/* START Get Training ID Participants View */
+			$select = $this->_modelParticipants->select()->distinct(true)->setIntegrityCheck(false)
+			->from('TR_TRAINING_PARTICIPANTS_VIEW',array('TRAINING_ID', 'COUNT(*) as COUNT_PARTICIPANTS'))
+			->group('TRAINING_ID');
+			$result = $select->query()->fetchAll();
+			/* END Get Training ID Participants View */
+			
+			$q = $this->_modelTrainingView->select()
+			->from($this->_modelTrainingView->getTableName(), array('ID','TRAINING_NAME','VENUE_COUNTRY_NAME'));
+			$res = $q->query()->fetchAll();
+			
 // 			$c = array();
-// 			foreach ($query as $key=>$value) {
-// 				if(!isset($c[$value['TRAINING_NAME']][$value['VENUE_COUNTRY_NAME']])) {
-// 					$c[$value['TRAINING_NAME']][$value['VENUE_COUNTRY_NAME']] = 1;
+			$arrayMap = array_map(null, $res, $result);
+			foreach ($arrayMap as $key=>$val) {
+				$arrayMerge = array_merge($val[0], $val[1]);
+					$a[] = $arrayMerge['TRAINING_NAME'];
+					$b[] = $arrayMerge['VENUE_COUNTRY_NAME'];
+					$c[] = $arrayMerge['COUNT_PARTICIPANTS'];
+
+				
+// 			     foreach($countries as $_k => $_d) {
+// 					if(!isset($names[$arrayMerge['TRAINING_NAME']][$arrayMerge['COUNT_PARTICIPANTS']]['TOTAL_' . str_replace(' ', '_', strtoupper($_d))])) {
+// 						$names[$arrayMerge['TRAINING_NAME']][$arrayMerge['COUNT_PARTICIPANTS']]['TOTAL_' . str_replace(' ', '_', strtoupper($_d))] = 0;
+// 					}
+// 				}
+
+// 				if(!isset($c[$arrayMerge['TRAINING_NAME']][$arrayMerge['VENUE_COUNTRY_NAME']])) {
+// 					$c[$arrayMerge['TRAINING_NAME']][$arrayMerge['COUNT_PARTICIPANTS']][$arrayMerge['VENUE_COUNTRY_NAME']] = 1;
 // 				} else {
-// 					$c[$value['TRAINING_NAME']][$value['VENUE_COUNTRY_NAME']]++;
+// 					$c[$arrayMerge['TRAINING_NAME']][$arrayMerge['COUNT_PARTICIPANTS']][$arrayMerge['VENUE_COUNTRY_NAME']]++;
+// 				}
+			}
+			$arrayLast = array_map(null, $a, $b, $c);
+			print_r($arrayLast);
+
+			
+// 			$sum = array();
+// 			foreach ($arrayLast as $key=>$val) {
+// 				if ($key);
+// 				 if (!isset($sum[$val[0]][$val[1]][$val[2]])) {
+// 		             $sum[$val[0]][$val[1]][$val[2]] = 1;
+// 				 } else {
+// 				 	$sum[$val[0]][$val[1]][$val[2]]++;
+// 				 }
+// 			}
+// 			print_r($sum);
+
+// 			$totals = array();
+// 			foreach($arrayLast as $val)
+// 			{
+
+// 				if (!isset($totals[$val[0]][$val[1]])) {
+// 					$totals[$val[0]][$val[1]] += $val[2];
+// 				} else {
+// 					$totals[$val[0]][$val[1]] += $val[2];
 // 				}
 // 			}
+// 			print_r($totals);
 			
-// 			print_r($c);
-
-// 			$columns = array();
-// 			$temp='';
-// 			foreach ($c as $key=>$value) {
+			print_r($sumResult);
 			
-// 				$col = array();
-// 				$col[] = array('text' => ''.$key ,'width' => '45','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-// 				foreach ($value as $k=>$v) {
-// 						$temp = $temp.$v;
-// 				}
-// 				$col[] = array('text' => $temp ,'width' => '45','height'=>'5','align' => 'L','linearea'=>'LTBR',);
-// 				$columns[] = $col;
-// 				$temp = '';
+			$names = array();
+			$trainings = array();
+			foreach($res as $k=>$d) {
+			
+				if(!in_array($d['TRAINING_NAME'], $trainings)) {
+					$trainings[] = $d['TRAINING_NAME'];
+				}
+			
+				foreach($countries as $_k => $_d) {
+					if(!isset($names[$d['TRAINING_NAME']]['TOTAL_' . str_replace(' ', '_', strtoupper($_d))])) {
+						$names[$d['TRAINING_NAME']]['TOTAL_' . str_replace(' ', '_', strtoupper($_d))] = 0;
+					}
+				}
 
-// 			}
+				if(!isset($names[$d['TRAINING_NAME']]['TOTAL'])) {
+					$names[$d['TRAINING_NAME']]['TOTAL'] = 1;
+				} else {
+					$names[$d['TRAINING_NAME']]['TOTAL']++;
+				}
+			
+				$names[$d['TRAINING_NAME']]['TOTAL_' . str_replace(' ', '_', strtoupper($d['VENUE_COUNTRY_NAME']))]++;
+			
+			}
+			// $fields[] = 'TOTAL';
+			
+			$columns = array();
+			$data = array();
+			$i = 0;
+			foreach($names as $k=>$d) {
+				if($i >= $this->_start && $i < $this->_limit) {
+					$data[$i]['TRAINING_NAME'] = $k;
+					foreach($d as $_k => $_d) {
+						$data[$i][$_k] = $_d;
+					}
+				}
+				$i++;
+			}
+
+			foreach ($data as $key=>$row) {
+				$col = array();
+				foreach ($row as $x=>$y) {
+					$col[] = array('text' => $y , 'width' => '23','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+				}
+				$columns[] = $col;
+			}
 			$pdf->WriteTable($columns);
 			$pdf->Output('pdf/participants/' . $filename . '.pdf','F');
 			
 			$this->_data['fileName'] = $filename . '.pdf';
 			$this->_data['path'] = 'pdf/participants/';
+		//}
+	}
+	
+	public function getCountryAction() {
+		try {
+	
+			$model = new countries_Model_Country();
+	
+			$q = $model->select()
+			->from($model->getTableName(), array('NAME'))
+			->distinct(true);
+	
+			$res = $q->query()->fetchAll();
+			$this->_data['names'] = $res;
+	
+		} catch(Exception $e) {
+			$this->exception($e);
 		}
 	}
 }

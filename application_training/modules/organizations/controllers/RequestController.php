@@ -384,140 +384,142 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 	
 	public function printAction()
 	{
+		try {
 		$pdf = new myfpdf();
 		$h = 13;
 		$left = 40;
 		$top = 60;
 		
-		
 		$pdf->SetFont('Arial','',14);
-		$pdf->AddPage('p', 'a4');
+		$pdf->addPage();
 		$pdf->Ln(2);
 		
-		$filename ='ReportOrganization.' . date('Y-m-d-H-i-s');
-		if(isset($this->_posts['ID']) && !empty($this->_posts['ID'])) {
-			$id = $this->_enc->base64decrypt($this->_posts['ID']);
-			$q = $this->_modelTraining->select()
-			->from('TR_TRAININGS_VIEW', array('ID'))
-			->where('ORGANIZATION_ID = ?', $id);
+		    $filename ='ReportOrganization.' . date('Y-m-d-H-i-s');
+		    
+		    	/* ===================================================================================== */
+		    
+		    	/* Get Country */
+		    	$model = new countries_Model_Country();
+		    	$countries = array();
+		    
+		    	$q = $model->select()
+		    	->from($model->getTableName(), array('NAME'))
+		    	->distinct(true);
+		    
+		    	$res = $q->query()->fetchAll();
+		    
+		    	foreach($res as $k=>$d) {
+		    		$countries[] = $d['NAME'];
+		    	}
 
-// 			if(isset($this->_posts['START_DATE']) && isset($this->_posts['END_DATE']) && !empty($this->_posts['START_DATE']) && !empty($this->_posts['END_DATE'])) {
-// 				$q->where('SDATE >= ?', $this->_posts['START_DATE']);
-// 				$q->where('SDATE <= ?', $this->_posts['END_DATE']);
-// 			}
-
-			$q->query()->fetchAll();
-			$list = $q->query()->fetchAll();
-			$x = $this->_modelTraining->select()->from('TR_TRAININGS_VIEW', array('*'))
-			->where('ID IN (?)', $list);
-			$query = $x->query()->fetchAll();
-			
-			$c = array();
-			foreach ($query as $key=>$value) {
-				if(!isset($c[$value['TRAINING_NAME']][$value['VENUE_COUNTRY_NAME']])) {
-					$c[$value['TRAINING_NAME']][$value['VENUE_COUNTRY_NAME']] = 1;
-				} else {
-					$c[$value['TRAINING_NAME']][$value['VENUE_COUNTRY_NAME']]++;
-				}
-			}
-			
-			$negara = $this->_msCountry->select()->from('MS_COUNTRY', array('NAME'));
-			$daftar = $negara->query()->fetchAll();
-			foreach ($daftar as $kunci=>$nilai) {
-				$var[] = $nilai['NAME'];
-			}
-
-			/*Start Header Table */
-			$push = $var;
-			array_unshift($push, 'Training Name');
-			
-			$HeaderTable = array_unique($push);
-			$headerTable = array($HeaderTable);
-			
-			$columns = array();
-			if ( $headerTable ) foreach( $headerTable as $split ):
-			$array = array_values($split);
-			$col = array();
-			for ($i = 0; $i < count($array); ++$i) {
-			$col[] = array('text' => $array[$i] , 'width' => '23','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
-			}
-			$columns[] = $col;
-			$pdf->WriteTable($columns);
-			endforeach;
-			
-			/* End Header Table */
-			foreach ($var as $compare=>$buat) {
-
-				$tes [] = $buat;
-			}
-// 			for ($i = 0; $i <= count($tes); ++$i) {
-// 				print_r($tes[$i]);
-// 			}
-			$columns = array();
-
-			if ( $c ) foreach( $c as $key=>$split ):
-			$col = array();
-			$col[] = array('text' => $key ,'width' => '23','height' => '5','align' => 'L','linearea' => 'LTBR',);
-				foreach ($split as $keys=>$value) {
-					if($keys == $tes) {
-						$col[] = array('text' => $value ,'width' => '23','height' => '5','align' => 'L','linearea' => 'LTBR',);
-					} else {
-						$value = 0;
-						$col[] = array('text' => $value ,'width' => '23','height' => '5','align' => 'L','linearea' => 'LTBR',);
+		    	/* End of : Get Country */
+		    	
+				    $push = $countries;
+					array_unshift($push, 'Training Name');
+					array_push($push, 'Total');
+					$HeaderTable = array_unique($push);
+					$headerTable = array($HeaderTable);
+					
+					$columns = array();
+					if ( $headerTable ) foreach( $headerTable as $split ):
+					$array = array_values($split);
+					$col = array();
+					for ($i = 0; $i < count($array); ++$i) {
+					$col[] = array('text' => $array[$i] , 'width' => '23','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
 					}
+					$columns[] = $col;
+					$pdf->WriteTable($columns);
+					endforeach;
+		    
+		    	/* ===================================================================================== */
+		    
+		    	$q = $this->_modelTraining->select()
+		    	->from($this->_modelTraining->getTableName(), array('TRAINING_NAME','VENUE_COUNTRY_NAME'));
+		    
+		    	$res = $q->query()->fetchAll();
+		    
+		    	$names = array();
+		    	$trainings = array();
+		    
+		    	foreach($res as $k=>$d) {
+		    
+		    		if(!in_array($d['TRAINING_NAME'], $trainings)) {
+		    			$trainings[] = $d['TRAINING_NAME'];
+		    		}
+		    
+		    		foreach($countries as $_k => $_d) {
+		    			if(!isset($names[$d['TRAINING_NAME']]['TOTAL_' . str_replace(' ', '_', strtoupper($_d))])) {
+		    				$names[$d['TRAINING_NAME']]['TOTAL_' . str_replace(' ', '_', strtoupper($_d))] = 0;
+		    			}
+		    		}
+		    
+		    		if(!isset($names[$d['TRAINING_NAME']]['TOTAL'])) {
+		    			$names[$d['TRAINING_NAME']]['TOTAL'] = 1;
+		    		} else {
+		    			$names[$d['TRAINING_NAME']]['TOTAL']++;
+		    		}
+		    
+		    		$names[$d['TRAINING_NAME']]['TOTAL_' . str_replace(' ', '_', strtoupper($d['VENUE_COUNTRY_NAME']))]++;
+		    
+		    	}
+		    	// $fields[] = 'TOTAL';
+
+		    	$columns = array();
+		    	$data = array();
+		    	$i = 0;
+		    	foreach($names as $k=>$d) {
+		    		if($i >= $this->_start && $i < $this->_limit) {
+		    			$data[$i]['TRAINING_NAME'] = $k;
+		    			foreach($d as $_k => $_d) {
+		    				$data[$i][$_k] = $_d;
+		    			}
+		    		}
+		    		$i++;
+		    	}
+		    	
+		    	$total = array();
+		         foreach ($data as $key=>$row) {
+		         	$col = array();
+		         	foreach ($row as $x=>$y) {
+					$col[] = array('text' => $y , 'width' => '23','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
+					$total[] = $y;
+		         	}
+		         	$columns[] = $col;	
 					}
-			$columns[] = $col;
-			endforeach;
-			$pdf->WriteTable($columns);
-
-			$country = array_unique($k);
-			$result =  array_map(null,$v,$k);
-			$Country = array($country);
-
-
-	        /* Start Store Count Result */			
-			$trName2 = array_unique($v);
-			foreach ($result as $x=>$y) {
-				foreach ($trName2 as $key=>$row) {
-					if ($y[0] == $row) {
-						$string[] = '' . $y[0] .'-' . $y[1] . '';
-						$stringX[] = $y[1];
-							
-					}
+					$pdf->WriteTable($columns);
+					
+				$acc = array_shift($data);
+			    foreach ($data as $val) {
+			       foreach ($val as $key => $val) {
+			        $acc[$key] += $val;
+			        }
+                }
+                
+                $replace = array('TRAINING_NAME'=>'Total');
+				$acc = array_replace($acc, $replace);
+				$footerTable = array($acc);
+				$columns = array();
+				if ( $footerTable ) foreach( $footerTable as $split ):
+				$array = array_values($split);
+				$col = array();
+				for ($i = 0; $i < count($array); ++$i) {
+					$col[] = array('text' => $array[$i] , 'width' => '23','height'=>'5', 'align' => 'L','linearea'=>'LTBR');
 				}
-			}
+				$columns[] = $col;
+				$pdf->WriteTable($columns);
+				endforeach;
+
+						
 
 
-			$count = array_count_values($string);
-			$unique = array_unique($string);
-			$reindex = array_values($unique);
-			foreach ($reindex as $explode) {
-				$Explode = explode("-", $explode);
-				$newExplode[] = $Explode[0];
-				$newCount[] = $Explode[1];
-			}
-
-			$res = array_map(null,$newExplode,$newCount,$count);
-			foreach ($res as $k=>$v){
-// 				print_r($k);
-				for ($i = 0; $i <= $k; ++$i) {
-// 					print_r(($v[$i]));
-				}
-// 				$columns = array();
-// 				$col = array();
-// 				$col[] = array('text' => $v[0] ,'width' => '35','height' => '5','align' => 'L','linearea' => 'LTBR',);
-// 				$col[] = array('text' => $v[1] ,'width' => '35','height' => '5','align' => 'L','linearea' => 'LTBR',);
-// 				$col[] = array('text' => $v[2] ,'width' => '35','height' => '5','align' => 'L','linearea' => 'LTBR',);
-// 				$columns[] = $col;
-// 				$pdf->WriteTable($columns);
-			}
-			
 			$pdf->Output('pdf/participants/' . $filename . '.pdf','F');
-		
 			$this->_data['fileName'] = $filename . '.pdf';
 			$this->_data['path'] = 'pdf/participants/';
+			} catch(Exception $e) {
+				$this->exception($e);
+			}
 		}
-	}
+
 
 	public function getCountryAction() {
 		try {
@@ -529,7 +531,6 @@ class Organizations_RequestController extends MyIndo_Controller_Action
 			->distinct(true);
 
 			$res = $q->query()->fetchAll();
-
 			$this->_data['names'] = $res;
 
 		} catch(Exception $e) {

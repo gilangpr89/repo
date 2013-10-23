@@ -144,10 +144,52 @@ Ext.define(MyIndo.getNameSpace('controller.Menu'), {
 		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Transaction.Trainings.View'));
 	},
 	
-	/* Report Panel */
+	/* Report Statistik Panel */
 	onReportParticipantsClicked: function(menuTitle, menuId, mainContent) {
-		var store = Ext.create(MyIndo.getNameSpace('store.Report.Participants'));
-		this.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Report.Participants.View'));
+		var me = this;
+		Ext.Ajax.request({
+			url: MyIndo.siteUrl('participants/request/get-country'),
+			params: {p:true},
+			success: function(r) {
+				var json = Ext.decode(r.responseText);
+				if(typeof(json.data.names) !== 'undefined') {
+					var params = json.data.names;
+
+					var fields = [{
+						name: 'TRAINING_NAME',
+						type: 'string'
+					},{
+						name: 'TOTAL',
+						type: 'int'
+					}];
+
+					for(var i = 0; i < params.length; i++) {
+						 console.log(params[i].NAME.replace(' ','_').toUpperCase());
+						fields.push({
+							name: 'TOTAL_' + params[i].NAME.replace(' ', '_').toUpperCase(),
+							type: 'int'
+						});
+					}
+
+
+					/* asdasdasdasd */
+
+					var model = Ext.define('ModelParticipant', {
+						extend: 'Ext.data.Model',
+						fields: fields
+					});
+
+					var store = Ext.create(MyIndo.getNameSpace('store.Report.Participants'), {
+						model: model
+					});
+
+					me.createPanel(menuTitle, menuId, mainContent, store, MyIndo.getNameSpace('view.Report.Participants.View'), params);
+				
+				} else {
+					Ext.Msg.alert('Error', json.error_message);
+				}
+			}
+		});
 	},
 	
 	onReportOrganizationClicked: function(menuTitle, menuId, mainContent) {

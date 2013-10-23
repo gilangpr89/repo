@@ -1,6 +1,6 @@
 Ext.define(MyIndo.getNameSpace('store.Report.Participants'), {
 	extend: 'MyIndo.data.Store',
-	model: MyIndo.getNameSpace('model.Report.Participant'),
+	//model: MyIndo.getNameSpace('model.Report.Participant'),
 	proxy: {
 		type: 'ajax',
 		api: {
@@ -10,7 +10,7 @@ Ext.define(MyIndo.getNameSpace('store.Report.Participants'), {
 		reader: MyIndo.config.defaultReader
 	},
 	sorters: {
-		property: 'NAME',
+		property: 'TRAINING_NAME',
 		direction: 'ASC'
 	},
 	remoteSort: true

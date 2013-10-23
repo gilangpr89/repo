@@ -19,7 +19,7 @@ class MyIndo_Db_Table_Abstract extends Zend_Db_Table_Abstract
 	public function getTableName()
 	{
 		return $this->_name;
-	}
+	}	
 
 	public function getPk()
 	{
